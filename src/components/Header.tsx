@@ -21,16 +21,12 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3">
+          <Link to="/" className="flex items-center">
             <img 
               src="/lovable-uploads/04e60487-5280-4438-a1dc-95d891024624.png" 
               alt="Офис Интеллект" 
               className="w-10 h-10"
             />
-            <div className="hidden sm:block">
-              <span className="font-playfair font-bold text-xl text-primary">Офис Интеллект</span>
-              <p className="text-xs text-gray-600">Умные столы</p>
-            </div>
           </Link>
 
           {/* Desktop Navigation */}
