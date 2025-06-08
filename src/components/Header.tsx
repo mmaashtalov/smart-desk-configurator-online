@@ -1,94 +1,144 @@
 
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ShoppingCart, Menu, X, Search, User } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { Search, ShoppingCart, Heart, User, Menu, X } from 'lucide-react';
+import { useApp } from '@/contexts/AppContext';
+import SearchModal from './SearchModal';
+import CartModal from './CartModal';
+import AuthModal from './AuthModal';
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const { cartCount, user, favorites } = useApp();
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const navigation = [
-    { name: 'Главная', href: '/' },
-    { name: 'Каталог', href: '/catalog' },
-    { name: 'Конфигуратор', href: '/configurator' },
-    { name: 'Проекты', href: '/projects' },
-    { name: 'О компании', href: '/about' },
-    { name: 'Контакты', href: '/contacts' },
+  const navigationItems = [
+    { label: 'Главная', href: '/' },
+    { label: 'Каталог', href: '/catalog' },
+    { label: 'Конфигуратор', href: '/configurator' },
+    { label: 'О компании', href: '/about' },
+    { label: 'Проекты', href: '/projects' },
+    { label: 'Контакты', href: '/contacts' },
   ];
 
   return (
-    <header className="bg-white/95 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link to="/" className="flex items-center">
-            <img 
-              src="/lovable-uploads/04e60487-5280-4438-a1dc-95d891024624.png" 
-              alt="Офис Интеллект" 
-              className="w-10 h-10"
-            />
-          </Link>
+    <>
+      <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <Link to="/" className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">УС</span>
+              </div>
+            </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex space-x-8">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className="text-gray-700 hover:text-accent transition-colors duration-200 font-roboto font-medium relative group"
-              >
-                {item.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full"></span>
-              </Link>
-            ))}
-          </nav>
-
-          {/* Actions */}
-          <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="sm" className="hidden md:flex">
-              <Search className="h-4 w-4" />
-            </Button>
-            <Button variant="ghost" size="sm" className="hidden md:flex">
-              <User className="h-4 w-4" />
-            </Button>
-            <Button variant="ghost" size="sm" className="relative">
-              <ShoppingCart className="h-4 w-4" />
-              <span className="absolute -top-1 -right-1 bg-accent text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                0
-              </span>
-            </Button>
-
-            {/* Mobile menu button */}
-            <Button
-              variant="ghost"
-              size="sm"
-              className="lg:hidden"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
-          </div>
-        </div>
-
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="lg:hidden py-4 border-t border-gray-200">
-            <nav className="flex flex-col space-y-2">
-              {navigation.map((item) => (
+            {/* Desktop Navigation */}
+            <nav className="hidden lg:flex space-x-8">
+              {navigationItems.map((item) => (
                 <Link
-                  key={item.name}
+                  key={item.href}
                   to={item.href}
-                  className="text-gray-700 hover:text-accent transition-colors duration-200 font-roboto py-2 px-4 rounded-md hover:bg-gray-50"
-                  onClick={() => setIsMenuOpen(false)}
+                  className="text-gray-700 hover:text-primary transition-colors duration-200 font-medium"
                 >
-                  {item.name}
+                  {item.label}
                 </Link>
               ))}
             </nav>
+
+            {/* Actions */}
+            <div className="flex items-center space-x-2">
+              {/* Search */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsSearchOpen(true)}
+                className="text-gray-600 hover:text-primary"
+              >
+                <Search className="h-5 w-5" />
+              </Button>
+
+              {/* Favorites */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => navigate('/favorites')}
+                className="text-gray-600 hover:text-primary relative"
+              >
+                <Heart className="h-5 w-5" />
+                {favorites.length > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-accent text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    {favorites.length}
+                  </span>
+                )}
+              </Button>
+
+              {/* Cart */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsCartOpen(true)}
+                className="text-gray-600 hover:text-primary relative"
+              >
+                <ShoppingCart className="h-5 w-5" />
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-accent text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                )}
+              </Button>
+
+              {/* User Account */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsAuthOpen(true)}
+                className="text-gray-600 hover:text-primary"
+              >
+                <User className="h-5 w-5" />
+              </Button>
+
+              {/* Mobile Menu Toggle */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="lg:hidden text-gray-600 hover:text-primary"
+              >
+                {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </Button>
+            </div>
           </div>
-        )}
-      </div>
-    </header>
+
+          {/* Mobile Navigation */}
+          {isMobileMenuOpen && (
+            <div className="lg:hidden border-t border-gray-200 py-4">
+              <nav className="flex flex-col space-y-2">
+                {navigationItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="px-2 py-2 text-gray-700 hover:text-primary hover:bg-gray-50 rounded-md transition-colors duration-200"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </nav>
+            </div>
+          )}
+        </div>
+      </header>
+
+      {/* Modals */}
+      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+      <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+      <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
+    </>
   );
 };
 

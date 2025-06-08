@@ -67,17 +67,8 @@ const Configurator = () => {
   };
 
   const handleAddToCart = () => {
-    // Check if required fields are filled
-    if (!config.material || !config.tableBase) {
-      setShowNotification('error');
-      setTimeout(() => setShowNotification(''), 3000);
-      return;
-    }
-    
-    // Add to cart logic would go here
-    console.log('Adding to cart:', config);
-    setShowNotification('cart');
-    setTimeout(() => setShowNotification(''), 3000);
+    // This functionality is now handled in ConfigPrice component
+    console.log('Add to cart handled by ConfigPrice component');
   };
 
   return (

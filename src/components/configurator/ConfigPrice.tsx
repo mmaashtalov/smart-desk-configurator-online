@@ -2,6 +2,7 @@
 import { ConfigurationState } from '@/types/configurator';
 import { Button } from '@/components/ui/button';
 import { useState, useEffect } from 'react';
+import { useApp } from '@/contexts/AppContext';
 
 interface ConfigPriceProps {
   config: ConfigurationState;
@@ -9,8 +10,9 @@ interface ConfigPriceProps {
   onAddToCart: () => void;
 }
 
-const ConfigPrice = ({ config, onSave, onAddToCart }: ConfigPriceProps) => {
+const ConfigPrice = ({ config, onSave }: ConfigPriceProps) => {
   const [animatePrice, setAnimatePrice] = useState(false);
+  const { addToCart } = useApp();
 
   const calculatePrice = () => {
     let basePrice = 85000; // Base oak table price
@@ -54,6 +56,20 @@ const ConfigPrice = ({ config, onSave, onAddToCart }: ConfigPriceProps) => {
 
   const totalPrice = calculatePrice();
 
+  const handleAddToCart = () => {
+    const configuredProduct = {
+      id: `config-${Date.now()}`,
+      name: `Настроенный стол ${config.material === 'oak' ? 'Дуб' : config.material === 'walnut' ? 'Орех' : 'Палисандр'}`,
+      price: totalPrice,
+      configuration: config,
+    };
+
+    addToCart(configuredProduct);
+    
+    // Show success message
+    alert('Конфигурация добавлена в корзину!');
+  };
+
   return (
     <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -72,13 +88,14 @@ const ConfigPrice = ({ config, onSave, onAddToCart }: ConfigPriceProps) => {
         <div className="flex flex-col sm:flex-row gap-3">
           <Button 
             onClick={onSave}
-            className="config-button"
+            variant="outline"
+            className="px-6 py-3"
           >
             Сохранить конфигурацию
           </Button>
           <Button 
-            onClick={onAddToCart}
-            className="add-to-cart"
+            onClick={handleAddToCart}
+            className="btn-primary px-6 py-3"
           >
             Добавить в корзину
           </Button>
