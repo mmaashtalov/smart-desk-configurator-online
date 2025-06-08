@@ -15,7 +15,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 215 25% 13%; /* #1f2426 */
+    --primary: 215 28% 17%; /* Более темный и контрастный */
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -24,7 +24,7 @@
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 14 100% 57%; /* #ff3c00 */
+    --accent: 27 96% 61%; /* Теплый оранжевый акцент */
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 84.2% 60.2%;
@@ -34,7 +34,7 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem; /* Увеличенный радиус */
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -45,11 +45,17 @@
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
 
-    /* Custom design system colors */
-    --wood-primary: 28 20% 85%; /* Light wood tone */
-    --wood-secondary: 28 25% 75%; /* Medium wood tone */
-    --neutral-bg: 0 0% 96%; /* #f5f5f5 */
-    --text-primary: 0 0% 20%; /* #333333 */
+    /* Обновленная цветовая палитра */
+    --wood-primary: 28 20% 85%;
+    --wood-secondary: 28 25% 75%;
+    --neutral-bg: 0 0% 98%; /* Более светлый фон */
+    --text-primary: 0 0% 15%; /* Более мягкий черный */
+    
+    /* Новые цвета для современного дизайна */
+    --gradient-start: 215 28% 17%;
+    --gradient-end: 27 96% 61%;
+    --surface: 0 0% 99%;
+    --surface-variant: 220 14% 96%;
   }
 
   .dark {
@@ -89,11 +95,23 @@
   }
 
   body {
-    @apply bg-background text-foreground font-roboto;
+    @apply bg-background text-foreground font-roboto leading-relaxed;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-playfair;
+    @apply font-playfair font-bold;
+  }
+
+  h1 {
+    @apply text-4xl md:text-6xl leading-tight;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl leading-tight;
+  }
+
+  h3 {
+    @apply text-2xl md:text-3xl leading-tight;
   }
 }
 
@@ -118,12 +136,44 @@
     background-color: hsl(var(--neutral-bg));
   }
   
+  .bg-surface {
+    background-color: hsl(var(--surface));
+  }
+  
+  .bg-surface-variant {
+    background-color: hsl(var(--surface-variant));
+  }
+  
   .text-primary {
     color: hsl(var(--text-primary));
   }
 
+  .gradient-primary {
+    background: linear-gradient(135deg, hsl(var(--gradient-start)) 0%, hsl(var(--gradient-end)) 100%);
+  }
+
+  .gradient-accent {
+    background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(var(--accent) / 0.8) 100%);
+  }
+
   .hover-scale {
-    @apply transition-transform duration-300 hover:scale-105;
+    @apply transition-all duration-300 hover:scale-105;
+  }
+
+  .hover-lift {
+    @apply transition-all duration-300 hover:-translate-y-2 hover:shadow-xl;
+  }
+
+  .glass-card {
+    @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-xl;
+  }
+
+  .modern-shadow {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+
+  .modern-shadow-lg {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
   }
 
   .wood-texture {
@@ -134,9 +184,16 @@
     background-size: 20px 20px;
     background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
   }
+
+  .text-gradient {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
 }
 
-/* Animation keyframes */
+/* Современные анимации */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -159,12 +216,25 @@
   }
 }
 
-@keyframes pulse-accent {
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse-modern {
   0%, 100% {
     background-color: hsl(var(--accent));
+    transform: scale(1);
   }
   50% {
     background-color: hsl(var(--accent) / 0.8);
+    transform: scale(1.05);
   }
 }
 
@@ -176,30 +246,44 @@
   animation: slideInRight 0.6s ease-out;
 }
 
-.animate-pulse-accent {
-  animation: pulse-accent 2s infinite;
+.animate-scale-in {
+  animation: scaleIn 0.6s ease-out;
 }
 
-.config-button {
-  background-color: hsl(var(--primary));
-  color: white;
-  transition: all 0.3s ease;
+.animate-pulse-modern {
+  animation: pulse-modern 3s infinite;
 }
 
-.config-button:hover {
-  background-color: hsl(var(--accent));
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+/* Современные кнопки */
+.btn-primary {
+  @apply bg-primary text-white px-8 py-4 rounded-xl font-semibold text-lg;
+  @apply transition-all duration-300 hover:bg-accent hover:shadow-xl hover:-translate-y-1;
+  @apply focus:outline-none focus:ring-4 focus:ring-accent/30;
 }
 
-.add-to-cart {
-  background-color: hsl(var(--accent));
-  color: white;
-  transition: all 0.3s ease;
+.btn-secondary {
+  @apply bg-white text-primary border-2 border-primary px-8 py-4 rounded-xl font-semibold text-lg;
+  @apply transition-all duration-300 hover:bg-primary hover:text-white hover:shadow-xl hover:-translate-y-1;
+  @apply focus:outline-none focus:ring-4 focus:ring-primary/30;
 }
 
-.add-to-cart:hover {
-  background-color: hsl(var(--primary));
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+.btn-accent {
+  @apply gradient-accent text-white px-8 py-4 rounded-xl font-semibold text-lg;
+  @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:scale-105;
+  @apply focus:outline-none focus:ring-4 focus:ring-accent/30;
+}
+
+/* Современные карточки */
+.product-card {
+  @apply bg-white rounded-2xl overflow-hidden modern-shadow;
+  @apply transition-all duration-300 hover:modern-shadow-lg hover:-translate-y-2;
+}
+
+.feature-card {
+  @apply bg-surface rounded-2xl p-8 modern-shadow;
+  @apply transition-all duration-300 hover:modern-shadow-lg hover:-translate-y-1;
+}
+
+.hero-section {
+  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.9) 50%, hsl(var(--accent) / 0.1) 100%);
 }
