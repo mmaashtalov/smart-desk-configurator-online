@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Search, ShoppingCart, Heart, User, Menu, X } from 'lucide-react';
+import { Search, ShoppingCart, Heart, User, Menu, X, Gem } from 'lucide-react';
 import { useApp } from '@/contexts/AppContext';
 import SearchModal from './SearchModal';
 import CartModal from './CartModal';
@@ -18,46 +18,55 @@ const Header = () => {
 
   const navigationItems = [
     { label: 'Главная', href: '/' },
-    { label: 'Каталог', href: '/catalog' },
+    { label: 'Коллекция', href: '/catalog' },
     { label: 'Конфигуратор', href: '/configurator' },
-    { label: 'О компании', href: '/about' },
+    { label: 'Мастерская', href: '/about' },
     { label: 'Проекты', href: '/projects' },
     { label: 'Контакты', href: '/contacts' },
   ];
 
   return (
     <>
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+      <header className="bg-luxury-white/95 backdrop-blur-xl border-b border-luxury-platinum/20 sticky top-0 z-50 shadow-luxury">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">УС</span>
+            <Link to="/" className="flex items-center space-x-3 group">
+              <div className="w-10 h-10 bg-gradient-gold rounded-sm flex items-center justify-center shadow-gold transition-all duration-300 group-hover:scale-105">
+                <Gem className="text-luxury-black h-5 w-5" />
+              </div>
+              <div className="hidden sm:block">
+                <span className="font-playfair font-medium text-xl text-luxury-black tracking-tight">
+                  Офис Интеллект
+                </span>
+                <div className="text-xs text-luxury-platinum tracking-widest uppercase">
+                  Premium Tables
+                </div>
               </div>
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex space-x-8">
+            <nav className="hidden lg:flex space-x-12">
               {navigationItems.map((item) => (
                 <Link
                   key={item.href}
                   to={item.href}
-                  className="text-gray-700 hover:text-primary transition-colors duration-200 font-medium"
+                  className="relative text-luxury-charcoal hover:text-luxury-black transition-colors duration-300 font-inter font-medium tracking-wide group"
                 >
                   {item.label}
+                  <span className="absolute -bottom-2 left-0 w-full h-0.5 bg-luxury-gold scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
                 </Link>
               ))}
             </nav>
 
             {/* Actions */}
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-3">
               {/* Search */}
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsSearchOpen(true)}
-                className="text-gray-600 hover:text-primary"
+                className="text-luxury-charcoal hover:text-luxury-black hover:bg-luxury-pearl/50 transition-all duration-300 w-12 h-12"
               >
                 <Search className="h-5 w-5" />
               </Button>
@@ -67,11 +76,11 @@ const Header = () => {
                 variant="ghost"
                 size="icon"
                 onClick={() => navigate('/favorites')}
-                className="text-gray-600 hover:text-primary relative"
+                className="text-luxury-charcoal hover:text-luxury-black hover:bg-luxury-pearl/50 transition-all duration-300 relative w-12 h-12"
               >
                 <Heart className="h-5 w-5" />
                 {favorites.length > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-accent text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 bg-luxury-gold text-luxury-black text-xs rounded-full h-5 w-5 flex items-center justify-center font-inter font-medium shadow-gold">
                     {favorites.length}
                   </span>
                 )}
@@ -82,11 +91,11 @@ const Header = () => {
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsCartOpen(true)}
-                className="text-gray-600 hover:text-primary relative"
+                className="text-luxury-charcoal hover:text-luxury-black hover:bg-luxury-pearl/50 transition-all duration-300 relative w-12 h-12"
               >
                 <ShoppingCart className="h-5 w-5" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-accent text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 bg-luxury-gold text-luxury-black text-xs rounded-full h-5 w-5 flex items-center justify-center font-inter font-medium shadow-gold">
                     {cartCount}
                   </span>
                 )}
@@ -97,7 +106,7 @@ const Header = () => {
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsAuthOpen(true)}
-                className="text-gray-600 hover:text-primary"
+                className="text-luxury-charcoal hover:text-luxury-black hover:bg-luxury-pearl/50 transition-all duration-300 w-12 h-12"
               >
                 <User className="h-5 w-5" />
               </Button>
@@ -107,7 +116,7 @@ const Header = () => {
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="lg:hidden text-gray-600 hover:text-primary"
+                className="lg:hidden text-luxury-charcoal hover:text-luxury-black hover:bg-luxury-pearl/50 transition-all duration-300 w-12 h-12"
               >
                 {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </Button>
@@ -116,14 +125,14 @@ const Header = () => {
 
           {/* Mobile Navigation */}
           {isMobileMenuOpen && (
-            <div className="lg:hidden border-t border-gray-200 py-4">
-              <nav className="flex flex-col space-y-2">
+            <div className="lg:hidden border-t border-luxury-platinum/20 py-6 luxury-fade-in">
+              <nav className="flex flex-col space-y-4">
                 {navigationItems.map((item) => (
                   <Link
                     key={item.href}
                     to={item.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="px-2 py-2 text-gray-700 hover:text-primary hover:bg-gray-50 rounded-md transition-colors duration-200"
+                    className="px-4 py-3 text-luxury-charcoal hover:text-luxury-black hover:bg-luxury-pearl/30 rounded-lg transition-all duration-300 font-inter font-medium"
                   >
                     {item.label}
                   </Link>

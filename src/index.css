@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,85 +7,86 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 210 8% 14%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 210 8% 14%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 210 8% 14%;
 
-    --primary: 215 28% 17%; /* Более темный и контрастный */
-    --primary-foreground: 210 40% 98%;
+    /* Премиальная палитра */
+    --primary: 210 8% 14%; /* Глубокий антрацит */
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 210 6% 93%;
+    --secondary-foreground: 210 8% 14%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 210 6% 96%;
+    --muted-foreground: 210 4% 46%;
 
-    --accent: 27 96% 61%; /* Теплый оранжевый акцент */
-    --accent-foreground: 210 40% 98%;
+    --accent: 43 74% 49%; /* Роскошное золото */
+    --accent-foreground: 210 8% 14%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 210 12% 91%;
+    --input: 210 12% 91%;
+    --ring: 43 74% 49%;
 
-    --radius: 0.75rem; /* Увеличенный радиус */
+    --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-foreground: 210 8% 14%;
+    --sidebar-primary: 210 8% 14%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 210 6% 93%;
+    --sidebar-accent-foreground: 210 8% 14%;
+    --sidebar-border: 210 12% 91%;
+    --sidebar-ring: 43 74% 49%;
 
-    /* Обновленная цветовая палитра */
-    --wood-primary: 28 20% 85%;
-    --wood-secondary: 28 25% 75%;
-    --neutral-bg: 0 0% 98%; /* Более светлый фон */
-    --text-primary: 0 0% 15%; /* Более мягкий черный */
+    /* Премиальные цвета */
+    --luxury-black: 210 8% 14%;
+    --luxury-white: 0 0% 99%;
+    --luxury-gold: 43 74% 49%;
+    --luxury-platinum: 210 4% 82%;
+    --luxury-charcoal: 210 6% 25%;
+    --luxury-pearl: 210 6% 96%;
+    --luxury-onyx: 210 12% 8%;
     
-    /* Новые цвета для современного дизайна */
-    --gradient-start: 215 28% 17%;
-    --gradient-end: 27 96% 61%;
-    --surface: 0 0% 99%;
-    --surface-variant: 220 14% 96%;
+    /* Градиенты */
+    --gradient-luxury: linear-gradient(135deg, hsl(var(--luxury-black)) 0%, hsl(var(--luxury-charcoal)) 100%);
+    --gradient-gold: linear-gradient(135deg, hsl(var(--luxury-gold)) 0%, #d4af37 100%);
+    --gradient-pearl: linear-gradient(135deg, hsl(var(--luxury-pearl)) 0%, hsl(var(--luxury-white)) 100%);
+    
+    /* Тени премиум-класса */
+    --shadow-luxury: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    --shadow-luxury-lg: 0 35px 60px -12px rgba(0, 0, 0, 0.35);
+    --shadow-gold: 0 8px 32px rgba(212, 175, 55, 0.3);
+    --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --background: 210 8% 14%;
+    --foreground: 0 0% 98%;
+    --card: 210 8% 14%;
+    --card-foreground: 0 0% 98%;
+    --popover: 210 8% 14%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 210 8% 14%;
+    --secondary: 210 6% 25%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 210 6% 25%;
+    --muted-foreground: 210 4% 65%;
+    --accent: 43 74% 49%;
+    --accent-foreground: 210 8% 14%;
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 210 6% 25%;
+    --input: 210 6% 25%;
+    --ring: 43 74% 49%;
   }
 }
 
@@ -95,23 +96,33 @@
   }
 
   body {
-    @apply bg-background text-foreground font-roboto leading-relaxed;
+    @apply bg-background text-foreground font-inter antialiased;
+    letter-spacing: -0.01em;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-playfair font-bold;
+    @apply font-playfair font-medium;
+    letter-spacing: -0.02em;
   }
 
   h1 {
-    @apply text-4xl md:text-6xl leading-tight;
+    @apply text-5xl md:text-7xl xl:text-8xl leading-[0.85] tracking-tighter;
+    font-weight: 500;
   }
 
   h2 {
-    @apply text-3xl md:text-4xl leading-tight;
+    @apply text-4xl md:text-5xl xl:text-6xl leading-[0.9] tracking-tight;
+    font-weight: 500;
   }
 
   h3 {
+    @apply text-3xl md:text-4xl leading-[0.95] tracking-tight;
+    font-weight: 500;
+  }
+
+  h4 {
     @apply text-2xl md:text-3xl leading-tight;
+    font-weight: 500;
   }
 }
 
@@ -120,170 +131,233 @@
     font-family: 'Playfair Display', serif;
   }
   
-  .font-roboto {
-    font-family: 'Roboto', sans-serif;
+  .font-inter {
+    font-family: 'Inter', sans-serif;
   }
 
-  .bg-wood-primary {
-    background-color: hsl(var(--wood-primary));
-  }
+  /* Премиальные цвета */
+  .bg-luxury-black { background-color: hsl(var(--luxury-black)); }
+  .bg-luxury-white { background-color: hsl(var(--luxury-white)); }
+  .bg-luxury-gold { background-color: hsl(var(--luxury-gold)); }
+  .bg-luxury-platinum { background-color: hsl(var(--luxury-platinum)); }
+  .bg-luxury-charcoal { background-color: hsl(var(--luxury-charcoal)); }
+  .bg-luxury-pearl { background-color: hsl(var(--luxury-pearl)); }
+  .bg-luxury-onyx { background-color: hsl(var(--luxury-onyx)); }
   
-  .bg-wood-secondary {
-    background-color: hsl(var(--wood-secondary));
-  }
-  
-  .bg-neutral {
-    background-color: hsl(var(--neutral-bg));
-  }
-  
-  .bg-surface {
-    background-color: hsl(var(--surface));
-  }
-  
-  .bg-surface-variant {
-    background-color: hsl(var(--surface-variant));
-  }
-  
-  .text-primary {
-    color: hsl(var(--text-primary));
+  .text-luxury-black { color: hsl(var(--luxury-black)); }
+  .text-luxury-white { color: hsl(var(--luxury-white)); }
+  .text-luxury-gold { color: hsl(var(--luxury-gold)); }
+  .text-luxury-platinum { color: hsl(var(--luxury-platinum)); }
+  .text-luxury-charcoal { color: hsl(var(--luxury-charcoal)); }
+
+  /* Премиальные градиенты */
+  .gradient-luxury {
+    background: var(--gradient-luxury);
   }
 
-  .gradient-primary {
-    background: linear-gradient(135deg, hsl(var(--gradient-start)) 0%, hsl(var(--gradient-end)) 100%);
+  .gradient-gold {
+    background: var(--gradient-gold);
   }
 
-  .gradient-accent {
-    background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(var(--accent) / 0.8) 100%);
+  .gradient-pearl {
+    background: var(--gradient-pearl);
   }
 
-  .hover-scale {
-    @apply transition-all duration-300 hover:scale-105;
-  }
-
-  .hover-lift {
-    @apply transition-all duration-300 hover:-translate-y-2 hover:shadow-xl;
-  }
-
-  .glass-card {
-    @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-xl;
-  }
-
-  .modern-shadow {
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  }
-
-  .modern-shadow-lg {
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-  }
-
-  .wood-texture {
-    background-image: linear-gradient(45deg, hsl(var(--wood-primary)) 25%, transparent 25%), 
-                      linear-gradient(-45deg, hsl(var(--wood-primary)) 25%, transparent 25%), 
-                      linear-gradient(45deg, transparent 75%, hsl(var(--wood-secondary)) 75%), 
-                      linear-gradient(-45deg, transparent 75%, hsl(var(--wood-secondary)) 75%);
-    background-size: 20px 20px;
-    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-  }
-
-  .text-gradient {
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+  .text-gradient-gold {
+    background: var(--gradient-gold);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+
+  /* Премиальные тени */
+  .shadow-luxury {
+    box-shadow: var(--shadow-luxury);
+  }
+
+  .shadow-luxury-lg {
+    box-shadow: var(--shadow-luxury-lg);
+  }
+
+  .shadow-gold {
+    box-shadow: var(--shadow-gold);
+  }
+
+  .shadow-inner {
+    box-shadow: var(--shadow-inner);
+  }
+
+  /* Премиальные эффекты */
+  .luxury-hover {
+    @apply transition-all duration-700 ease-out hover:scale-[1.02] hover:shadow-luxury-lg;
+  }
+
+  .luxury-card {
+    @apply bg-luxury-white/80 backdrop-blur-xl border border-luxury-platinum/30 shadow-luxury rounded-xl;
+  }
+
+  .luxury-button {
+    @apply bg-luxury-black text-luxury-white px-12 py-6 rounded-none font-inter font-medium text-base tracking-wider uppercase;
+    @apply transition-all duration-500 hover:bg-luxury-gold hover:text-luxury-black hover:shadow-gold;
+    @apply focus:outline-none focus:ring-4 focus:ring-luxury-gold/30;
+    letter-spacing: 0.15em;
+  }
+
+  .luxury-button-outline {
+    @apply bg-transparent text-luxury-black border-2 border-luxury-black px-12 py-6 rounded-none font-inter font-medium text-base tracking-wider uppercase;
+    @apply transition-all duration-500 hover:bg-luxury-black hover:text-luxury-white hover:shadow-luxury;
+    @apply focus:outline-none focus:ring-4 focus:ring-luxury-black/30;
+    letter-spacing: 0.15em;
+  }
+
+  .luxury-button-gold {
+    @apply gradient-gold text-luxury-black px-12 py-6 rounded-none font-inter font-medium text-base tracking-wider uppercase;
+    @apply transition-all duration-500 hover:scale-105 hover:shadow-gold;
+    @apply focus:outline-none focus:ring-4 focus:ring-luxury-gold/30;
+    letter-spacing: 0.15em;
+  }
+
+  /* Анимации для премиум-сегмента */
+  .luxury-reveal {
+    @apply opacity-0 translate-y-12;
+    animation: luxuryReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .luxury-fade-in {
+    @apply opacity-0;
+    animation: luxuryFadeIn 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .luxury-slide-up {
+    @apply opacity-0 translate-y-16;
+    animation: luxurySlideUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .luxury-scale-in {
+    @apply opacity-0 scale-95;
+    animation: luxuryScaleIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .parallax-slow {
+    transform: translateY(var(--scroll-y, 0) * 0.5px);
+  }
+
+  .parallax-fast {
+    transform: translateY(var(--scroll-y, 0) * -0.3px);
+  }
 }
 
-/* Современные анимации */
-@keyframes fadeInUp {
-  from {
+/* Премиальные анимации */
+@keyframes luxuryReveal {
+  0% {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(48px);
   }
-  to {
+  100% {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-@keyframes slideInRight {
-  from {
+@keyframes luxuryFadeIn {
+  0% {
     opacity: 0;
-    transform: translateX(30px);
   }
-  to {
+  100% {
     opacity: 1;
-    transform: translateX(0);
   }
 }
 
-@keyframes scaleIn {
-  from {
+@keyframes luxurySlideUp {
+  0% {
     opacity: 0;
-    transform: scale(0.9);
+    transform: translateY(64px);
   }
-  to {
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes luxuryScaleIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
     opacity: 1;
     transform: scale(1);
   }
 }
 
-@keyframes pulse-modern {
-  0%, 100% {
-    background-color: hsl(var(--accent));
-    transform: scale(1);
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
   }
-  50% {
-    background-color: hsl(var(--accent) / 0.8);
-    transform: scale(1.05);
+  100% {
+    background-position: 200% 0;
   }
 }
 
-.animate-fade-in-up {
-  animation: fadeInUp 0.6s ease-out;
+.shimmer {
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
 }
 
-.animate-slide-in-right {
-  animation: slideInRight 0.6s ease-out;
+/* Кастомные скроллбары для премиального вида */
+::-webkit-scrollbar {
+  width: 8px;
 }
 
-.animate-scale-in {
-  animation: scaleIn 0.6s ease-out;
+::-webkit-scrollbar-track {
+  background: hsl(var(--luxury-pearl));
 }
 
-.animate-pulse-modern {
-  animation: pulse-modern 3s infinite;
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--luxury-platinum));
+  border-radius: 4px;
 }
 
-/* Современные кнопки */
-.btn-primary {
-  @apply bg-primary text-white px-8 py-4 rounded-xl font-semibold text-lg;
-  @apply transition-all duration-300 hover:bg-accent hover:shadow-xl hover:-translate-y-1;
-  @apply focus:outline-none focus:ring-4 focus:ring-accent/30;
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--luxury-gold));
 }
 
-.btn-secondary {
-  @apply bg-white text-primary border-2 border-primary px-8 py-4 rounded-xl font-semibold text-lg;
-  @apply transition-all duration-300 hover:bg-primary hover:text-white hover:shadow-xl hover:-translate-y-1;
-  @apply focus:outline-none focus:ring-4 focus:ring-primary/30;
+/* Типографика премиум-класса */
+.luxury-heading {
+  @apply font-playfair font-medium text-luxury-black leading-none tracking-tighter;
 }
 
-.btn-accent {
-  @apply gradient-accent text-white px-8 py-4 rounded-xl font-semibold text-lg;
-  @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:scale-105;
-  @apply focus:outline-none focus:ring-4 focus:ring-accent/30;
+.luxury-subheading {
+  @apply font-inter font-normal text-luxury-charcoal/80 leading-relaxed;
 }
 
-/* Современные карточки */
-.product-card {
-  @apply bg-white rounded-2xl overflow-hidden modern-shadow;
-  @apply transition-all duration-300 hover:modern-shadow-lg hover:-translate-y-2;
+.luxury-body {
+  @apply font-inter font-normal text-luxury-charcoal/70 leading-relaxed;
 }
 
-.feature-card {
-  @apply bg-surface rounded-2xl p-8 modern-shadow;
-  @apply transition-all duration-300 hover:modern-shadow-lg hover:-translate-y-1;
+.luxury-caption {
+  @apply font-inter font-medium text-luxury-platinum text-sm tracking-wide uppercase;
+  letter-spacing: 0.1em;
 }
 
-.hero-section {
-  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.9) 50%, hsl(var(--accent) / 0.1) 100%);
+/* Hero section премиум */
+.hero-luxury {
+  background: linear-gradient(135deg, 
+    hsl(var(--luxury-black)) 0%, 
+    hsl(var(--luxury-charcoal)) 50%, 
+    hsl(var(--luxury-black)) 100%
+  );
+  position: relative;
+}
+
+.hero-luxury::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 30% 70%, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
+  pointer-events: none;
 }
