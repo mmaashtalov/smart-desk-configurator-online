@@ -1,6 +1,5 @@
-
 import { useApp } from '@/contexts/AppContext';
-import Layout from '@/components/Layout';
+import { Layout } from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Heart, ShoppingCart } from 'lucide-react';
 

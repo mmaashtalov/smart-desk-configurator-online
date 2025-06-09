@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import Layout from '@/components/Layout';
+import { Layout } from '@/components/Layout';
 import ConfigVisualization from '@/components/configurator/ConfigVisualization';
 import ConfigForm from '@/components/configurator/ConfigForm';
 import ConfigPrice from '@/components/configurator/ConfigPrice';

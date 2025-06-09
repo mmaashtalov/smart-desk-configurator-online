@@ -1,22 +1,23 @@
-
-import { ReactNode } from 'react';
-import Header from './Header';
-import Footer from './Footer';
+import React, { ReactNode } from 'react'
+import { NewHeader } from '@/components/NewHeader'
+import { Footer } from '@/components/Footer'
+import { usePageTracking } from '@/hooks/useAnalytics'
 
 interface LayoutProps {
-  children: ReactNode;
+  children: ReactNode
 }
 
-const Layout = ({ children }: LayoutProps) => {
+export function Layout({ children }: LayoutProps) {
+  usePageTracking()
+
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
+      <NewHeader />
       <main className="flex-1">
         {children}
       </main>
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default Layout;

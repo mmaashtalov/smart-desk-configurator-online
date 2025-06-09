@@ -7,6 +7,8 @@ export default {
 		"./components/**/*.{ts,tsx}",
 		"./app/**/*.{ts,tsx}",
 		"./src/**/*.{ts,tsx}",
+		'./src/contexts/**/*.{js,ts,jsx,tsx}',
+		'./src/hooks/**/*.{js,ts,jsx,tsx}',
 	],
 	prefix: "",
 	theme: {

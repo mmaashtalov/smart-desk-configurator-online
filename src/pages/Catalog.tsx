@@ -1,7 +1,6 @@
-
 import { useState } from 'react';
 import { Filter, Grid, List } from 'lucide-react';
-import Layout from '@/components/Layout';
+import { Layout } from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
