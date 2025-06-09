@@ -4,6 +4,8 @@ import { Slider } from '@/components/ui/slider';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { HelpCircle } from 'lucide-react';
+import { useChat } from '@/contexts/ChatContext';
+import { Button } from '@/components/ui/button';
 
 interface ConfigFormProps {
   config: ConfigurationState;
@@ -11,6 +13,13 @@ interface ConfigFormProps {
 }
 
 const ConfigForm = ({ config, onConfigChange }: ConfigFormProps) => {
+  const { setCurrentConfiguration, setIsOpen } = useChat();
+
+  const handleHelpClick = (topic: string) => {
+    setCurrentConfiguration({ ...config, helpTopic: topic });
+    setIsOpen(true);
+  };
+
   const materials: MaterialOption[] = [
     {
       value: 'oak',
@@ -175,7 +184,12 @@ const ConfigForm = ({ config, onConfigChange }: ConfigFormProps) => {
         <form className="space-y-6">
           {/* Dimensions */}
           <div className="space-y-4">
-            <h4 className="font-roboto font-semibold text-primary">Размеры стола</h4>
+            <div className="flex items-center justify-between">
+              <h4 className="font-roboto font-semibold text-primary">Размеры стола</h4>
+              <Button variant="ghost" size="icon" onClick={() => handleHelpClick('dimensions')}>
+                <HelpCircle className="h-5 w-5 text-gray-400" />
+              </Button>
+            </div>
             
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -208,9 +222,14 @@ const ConfigForm = ({ config, onConfigChange }: ConfigFormProps) => {
 
           {/* Material */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Материал
-            </label>
+            <div className="flex items-center justify-between">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Материал
+              </label>
+              <Button variant="ghost" size="icon" onClick={() => handleHelpClick('material')}>
+                <HelpCircle className="h-5 w-5 text-gray-400" />
+              </Button>
+            </div>
             <Select value={config.material} onValueChange={(value) => onConfigChange({ material: value as any })}>
               <SelectTrigger>
                 <SelectValue placeholder="Выберите материал" />
@@ -233,9 +252,14 @@ const ConfigForm = ({ config, onConfigChange }: ConfigFormProps) => {
 
           {/* Table Base */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Подстолье
-            </label>
+            <div className="flex items-center justify-between">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Подстолье
+              </label>
+              <Button variant="ghost" size="icon" onClick={() => handleHelpClick('tableBase')}>
+                <HelpCircle className="h-5 w-5 text-gray-400" />
+              </Button>
+            </div>
             <Select value={config.tableBase} onValueChange={(value) => onConfigChange({ tableBase: value as any })}>
               <SelectTrigger>
                 <SelectValue placeholder="Выберите подстолье" />
@@ -257,9 +281,14 @@ const ConfigForm = ({ config, onConfigChange }: ConfigFormProps) => {
 
           {/* Storage */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Система хранения
-            </label>
+            <div className="flex items-center justify-between">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Система хранения
+              </label>
+              <Button variant="ghost" size="icon" onClick={() => handleHelpClick('storage')}>
+                <HelpCircle className="h-5 w-5 text-gray-400" />
+              </Button>
+            </div>
             <Select value={config.storage} onValueChange={(value) => onConfigChange({ storage: value as any })}>
               <SelectTrigger>
                 <SelectValue placeholder="Выберите систему хранения" />
@@ -283,7 +312,12 @@ const ConfigForm = ({ config, onConfigChange }: ConfigFormProps) => {
 
           {/* Additional Options */}
           <div>
-            <h4 className="font-roboto font-semibold text-primary mb-4">Дополнительные опции</h4>
+            <div className="flex items-center justify-between">
+              <h4 className="font-roboto font-semibold text-primary mb-4">Дополнительные опции</h4>
+              <Button variant="ghost" size="icon" onClick={() => handleHelpClick('options')}>
+                <HelpCircle className="h-5 w-5 text-gray-400" />
+              </Button>
+            </div>
             <div className="relative h-88">
               <div className="h-full overflow-y-auto pr-2 space-y-3">
                 <TooltipProvider>

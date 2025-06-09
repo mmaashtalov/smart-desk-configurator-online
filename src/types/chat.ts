@@ -19,6 +19,7 @@ export interface ProductConfiguration {
   color?: string
   accessories?: string[]
   price?: number
+  helpTopic?: string
 }
 
 export interface ChatContextType {
