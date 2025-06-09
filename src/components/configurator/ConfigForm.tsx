@@ -1,4 +1,3 @@
-
 import { ConfigurationState, MaterialOption, BaseOption, StorageOption, AdditionalOption } from '@/types/configurator';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
@@ -285,39 +284,42 @@ const ConfigForm = ({ config, onConfigChange }: ConfigFormProps) => {
           {/* Additional Options */}
           <div>
             <h4 className="font-roboto font-semibold text-primary mb-4">Дополнительные опции</h4>
-            <div className="grid grid-cols-1 gap-3">
-              <TooltipProvider>
-                {additionalOptions.map((option) => (
-                  <div key={option.key} className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50">
-                    <Checkbox
-                      id={option.key}
-                      checked={config.options[option.key]}
-                      onCheckedChange={(checked) => 
-                        onConfigChange({
-                          options: {
-                            ...config.options,
-                            [option.key]: checked as boolean
-                          }
-                        })
-                      }
-                    />
-                    <div className="flex-1">
-                      <label htmlFor={option.key} className="text-sm font-medium text-gray-700 cursor-pointer">
-                        {option.label}
-                      </label>
-                      <div className="text-sm text-gray-500">{option.description}</div>
+            <div className="relative h-88">
+              <div className="h-full overflow-y-auto pr-2 space-y-3">
+                <TooltipProvider>
+                  {additionalOptions.map((option) => (
+                    <div key={option.key} className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50">
+                      <Checkbox
+                        id={option.key}
+                        checked={config.options[option.key]}
+                        onCheckedChange={(checked) =>
+                          onConfigChange({
+                            options: {
+                              ...config.options,
+                              [option.key]: checked as boolean
+                            }
+                          })
+                        }
+                      />
+                      <div className="flex-1">
+                        <label htmlFor={option.key} className="text-sm font-medium text-gray-700 cursor-pointer">
+                          {option.label}
+                        </label>
+                        <div className="text-sm text-gray-500">{option.description}</div>
+                      </div>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <HelpCircle className="h-4 w-4 text-gray-400" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>{option.tooltip}</p>
+                        </TooltipContent>
+                      </Tooltip>
                     </div>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <HelpCircle className="h-4 w-4 text-gray-400" />
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>{option.tooltip}</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </div>
-                ))}
-              </TooltipProvider>
+                  ))}
+                </TooltipProvider>
+              </div>
+              <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent pointer-events-none" />
             </div>
           </div>
         </form>

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import ConfigVisualization from '@/components/configurator/ConfigVisualization';
@@ -88,12 +87,12 @@ const Configurator = () => {
           {/* Main Content */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
             {/* Visualization */}
-            <div className="order-2 lg:order-1">
+            <div className="order-1">
               <ConfigVisualization config={config} />
             </div>
 
             {/* Configuration Form */}
-            <div className="order-1 lg:order-2">
+            <div className="order-2">
               <ConfigForm config={config} onConfigChange={updateConfig} />
             </div>
           </div>
