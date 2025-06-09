@@ -60,7 +60,7 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
     }
   }, [trackPageView])
 
-  const trackEvent = (
+  const trackEvent = useCallback((
     type: AnalyticsEvent['type'],
     page: string,
     element?: string,
@@ -83,7 +83,7 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
     }
 
     setEvents(prev => [...prev, event])
-  }
+  }, [sessionId])
 
   const getMetrics = (startDate?: string, endDate?: string): AnalyticsMetrics => {
     let filteredEvents = events
