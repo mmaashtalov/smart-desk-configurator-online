@@ -18,8 +18,15 @@ import { NewProtectedRoute } from "@/components/NewProtectedRoute";
 import { LoginPage } from "./pages/LoginPage";
 import { ThemeProvider } from './contexts/ThemeContext';
 import Settings from "./pages/Settings";
+import { AnalyticsPage } from './pages/AnalyticsPage';
+import { TrackingScriptsEditor } from './components/analytics/TrackingScriptsEditor';
 import { ChatWidget } from './components/chat/ChatWidget';
 import { ChatWindow } from './components/chat/ChatWindow';
+import AnalyticsDashboard from "./pages/AnalyticsDashboard";
+import { BlogAdminPage } from "./pages/BlogAdminPage";
+import { BlogPostEditor } from "./pages/BlogPostEditor";
+import { BlogPage } from "./pages/BlogPage";
+import { BlogPostPage } from "./pages/BlogPostPage";
 
 const queryClient = new QueryClient();
 
@@ -40,10 +47,25 @@ const App = () => (
               <Route path="/contacts" element={<Contacts />} />
               <Route path="/favorites" element={<Favorites />} />
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/blog" element={<BlogPage />} />
+              <Route path="/blog/:slug" element={<BlogPostPage />} />
               <Route element={<NewProtectedRoute adminOnly />}>
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/admin/seo" element={<SEOSettings />} />
+                <Route path="/admin/analytics" element={
+                  <AnalyticsPage>
+                    <AnalyticsDashboard />
+                  </AnalyticsPage>
+                } />
+                <Route path="/admin/analytics/integrations" element={
+                  <AnalyticsPage>
+                    <TrackingScriptsEditor />
+                  </AnalyticsPage>
+                } />
                 <Route path="/admin/settings" element={<Settings />} />
+                <Route path="/admin/blog" element={<BlogAdminPage />} />
+                <Route path="/admin/blog/new" element={<BlogPostEditor />} />
+                <Route path="/admin/blog/edit/:id" element={<BlogPostEditor />} />
               </Route>
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

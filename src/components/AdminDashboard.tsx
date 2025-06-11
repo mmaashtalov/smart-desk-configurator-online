@@ -58,7 +58,7 @@ export function AdminDashboard() {
 
           <Card
             className="hover:shadow-lg transition-shadow cursor-pointer"
-            onClick={() => handleCardClick('', 'Аналитика')}
+            onClick={() => handleCardClick('/admin/analytics', 'Аналитика')}
           >
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
@@ -93,49 +93,25 @@ export function AdminDashboard() {
               </p>
             </CardContent>
           </Card>
-        </div>
 
-        <div className="mt-12">
-          <h2 className="text-xl font-semibold text-gray-900 mb-6">
-            Быстрые действия
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Button
-              variant="outline"
-              className="h-auto p-4 flex flex-col items-center space-y-2"
-              onClick={() => handleCardClick('/admin/seo', 'Настроить SEO')}
-            >
-              <span className="text-lg">🔍</span>
-              <span>Настроить SEO</span>
-            </Button>
-            
-            <Button
-              variant="outline"
-              className="h-auto p-4 flex flex-col items-center space-y-2"
-              onClick={() => handleCardClick('', 'Посмотреть статистику')}
-            >
-              <span className="text-lg">📈</span>
-              <span>Посмотреть статистику</span>
-            </Button>
-            
-            <Button
-              variant="outline"
-              className="h-auto p-4 flex flex-col items-center space-y-2"
-              onClick={() => handleCardClick('', 'Экспорт данных')}
-            >
-              <span className="text-lg">📥</span>
-              <span>Экспорт данных</span>
-            </Button>
-            
-            <Button
-              variant="outline"
-              className="h-auto p-4 flex flex-col items-center space-y-2"
-              onClick={() => handleCardClick('', 'Резервная копия')}
-            >
-              <span className="text-lg">💾</span>
-              <span>Резервная копия</span>
-            </Button>
-          </div>
+          <Card
+            className="hover:shadow-lg transition-shadow cursor-pointer"
+            onClick={() => handleCardClick('/admin/blog', 'Блог')}
+          >
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
+                  <span className="text-orange-600 font-semibold">📝</span>
+                </div>
+                <span>Блог</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600">
+                Создание, редактирование и управление статьями блога
+              </p>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
