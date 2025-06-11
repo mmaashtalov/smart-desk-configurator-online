@@ -1,17 +1,25 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 import { SEOData, PageSEO } from '@/types'
 
-interface SEOContextType {
+interface SEOContextData {
   currentSEO: SEOData
-  updateSEO: (seo: Partial<SEOData>) => void
-  getPageSEO: (path: string) => PageSEO | null
+  setSEO: (seo: SEOData) => void
+  getPageSEO: (path: string) => PageSEO | undefined
   updatePageSEO: (path: string, seo: Partial<SEOData>) => void
   getAllPagesSEO: () => PageSEO[]
   generateSitemap: () => string
   generateRobotsTxt: () => string
+  pages: PageSEO[]
+  addPageSEO: (path: string) => void
+  removePageSEO: (path: string) => void
+  updatePagePath: (oldPath: string, newPath: string) => void
+  verification: { google: string; yandex: string }
+  updateVerification: (codes: { google: string; yandex: string }) => void
+  cleanParam: string
+  updateCleanParam: (value: string) => void
 }
 
-const SEOContext = createContext<SEOContextType | undefined>(undefined)
+const SEOContext = createContext<SEOContextData | undefined>(undefined)
 
 const defaultSEO: SEOData = {
   title: 'Офис Интеллект - Премиальные умные столы',
@@ -25,27 +33,54 @@ const defaultSEO: SEOData = {
   robots: 'index, follow',
 }
 
-export function SEOProvider({ children }: { children: ReactNode }) {
-  const [currentSEO, setCurrentSEO] = useState<SEOData>(defaultSEO)
-  const [pagesSEO, setPagesSEO] = useState<PageSEO[]>([])
-
-  useEffect(() => {
-    // Load SEO data from localStorage
-    const savedSEO = localStorage.getItem('seo-data')
-    if (savedSEO) {
-      try {
-        const parsed = JSON.parse(savedSEO)
-        setPagesSEO(parsed)
-      } catch (error) {
-        console.error('Error loading SEO data:', error)
+export const SEOProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [currentSEO, setCurrentSEO] = useState<SEOData>(defaultSEO);
+  const [pages, setPages] = useState<PageSEO[]>(() => {
+    try {
+      const savedData = localStorage.getItem('seo-data');
+      if (savedData) {
+        const parsed = JSON.parse(savedData);
+        if (Array.isArray(parsed)) return parsed;
       }
+    } catch (error) {
+      console.error('Error loading SEO data:', error);
     }
-  }, [])
+    return [];
+  });
+  const [verification, setVerification] = useState(() => {
+    try {
+      const savedVerification = localStorage.getItem('seo-verification');
+      if (savedVerification) {
+        return JSON.parse(savedVerification);
+      }
+    } catch (error) {
+      console.error('Error loading verification data:', error);
+    }
+    return { google: '', yandex: '' };
+  });
+  const [cleanParam, setCleanParam] = useState(() => {
+    try {
+      const saved = localStorage.getItem('seo-clean-param');
+      return saved ? JSON.parse(saved) : '';
+    } catch (error) {
+      console.error('Error loading Clean-param data:', error);
+      return '';
+    }
+  });
 
   useEffect(() => {
-    // Save SEO data to localStorage
-    localStorage.setItem('seo-data', JSON.stringify(pagesSEO))
-  }, [pagesSEO])
+    localStorage.setItem('seo-data', JSON.stringify(pages));
+  }, [pages]);
+  
+  useEffect(() => {
+    localStorage.setItem('seo-verification', JSON.stringify(verification));
+    updateMetaTag('google-site-verification', verification.google);
+    updateMetaTag('yandex-verification', verification.yandex);
+  }, [verification]);
+
+  useEffect(() => {
+    localStorage.setItem('seo-clean-param', JSON.stringify(cleanParam));
+  }, [cleanParam]);
 
   useEffect(() => {
     // Update document head
@@ -101,7 +136,7 @@ export function SEOProvider({ children }: { children: ReactNode }) {
   }
 
   const updateStructuredData = (data: Record<string, any>) => {
-    let element = document.querySelector('script[type="application/ld+json"]')
+    let element = document.querySelector('script[type="application/ld+json"]') as HTMLScriptElement | null;
     if (!element) {
       element = document.createElement('script')
       element.type = 'application/ld+json'
@@ -110,90 +145,124 @@ export function SEOProvider({ children }: { children: ReactNode }) {
     element.textContent = JSON.stringify(data)
   }
 
-  const updateSEO = (seo: Partial<SEOData>) => {
-    setCurrentSEO(prev => ({ ...prev, ...seo }))
-  }
-
-  const getPageSEO = (path: string): PageSEO | null => {
-    return pagesSEO.find(page => page.path === path) || null
-  }
+  const getPageSEO = (path: string): PageSEO | undefined => {
+    return pages.find(page => page.path === path);
+  };
 
   const updatePageSEO = (path: string, seo: Partial<SEOData>) => {
-    setPagesSEO(prev => {
-      const existingIndex = prev.findIndex(page => page.path === path)
-      const now = new Date().toISOString()
-      
-      if (existingIndex >= 0) {
-        const updated = [...prev]
-        updated[existingIndex] = {
-          ...updated[existingIndex],
-          seo: { ...updated[existingIndex].seo, ...seo },
-          updatedAt: now
-        }
-        return updated
-      } else {
-        const newPage: PageSEO = {
-          id: Math.random().toString(36).substr(2, 9),
-          path,
-          seo: { ...defaultSEO, ...seo },
-          isActive: true,
-          createdAt: now,
-          updatedAt: now
-        }
-        return [...prev, newPage]
-      }
-    })
-  }
+    setPages(prev =>
+      prev.map(p =>
+        p.path === path
+          ? { ...p, seo: { ...p.seo, ...seo }, updatedAt: new Date().toISOString() }
+          : p
+      )
+    );
+  };
+
+  const addPageSEO = (path: string) => {
+    if (pages.some(p => p.path === path)) {
+      alert(`Page with path "${path}" already exists.`);
+      return;
+    }
+    const now = new Date().toISOString();
+    const newPage: PageSEO = {
+      id: `page-${Date.now()}`,
+      path,
+      seo: {
+        title: path,
+        description: `Description for ${path}`,
+        keywords: [],
+        ogTitle: path,
+        ogDescription: `Description for ${path}`,
+        ogImage: '',
+        twitterCard: 'summary_large_image',
+        twitterSite: '',
+        canonical: path,
+        robots: 'index, follow',
+      },
+      isActive: true,
+      createdAt: now,
+      updatedAt: now,
+    };
+    setPages(prev => [...prev, newPage]);
+  };
+
+  const removePageSEO = (path: string) => {
+    setPages(prev => prev.filter(p => p.path !== path));
+  };
+
+  const updatePagePath = (oldPath: string, newPath: string) => {
+    if (pages.some(p => p.path === newPath && p.path !== oldPath)) {
+      alert(`Page with path "${newPath}" already exists.`);
+      return;
+    }
+    setPages(prev =>
+      prev.map(p =>
+        p.path === oldPath ? { ...p, path: newPath, updatedAt: new Date().toISOString() } : p
+      )
+    );
+  };
 
   const getAllPagesSEO = (): PageSEO[] => {
-    return pagesSEO
-  }
+    return pages;
+  };
 
   const generateSitemap = (): string => {
     const baseUrl = window.location.origin
-    const pages = pagesSEO.filter(page => page.isActive)
+    const activePages = pages.filter(page => page.isActive)
     
-    const urls = pages.map(page => `
-  <url>
-    <loc>${baseUrl}${page.path}</loc>
-    <lastmod>${page.updatedAt.split('T')[0]}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>`).join('')
+    const urls = activePages.map(page => `
+    <url>
+        <loc>${baseUrl}${page.path}</loc>
+        <lastmod>${page.updatedAt || new Date().toISOString()}</lastmod>
+        <priority>0.8</priority>
+    </url>`).join('')
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>${baseUrl}/</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>${urls}
+    ${urls}
 </urlset>`
-  }
+  };
 
   const generateRobotsTxt = (): string => {
-    const baseUrl = window.location.origin
+    const disallowed = pages
+      .filter(page => !page.isActive || page.seo.robots?.includes('noindex'))
+      .map(page => `Disallow: ${page.path}`)
+      .join('\n');
+    
+    const cleanParamDirectives = cleanParam
+      .split('\n')
+      .filter(line => line.trim() !== '')
+      .map(line => `Clean-param: ${line.trim()}`)
+      .join('\n');
+
     return `User-agent: *
-Allow: /
+${disallowed}
+${cleanParamDirectives ? `${cleanParamDirectives}\n` : ''}Allow: /
 
-Sitemap: ${baseUrl}/sitemap.xml`
-  }
+Sitemap: ${window.location.origin}/sitemap.xml`;
+  };
 
-  return (
-    <SEOContext.Provider value={{
-      currentSEO,
-      updateSEO,
-      getPageSEO,
-      updatePageSEO,
-      getAllPagesSEO,
-      generateSitemap,
-      generateRobotsTxt
-    }}>
-      {children}
-    </SEOContext.Provider>
-  )
-}
+  const value = {
+    currentSEO,
+    setSEO: setCurrentSEO,
+    getPageSEO,
+    updatePageSEO,
+    getAllPagesSEO,
+    generateSitemap,
+    generateRobotsTxt,
+    pages,
+    addPageSEO,
+    removePageSEO,
+    updatePagePath,
+    verification,
+    updateVerification: setVerification,
+    cleanParam,
+    updateCleanParam: setCleanParam
+  };
+
+  return <SEOContext.Provider value={value}>{children}</SEOContext.Provider>;
+};
 
 export function useSEO() {
   const context = useContext(SEOContext)

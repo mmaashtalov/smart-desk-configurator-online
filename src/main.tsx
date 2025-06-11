@@ -7,16 +7,30 @@ import { ChatProvider } from './contexts/ChatContext';
 import { SEOProvider } from './contexts/SEOContext';
 import { AnalyticsProvider } from './contexts/AnalyticsContext';
 
-createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <HelmetProvider>
-      <SEOProvider>
-        <AnalyticsProvider>
-          <ChatProvider>
-            <App />
-          </ChatProvider>
-        </AnalyticsProvider>
-      </SEOProvider>
-    </HelmetProvider>
-  </React.StrictMode>
-);
+async function enableMocking() {
+  if (import.meta.env.MODE !== 'development') {
+    return
+  }
+ 
+  const { worker } = await import('./mocks/browser')
+ 
+  // `worker.start()` returns a Promise that resolves
+  // once the Service Worker is up and ready to intercept requests.
+  return worker.start()
+}
+ 
+enableMocking().then(() => {
+  createRoot(document.getElementById('root')!).render(
+    <React.StrictMode>
+      <HelmetProvider>
+        <SEOProvider>
+          <AnalyticsProvider>
+            <ChatProvider>
+              <App />
+            </ChatProvider>
+          </AnalyticsProvider>
+        </SEOProvider>
+      </HelmetProvider>
+    </React.StrictMode>
+  );
+});
