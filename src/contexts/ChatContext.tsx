@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react'
 import { ChatMessage, ChatContextType, ProductConfiguration } from '@/types/chat'
 
-const ChatContext = createContext<ChatContextType | undefined>(undefined)
+export const ChatContext = createContext<ChatContextType | undefined>(undefined)
 
 export function ChatProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false)
@@ -51,9 +51,9 @@ export function ChatProvider({ children }: { children: ReactNode }) {
   )
 }
 
-export function useChat() {
+export const useChat = () => {
   const context = useContext(ChatContext)
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useChat must be used within a ChatProvider')
   }
   return context

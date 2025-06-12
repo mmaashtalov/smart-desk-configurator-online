@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
+import { ArrowLeft } from 'lucide-react';
 
 // This type should be shared
 interface BlogPost {
@@ -111,73 +112,87 @@ export const BlogPostEditor: React.FC = () => {
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div className="container mx-auto py-8 space-y-8">
-      <h1 className="text-3xl font-bold">{id ? 'Редактировать статью' : 'Создать новую статью'}</h1>
+    <div className="container mx-auto p-4 space-y-6">
+      <div className="flex justify-between items-center">
+        <div className="flex items-center gap-4">
+            <Button variant="outline" size="icon" onClick={() => navigate(-1)}>
+                <ArrowLeft className="h-4 w-4" />
+            </Button>
+            <h1 className="text-3xl font-bold">{id ? 'Редактировать статью' : 'Создать новую статью'}</h1>
+        </div>
+        <Button onClick={handleSave} disabled={loading}>
+          {loading ? 'Сохранение...' : 'Сохранить'}
+        </Button>
+      </div>
       
-      <Card>
-        <CardHeader>
-          <CardTitle>Основной контент</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="title">Заголовок статьи</Label>
-            <Input id="title" name="title" value={post.title} onChange={handleChange} placeholder="Введите заголовок" />
-          </div>
-          <div className="space-y-2">
-            <Label>Содержимое статьи</Label>
-            <ReactQuill theme="snow" value={post.content} onChange={handleContentChange} />
-          </div>
-        </CardContent>
-      </Card>
-      
-      <Card>
-        <CardHeader>
-          <CardTitle>SEO Настройки</CardTitle>
-          <CardDescription>Оптимизируйте вашу статью для поисковых систем.</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-center space-x-2">
-            <Switch id="auto-slug" checked={autoSlug} onCheckedChange={setAutoSlug} />
-            <Label htmlFor="auto-slug">Генерировать URL автоматически</Label>
-          </div>
-          {!autoSlug && (
-            <div className="space-y-2">
-              <Label htmlFor="slug">URL (ЧПУ)</Label>
-              <Input id="slug" name="slug" value={post.slug} onChange={handleChange} />
-            </div>
-          )}
-          <div className="space-y-2">
-            <Label htmlFor="seo.metaTitle">Meta Title</Label>
-            <Input id="seo.metaTitle" name="seo.metaTitle" value={post.seo?.metaTitle} onChange={handleChange} />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="seo.metaDescription">Meta Description</Label>
-            <Input id="seo.metaDescription" name="seo.metaDescription" value={post.seo?.metaDescription} onChange={handleChange} />
-          </div>
-        </CardContent>
-      </Card>
-      
-       <Card>
-        <CardHeader>
-          <CardTitle>Настройки публикации</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-           <div className="space-y-2">
-            <Label>Статус</Label>
-            <Select value={post.status} onValueChange={handleStatusChange}>
-              <SelectTrigger>
-                <SelectValue placeholder="Выберите статус" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="draft">Черновик</SelectItem>
-                <SelectItem value="published">Опубликовано</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 space-y-6">
+            <Card>
+                <CardHeader>
+                <CardTitle>Основной контент</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                <div className="space-y-2">
+                    <Label htmlFor="title">Заголовок статьи</Label>
+                    <Input id="title" name="title" value={post.title} onChange={handleChange} placeholder="Введите заголовок" />
+                </div>
+                <div className="space-y-2">
+                    <Label>Содержимое статьи</Label>
+                    <ReactQuill theme="snow" value={post.content} onChange={handleContentChange} />
+                </div>
+                </CardContent>
+            </Card>
+        </div>
 
-      <Button onClick={handleSave} size="lg">Сохранить статью</Button>
+        <div className="space-y-6">
+            <Card>
+                <CardHeader>
+                <CardTitle>Настройки публикации</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                <div className="space-y-2">
+                    <Label>Статус</Label>
+                    <Select value={post.status} onValueChange={handleStatusChange}>
+                    <SelectTrigger>
+                        <SelectValue placeholder="Выберите статус" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="draft">Черновик</SelectItem>
+                        <SelectItem value="published">Опубликовано</SelectItem>
+                    </SelectContent>
+                    </Select>
+                </div>
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                <CardTitle>SEO Настройки</CardTitle>
+                <CardDescription>Оптимизируйте вашу статью для поисковых систем.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                <div className="flex items-center space-x-2">
+                    <Switch id="auto-slug" checked={autoSlug} onCheckedChange={setAutoSlug} />
+                    <Label htmlFor="auto-slug">Генерировать URL автоматически</Label>
+                </div>
+                {!autoSlug && (
+                    <div className="space-y-2">
+                    <Label htmlFor="slug">URL (ЧПУ)</Label>
+                    <Input id="slug" name="slug" value={post.slug} onChange={handleChange} />
+                    </div>
+                )}
+                <div className="space-y-2">
+                    <Label htmlFor="seo.metaTitle">Meta Title</Label>
+                    <Input id="seo.metaTitle" name="seo.metaTitle" value={post.seo?.metaTitle} onChange={handleChange} />
+                </div>
+                <div className="space-y-2">
+                    <Label htmlFor="seo.metaDescription">Meta Description</Label>
+                    <Input id="seo.metaDescription" name="seo.metaDescription" value={post.seo?.metaDescription} onChange={handleChange} />
+                </div>
+                </CardContent>
+            </Card>
+        </div>
+      </div>
     </div>
   );
 }; 

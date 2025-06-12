@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { PlusCircle, Edit, Trash2 } from 'lucide-react';
+import { PlusCircle, Edit, Trash2, ArrowLeft } from 'lucide-react';
 import { toast } from 'sonner';
 
 // This type should eventually be moved to a shared types file
@@ -17,6 +17,7 @@ interface BlogPost {
 
 export const BlogAdminPage: React.FC = () => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch('/api/seo/blog-posts')
@@ -32,11 +33,13 @@ export const BlogAdminPage: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto py-8">
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h1 className="text-3xl font-bold">Управление блогом</h1>
-          <p className="text-gray-500">Создавайте, редактируйте и управляйте вашими статьями.</p>
+    <div className="container mx-auto p-4">
+      <div className="flex justify-between items-center mb-4">
+        <div className="flex items-center gap-4">
+            <Button variant="outline" size="icon" onClick={() => navigate('/admin')}>
+                <ArrowLeft className="h-4 w-4" />
+            </Button>
+            <h1 className="text-3xl font-bold">Управление блогом</h1>
         </div>
         <Link to="/admin/blog/new">
           <Button>
@@ -49,6 +52,7 @@ export const BlogAdminPage: React.FC = () => {
       <Card>
         <CardHeader>
           <CardTitle>Все статьи</CardTitle>
+          <CardDescription>Создавайте, редактируйте и управляйте вашими статьями.</CardDescription>
         </CardHeader>
         <CardContent>
           <Table>

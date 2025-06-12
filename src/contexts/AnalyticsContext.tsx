@@ -11,7 +11,7 @@ interface AnalyticsContextType {
   exportData: () => string
 }
 
-const AnalyticsContext = createContext<AnalyticsContextType | undefined>(undefined)
+export const AnalyticsContext = createContext<AnalyticsContextType | undefined>(undefined)
 
 export function AnalyticsProvider({ children }: { children: ReactNode }) {
   const [events, setEvents] = useState<AnalyticsEvent[]>([])
@@ -209,9 +209,9 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
   )
 }
 
-export function useAnalytics() {
+export const useAnalytics = () => {
   const context = useContext(AnalyticsContext)
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useAnalytics must be used within an AnalyticsProvider')
   }
   return context

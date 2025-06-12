@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import { URL, fileURLToPath } from 'node:url';
@@ -5,6 +6,7 @@ import { componentTagger } from "lovable-tagger";
 import fs from 'node:fs';
 import path from 'node:path';
 import RSS from 'rss';
+import { Connect } from 'vite';
 
 const seoApiPlugin = () => {
   const seoDataPath = path.resolve(__dirname, 'seo-data');
@@ -12,7 +14,7 @@ const seoApiPlugin = () => {
   const blogPostsPath = path.resolve(seoDataPath, 'blog-posts.json');
   const siteSettingsPath = path.resolve(seoDataPath, 'settings.json');
 
-  const getJsonFileContent = (filePath) => {
+  const getJsonFileContent = (filePath: string) => {
     try {
       if (fs.existsSync(filePath)) {
         const content = fs.readFileSync(filePath, 'utf-8');
@@ -26,8 +28,8 @@ const seoApiPlugin = () => {
 
   return {
     name: 'seo-api-plugin',
-    configureServer(server) {
-      server.middlewares.use((req, res, next) => {
+    configureServer(server: { middlewares: { use: (arg0: (req: Connect.IncomingMessage, res: any, next: any) => void) => void; }; }) {
+      server.middlewares.use((req: Connect.IncomingMessage, res: any, next: any) => {
         if (req.url === '/rss.xml') {
           try {
             const siteSettings = getJsonFileContent(siteSettingsPath);
@@ -43,8 +45,8 @@ const seoApiPlugin = () => {
             });
 
             posts
-              .filter(p => p.status === 'published')
-              .forEach(post => {
+              .filter((p: { status: string; }) => p.status === 'published')
+              .forEach((post: { title: any; seo: { metaDescription: any; }; url: string; slug: any; id: any; createdAt: any; author: any; }) => {
                 feed.item({
                   title: post.title,
                   description: post.seo.metaDescription,
@@ -77,7 +79,7 @@ const seoApiPlugin = () => {
           }
           if (req.method === 'POST') {
             let body = '';
-            req.on('data', chunk => {
+            req.on('data', (chunk: { toString: () => string; }) => {
               body += chunk.toString();
             });
             req.on('end', () => {
@@ -89,9 +91,9 @@ const seoApiPlugin = () => {
           }
         }
 
-        if (req.url.startsWith('/api/seo/')) {
+        if (req.url && req.url.startsWith('/api/seo/')) {
           const resource = req.url.split('/')[3];
-          const fileMap = {
+          const fileMap: { [key: string]: string } = {
             'meta': 'meta.json',
             'robots': 'robots.txt',
             'sitemap': 'sitemap.json',
@@ -123,7 +125,7 @@ const seoApiPlugin = () => {
             });
           } else if (req.method === 'POST') {
             let body = '';
-            req.on('data', chunk => {
+            req.on('data', (chunk: { toString: () => string; }) => {
               body += chunk.toString();
             });
             req.on('end', () => {
@@ -144,9 +146,9 @@ const seoApiPlugin = () => {
         }
       });
     },
-    transformIndexHtml(html) {
+    transformIndexHtml(html: string) {
       const scripts = getJsonFileContent(trackingScriptsPath);
-      const scriptTags = scripts.map(s => s.script).join('\\n');
+      const scriptTags = scripts.map((s: { script: any; }) => s.script).join('\\n');
       return html.replace('</head>', `${scriptTags}\\n</head>`);
     }
   }
@@ -168,5 +170,10 @@ export default defineConfig(({ mode }) => ({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/test/setup.ts',
   },
 }));

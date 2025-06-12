@@ -1,12 +1,12 @@
 import { http, HttpResponse } from 'msw';
 
-const initialMeta = {
-  title: 'Initial Meta Title',
-  description: 'Initial meta description.',
-  h1: 'Initial H1 Header',
+const mockMeta = {
+  title: 'Главная страница',
+  description: 'Лучший конфигуратор столов',
+  h1: 'Соберите стол своей мечты',
   verification: {
-    google: 'google-verification-code-123',
-    yandex: 'yandex-verification-code-456',
+    google: 'google-verification-code',
+    yandex: 'yandex-verification-code',
   },
 };
 
@@ -66,9 +66,11 @@ const initialBlogPosts = [
 export const handlers = [
   // Meta
   http.get('/api/seo/meta', () => {
-    return HttpResponse.json(initialMeta);
+    return HttpResponse.json(mockMeta);
   }),
-  http.post('/api/seo/meta', () => {
+  http.post('/api/seo/meta', async ({ request }) => {
+    const newData = await request.json();
+    console.log('MSW: Received POST data:', newData);
     return new HttpResponse(null, { status: 200 });
   }),
 

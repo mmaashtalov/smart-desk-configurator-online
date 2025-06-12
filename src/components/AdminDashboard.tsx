@@ -112,6 +112,25 @@ export function AdminDashboard() {
               </p>
             </CardContent>
           </Card>
+
+          <Card
+            className="hover:shadow-lg transition-shadow cursor-pointer"
+            onClick={() => handleCardClick('/admin/pages', 'Менеджер страниц')}
+          >
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <div className="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center">
+                  <span className="text-indigo-600 font-semibold">📄</span>
+                </div>
+                <span>Менеджер страниц</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600">
+                Создание, редактирование и управление статическими страницами
+              </p>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>

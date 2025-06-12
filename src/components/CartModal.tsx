@@ -1,4 +1,3 @@
-
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { useApp } from '@/contexts/AppContext';
@@ -64,6 +63,7 @@ const CartModal = ({ isOpen, onClose }: CartModalProps) => {
                         size="icon"
                         onClick={() => updateQuantity(item.id, item.quantity - 1)}
                         className="h-8 w-8"
+                        aria-label={`Уменьшить количество ${item.name}`}
                       >
                         <Minus className="h-3 w-3" />
                       </Button>
@@ -73,6 +73,7 @@ const CartModal = ({ isOpen, onClose }: CartModalProps) => {
                         size="icon"
                         onClick={() => updateQuantity(item.id, item.quantity + 1)}
                         className="h-8 w-8"
+                        aria-label={`Увеличить количество ${item.name}`}
                       >
                         <Plus className="h-3 w-3" />
                       </Button>
@@ -83,6 +84,7 @@ const CartModal = ({ isOpen, onClose }: CartModalProps) => {
                       size="icon"
                       onClick={() => removeFromCart(item.id)}
                       className="h-8 w-8 text-red-500 hover:text-red-700"
+                      aria-label={`Удалить ${item.name}`}
                     >
                       <X className="h-4 w-4" />
                     </Button>

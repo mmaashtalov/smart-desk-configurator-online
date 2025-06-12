@@ -196,6 +196,13 @@ export function AnalyticsDashboard() {
                 <RefreshCw className="w-4 h-4" />
                 <span>Обновить</span>
               </Button>
+              <Button 
+                variant="destructive" 
+                onClick={handleClearData}
+                className="flex items-center space-x-2"
+              >
+                <span>Очистить</span>
+              </Button>
             </div>
           </div>
         </div>
