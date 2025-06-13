@@ -5,99 +5,13 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ProductImageSlider } from '@/components/ProductImageSlider';
 import { Link } from 'react-router-dom';
-
-const initialProducts = [
-  {
-    id: 1,
-    name: "Умный стол Arctic",
-    category: "table",
-    price: 65000,
-    originalPrice: 70000,
-    images: [
-      "https://images.unsplash.com/photo-1593642532782-0c282fef3869?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "https://images.unsplash.com/photo-1522204652233-a33785461148?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "https://images.unsplash.com/photo-1627791850787-f831968d904c?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    ],
-    description: "Элегантный и функциональный стол для современного рабочего пространства.",
-    features: ["Регулировка высоты 65-125 см", "Беспроводная зарядка Qi", "USB-хаб", "Память позиций"],
-    inStock: true,
-    isNew: true
-  },
-  {
-    id: 2,
-    name: "Стол ErgoPro",
-    category: "table",
-    price: 58000,
-    originalPrice: 62000,
-    images: [
-      "https://images.unsplash.com/photo-1518779578619-ae94d03be523?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "https://images.unsplash.com/photo-1593642632559-0c282fef3869?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "https://images.unsplash.com/photo-1522204652233-a33785461148?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    ],
-    description: "Эргономичное решение для продуктивной работы.",
-    features: ["Регулировка высоты 65-125 см", "Беспроводная зарядка Qi", "USB-хаб", "Память позиций"],
-    inStock: true,
-    isNew: false
-  },
-  {
-    id: 3,
-    name: "Модель ComfortDesk",
-    category: "table",
-    price: 52000,
-    images: [
-      "https://images.unsplash.com/photo-1593642632559-0c282fef3869?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "https://images.unsplash.com/photo-1518779578619-ae94d03be523?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "https://images.unsplash.com/photo-1522204652233-a33785461148?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    ],
-    description: "Идеальный баланс комфорта и стиля.",
-    features: ["Регулировка высоты 65-125 см", "Беспроводная зарядка Qi", "USB-хаб", "Память позиций"],
-    inStock: false,
-    isNew: false
-  },
-  {
-    id: 4,
-    name: 'Стол "Прогресс"',
-    category: "table",
-    price: 68000,
-    images: [
-      "https://images.unsplash.com/photo-1522204652233-a33785461148?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "https://images.unsplash.com/photo-1627791850787-f831968d904c?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "https://images.unsplash.com/photo-1518779578619-ae94d03be523?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    ],
-    description: "Высота регулируется, а также множество цветов.",
-    features: ["Регулировка высоты 65-125 см", "Беспроводная зарядка Qi", "USB-хаб", "Память позиций"],
-    inStock: true,
-    isNew: true
-  },
-  {
-    id: 5,
-    name: "Стеновая панель Arctic",
-    category: "panel",
-    price: 15000,
-    images: ["https://picsum.photos/600/400?random=8"],
-    description: "Стеновая панель из дубового шпона с LED-подсветкой",
-    features: ["Встроенная подсветка", "Текстурированная поверхность", "Звукоизоляция"],
-    inStock: true,
-    isNew: false
-  },
-  {
-    id: 6,
-    name: "Тумба интегрированная Wenge",
-    category: "cabinet",
-    price: 55000,
-    images: ["https://picsum.photos/600/400?random=9"],
-    description: "Интегрированная тумба размера M с дополнительными возможностями",
-    features: ["Встроенный сейф", "Отделение для системного блока", "Кабель-менеджмент"],
-    inStock: true,
-    isNew: false
-  }
-];
+import { initialProducts, Product } from '@/lib/productData';
 
 const Catalog = () => {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [priceRange, setPriceRange] = useState<string>('all');
-  const [products, setProducts] = useState(initialProducts);
+  const [products, setProducts] = useState<Product[]>(initialProducts);
 
   const categories = [
     { value: 'all', label: 'Все категории' },
@@ -240,6 +154,7 @@ const Catalog = () => {
               >
                 {/* Image Slider Container */}
                 <div className="relative w-full h-72 rounded-t-2xl overflow-hidden">
+                  <Link to={`/catalog/${product.id}`}>
                   <ProductImageSlider
                     images={product.images}
                     productName={product.name}
@@ -247,9 +162,10 @@ const Catalog = () => {
                     onDeleteImage={(imageUrl) => handleDeleteImage(product.id, imageUrl)}
                     className="absolute inset-0 z-10"
                   />
+                  </Link>
                 </div>
                 {/* Product Info */}
-                <div className="p-6 flex-1">
+                <div className={`p-6 flex flex-col justify-between ${viewMode === 'list' ? 'flex-grow' : ''}`}>
                   <h3 className="font-playfair text-xl font-bold text-primary mb-2">
                     {product.name}
                   </h3>

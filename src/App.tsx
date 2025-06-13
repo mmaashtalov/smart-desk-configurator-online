@@ -30,6 +30,7 @@ import { BlogPostPage } from "./pages/BlogPostPage";
 import { PageManager } from "./pages/PageManager";
 import { PageEditor } from './pages/PageEditor';
 import { ErrorBoundary } from "./components/ErrorBoundary";
+import ProductDetail from "./pages/ProductDetail";
 
 const queryClient = new QueryClient();
 
@@ -45,6 +46,7 @@ const App = () => (
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/catalog" element={<Catalog />} />
+                <Route path="/catalog/:id" element={<ProductDetail />} />
                 <Route path="/configurator" element={<Configurator />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/projects" element={<Projects />} />

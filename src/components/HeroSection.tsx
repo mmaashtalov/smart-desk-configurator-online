@@ -13,8 +13,8 @@ const HeroSection = () => {
       subtitle: "в каждой детали",
       description: "Премиальные умные столы из редких пород дуба с инновационными технологиями для тех, кто ценит совершенство",
       images: [
-        "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2400&q=80",
-        "https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&auto=format&fit=crop&w=2400&q=80"
+        "https://picsum.photos/seed/hero1/2400/800",
+        "https://picsum.photos/seed/hero2/2400/800",
       ],
       features: ["Ручная работа", "Редкие материалы", "Инновации"]
     },
@@ -24,7 +24,8 @@ const HeroSection = () => {
       subtitle: "передается поколениями",
       description: "Каждый стол создается вручную мастерами с многолетним опытом, используя технологии будущего",
       images: [
-        "https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&auto=format&fit=crop&w=2400&q=80"
+        "https://picsum.photos/seed/hero3/2400/800",
+        "https://picsum.photos/seed/hero4/2400/800"
       ],
       features: ["Эксклюзивность", "Безупречность", "Вечность"]
     },
@@ -34,7 +35,8 @@ const HeroSection = () => {
       subtitle: "для избранных",
       description: "Создайте уникальный стол, который станет центром вашего пространства и отражением вашего статуса",
       images: [
-        "https://images.unsplash.com/photo-1497366412874-3415097a27e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2400&q=80"
+        "https://picsum.photos/seed/hero5/2400/800",
+        "https://picsum.photos/seed/hero6/2400/800"
       ],
       features: ["Персонализация", "Эксклюзивность", "Престиж"]
     }
@@ -88,22 +90,23 @@ const HeroSection = () => {
   }
 
   return (
-    <section className="relative h-screen min-h-[700px] bg-luxury-black text-white overflow-hidden flex items-center justify-center">
+    <section className="relative h-screen min-h-[700px] bg-luxury-black text-white w-full">
       {/* Background Slider */}
-      <ProductImageSlider
-        images={slide.images}
-        productName={slide.title}
-        onAddImage={handleAddImage}
-        onDeleteImage={handleDeleteImage}
+      <div
         className="absolute inset-0 z-15 w-full h-full"
+        style={{
+          backgroundImage: `url(${slide.images[0]})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
       />
       
       {/* Gradient Overlay (pointer-events-none, чтобы не блокировать клики) */}
       <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/50 to-black/80 z-10 pointer-events-none" />
 
       {/* Foreground Content */}
-      <div className="relative z-20 h-full w-full flex flex-col justify-center items-center text-center p-4">
-        <div className="max-w-4xl mx-auto">
+      <div className="relative z-20 h-full w-full absolute inset-0 flex flex-col justify-center items-center text-center p-4">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
           {/* Top Info */}
           <div className="flex items-center gap-3 mb-4 text-luxury-gold">
               <Gem className="h-5 w-5" />
