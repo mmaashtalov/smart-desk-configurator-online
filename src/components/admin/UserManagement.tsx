@@ -25,7 +25,7 @@ const initialUsers: User[] = [
   { id: 3, name: 'Дмитрий Волков', email: 'dmitry.v@example.com', role: 'user' },
 ];
 
-export function UserManagement() {
+export default function UserManagement() {
   const [users, setUsers] = useState<User[]>(initialUsers);
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
