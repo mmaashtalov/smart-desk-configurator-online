@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, PlusCircle, XCircle } from 'lucide-react'; // Убедитесь, что эти иконки импортированы
 import { Button } from '@/components/ui/button'; // Убедитесь, что Button импортирован
+import { ImageFormModal } from '@/components/ui/ImageFormModal';
 
 interface ProductImageSliderProps {
   images: string[];
@@ -12,6 +13,8 @@ interface ProductImageSliderProps {
 
 export const ProductImageSlider: React.FC<ProductImageSliderProps> = ({ images, productName, onAddImage, onDeleteImage, className }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState<'add' | 'delete'>('add');
 
   const goToPrevious = () => {
     const isFirstSlide = currentIndex === 0;
@@ -26,16 +29,26 @@ export const ProductImageSlider: React.FC<ProductImageSliderProps> = ({ images, 
   };
   
   const handleAddClick = () => {
-    const newImage = prompt('Введите URL нового изображения:');
-    if (newImage) {
-      onAddImage(newImage); // Вызываем onAddImage с одним аргументом
-    }
+    setModalMode('add');
+    setIsModalOpen(true);
   };
 
   const handleDeleteClick = () => {
-    if (window.confirm('Вы уверены, что хотите удалить это изображение?')) {
-      onDeleteImage(images[currentIndex]); // Вызываем onDeleteImage с одним аргументом
+    setModalMode('delete');
+    setIsModalOpen(true);
+  };
+
+  const handleModalConfirm = (value?: string) => {
+    if (modalMode === 'add' && value) {
+      onAddImage(value);
+    } else if (modalMode === 'delete') {
+      onDeleteImage(images[currentIndex]);
     }
+    setIsModalOpen(false);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
   };
 
   if (!images || images.length === 0) {
@@ -66,6 +79,13 @@ export const ProductImageSlider: React.FC<ProductImageSliderProps> = ({ images, 
           <XCircle className="w-4 h-4 mr-2" /> Удалить
         </Button>
       </div>
+      <ImageFormModal
+        isOpen={isModalOpen}
+        onClose={handleModalClose}
+        onConfirm={handleModalConfirm}
+        mode={modalMode}
+        currentImageUrl={modalMode === 'delete' ? images[currentIndex] : undefined}
+      />
     </div>
   );
 };
