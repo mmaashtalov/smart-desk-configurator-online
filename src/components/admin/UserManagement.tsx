@@ -36,7 +36,7 @@ const UserManagement = () => {
   };
 
   const handleSaveUser = (updatedUser: User) => {
-    setUsers(users.map(u => u.id === updatedUser.id ? updatedProduct : u));
+    setUsers(users.map(u => u.id === updatedUser.id ? updatedUser : u));
     setEditingUser(null);
   };
 
@@ -104,7 +104,7 @@ const UserManagement = () => {
               <Input
                 type="text"
                 value={editingUser.role}
-                onChange={(e) => setEditingUser({ ...editingUser, role: e.target.value })}\
+                onChange={(e) => setEditingUser({ ...editingUser, role: e.target.value })}
                 className="mt-1 block w-full"
               />
             </div>
