@@ -125,7 +125,7 @@ const Projects = () => {
                     <img 
                       src={project.image} 
                       alt={project.title}
-                      className="w-full h-48 object-cover"
+                      className="w-full aspect-video h-auto object-cover"
                     />
                     <div className="absolute top-4 left-4">
                       <Badge variant="secondary" className="bg-white/90">

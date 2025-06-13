@@ -217,7 +217,7 @@ const Contacts = () => {
               <div className="space-y-8">
                 {/* Map Placeholder */}
                 <Card className="overflow-hidden">
-                  <div className="h-64 bg-gradient-to-br from-wood-primary to-wood-secondary flex items-center justify-center">
+                  <div className="h-56 md:h-64 bg-gradient-to-br from-wood-primary to-wood-secondary flex items-center justify-center">
                     <div className="text-center text-gray-600">
                       <MapPin className="h-12 w-12 mx-auto mb-4" />
                       <p className="font-medium">Интерактивная карта</p>

@@ -86,7 +86,7 @@ const About = () => {
                 <img 
                   src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=800&q=80" 
                   alt="Мастерская" 
-                  className="rounded-lg shadow-lg"
+                  className="w-full h-auto object-cover rounded-lg shadow-lg"
                 />
               </div>
             </div>

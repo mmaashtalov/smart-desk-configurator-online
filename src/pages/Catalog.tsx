@@ -153,7 +153,7 @@ const Catalog = () => {
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 {/* Image Slider Container */}
-                <div className="relative w-full h-72 rounded-t-2xl overflow-hidden">
+                <div className="relative w-full h-56 md:h-72 rounded-t-2xl overflow-hidden">
                   <Link to={`/catalog/${product.id}`}>
                   <ProductImageSlider
                     images={product.images}
