@@ -13,11 +13,21 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useNavigate } from 'react-router-dom';
 import { logger } from '@/services/logger.service';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 
 export const PageManager: React.FC = () => {
   const [pages, setPages] = useState<Page[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [pageToDeleteId, setPageToDeleteId] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -45,9 +55,16 @@ export const PageManager: React.FC = () => {
   };
 
   const handleDelete = (id: string) => {
-    // TODO: Implement delete functionality
-    console.log(`Delete page ${id}`);
-    alert('Функционал удаления в разработке');
+    setPageToDeleteId(id);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (pageToDeleteId) {
+      setPages(pages.filter(page => page.id !== pageToDeleteId));
+      setIsDeleteModalOpen(false);
+      setPageToDeleteId(null);
+    }
   };
   
   const handleAddNewPage = () => {
@@ -126,6 +143,22 @@ export const PageManager: React.FC = () => {
             </Table>
         </CardContent>
       </Card>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Подтвердите удаление</DialogTitle>
+            <DialogDescription>
+              Вы уверены, что хотите удалить эту страницу? Это действие нельзя отменить.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsDeleteModalOpen(false)}>Отмена</Button>
+            <Button variant="destructive" onClick={handleConfirmDelete}>Удалить</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }; 
