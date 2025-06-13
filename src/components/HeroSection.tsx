@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Star, Award, Gem, PlusCircle, XCircle } from 'lucide-react'; // Добавлены PlusCircle и XCircle для кнопок
+import { ArrowRight, Star, Award, Gem, PlusCircle, XCircle } from 'lucide-react';
 import { ProductImageSlider } from '@/components/ProductImageSlider';
+import { ImageFormModal } from '@/components/ui/ImageFormModal';
 
 const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState<'add' | 'delete'>('add');
   const [slides, setSlides] = useState([
     {
       id: 1,
@@ -42,38 +45,46 @@ const HeroSection = () => {
     }
   ]);
 
-  // Функции handleAddImage и handleDeleteImage теперь управляются ProductImageSlider
-  // (Они были перемещены в ProductImageSlider для упрощения)
-  // Но если HeroSection должен их вызывать напрямую (например, для кнопок вне слайдера),
-  // то они должны принимать только imageUrl, а не productId.
-  // В HeroSection они будут вызываться ProductImageSlider'ом, который передаст только imageUrl.
-
-  const handleAddImage = (imageUrl: string) => {
-    // В HeroSection мы добавляем изображение к текущему слайду
-    setSlides(prevSlides =>
-      prevSlides.map((slide, index) =>
-        index === currentSlide
-          ? { ...slide, images: [...slide.images, imageUrl] }
-          : slide
-      )
-    );
+  const handleAddImageClick = () => {
+    setModalMode('add');
+    setIsModalOpen(true);
   };
 
-  const handleDeleteImage = (imageUrl: string) => {
-    // В HeroSection мы удаляем изображение из текущего слайда
-    setSlides(prevSlides =>
-      prevSlides.map((slide, index) => {
-        if (index === currentSlide) {
-          if (slide.images.length <= 1) {
-            alert("Нельзя удалить последнее изображение.");
-            return slide;
+  const handleDeleteImageClick = () => {
+    if (slides[currentSlide].images.length === 1) {
+      alert("Нельзя удалить последнее изображение.");
+      return;
+    }
+    setModalMode('delete');
+    setIsModalOpen(true);
+  };
+
+  const handleModalConfirm = (imageUrl?: string) => {
+    if (modalMode === 'add' && imageUrl) {
+      setSlides(prevSlides =>
+        prevSlides.map((slide, index) =>
+          index === currentSlide
+            ? { ...slide, images: [...slide.images, imageUrl] }
+            : slide
+        )
+      );
+    } else if (modalMode === 'delete') {
+      setSlides(prevSlides =>
+        prevSlides.map((slide, index) => {
+          if (index === currentSlide) {
+            const newImages = slide.images.filter(img => img !== slide.images[0]); // Only delete the currently displayed image for now
+            return { ...slide, images: newImages.length > 0 ? newImages : ["https://picsum.photos/seed/placeholder/2400/800"] }; // Placeholder if no images left
           }
-          const newImages = slide.images.filter(img => img !== imageUrl);
-          return { ...slide, images: newImages };
-        }
-        return slide;
-      })
-    );
+          return slide;
+        })
+      );
+      setCurrentSlide(0); // Reset to first slide after deletion
+    }
+    setIsModalOpen(false);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
   };
 
   useEffect(() => {
@@ -86,12 +97,12 @@ const HeroSection = () => {
   const slide = slides[currentSlide];
 
   if (!slide) {
-    return null; // или какой-то индикатор загрузки
+    return null;
   }
 
   return (
     <section className="relative h-screen min-h-[700px] bg-luxury-black text-white w-full">
-      {/* Background Slider */}
+      {/* Background Image */}
       <div
         className="absolute inset-0 z-15 w-full h-full"
         style={{
@@ -152,6 +163,17 @@ const HeroSection = () => {
               </Link>
             </Button>
           </div>
+
+          {/* Image Management Buttons */}
+          <div className="flex justify-center gap-4 mt-8">
+            <Button size="sm" variant="outline" onClick={handleAddImageClick}>
+              <PlusCircle className="w-4 h-4 mr-2" /> Добавить изображение
+            </Button>
+            <Button size="sm" variant="destructive" onClick={handleDeleteImageClick}>
+              <XCircle className="w-4 h-4 mr-2" /> Удалить изображение
+            </Button>
+          </div>
+
         </div>
       </div>
 
@@ -168,6 +190,13 @@ const HeroSection = () => {
           />
         ))}
       </div>
+      <ImageFormModal
+        isOpen={isModalOpen}
+        onClose={handleModalClose}
+        onConfirm={handleModalConfirm}
+        mode={modalMode}
+        currentImageUrl={modalMode === 'delete' ? slide.images[0] : undefined}
+      />
     </section>
   );
 };
