@@ -47,7 +47,7 @@ const Settings: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto py-10 space-y-8">
+    <div className="container mx-auto py-8 sm:py-10 lg:py-12 space-y-8">
       <h1 className="text-3xl font-bold">Общие настройки</h1>
       
       <SiteInfoSettings settings={settings} onSettingsChange={handleSettingsChange} />

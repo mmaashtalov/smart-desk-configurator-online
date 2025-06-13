@@ -198,6 +198,14 @@
 
   /* Премиальные эффекты */
   .luxury-hover {
+    transition: all 0.3s ease-in-out;
+  }
+
+  .hover-scale {
+    transform: scale(1.02);
+  }
+
+  .hover-raise {
     @apply transition-all duration-700 ease-out hover:scale-[1.02] hover:shadow-luxury-lg;
   }
 

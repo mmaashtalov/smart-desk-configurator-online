@@ -55,7 +55,7 @@ const Favorites = () => {
                     <img
                       src={item.image}
                       alt={item.name}
-                      className="w-full h-48 object-cover"
+                      className="w-full aspect-video h-auto object-cover"
                     />
                     <Button
                       variant="ghost"

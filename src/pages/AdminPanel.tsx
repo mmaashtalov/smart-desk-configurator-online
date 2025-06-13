@@ -1,6 +1,7 @@
 import React from 'react';
 import { Layout } from '@/components/Layout';
 import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 
 const AdminPanel = () => {
   return (
@@ -16,19 +17,25 @@ const AdminPanel = () => {
           <nav className="mt-8">
             <ul className="flex flex-wrap gap-4">
               <li>
-                <Link to="/admin/panel/products" className="text-blue-600 hover:underline">
-                  Управление продуктами
-                </Link>
+                <Button asChild variant="ghost" className="text-accent hover:underline">
+                  <Link to="/admin/panel/products">
+                    Управление продуктами
+                  </Link>
+                </Button>
               </li>
               <li>
-                <Link to="/admin/panel/users" className="text-blue-600 hover:underline">
-                  Управление пользователями
-                </Link>
+                <Button asChild variant="ghost" className="text-accent hover:underline">
+                  <Link to="/admin/panel/users">
+                    Управление пользователями
+                  </Link>
+                </Button>
               </li>
               <li>
-                <Link to="/admin/panel/content" className="text-blue-600 hover:underline">
-                  Управление контентом
-                </Link>
+                <Button asChild variant="ghost" className="text-accent hover:underline">
+                  <Link to="/admin/panel/content">
+                    Управление контентом
+                  </Link>
+                </Button>
               </li>
             </ul>
           </nav>

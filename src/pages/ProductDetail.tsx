@@ -30,7 +30,7 @@ const ProductDetail = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Product Image Slider */}
-            <div className="relative w-full h-96 rounded-lg overflow-hidden shadow-lg">
+            <div className="relative w-full h-64 md:h-80 lg:h-96 rounded-lg overflow-hidden shadow-lg">
               <ProductImageSlider
                 images={product.images}
                 productName={product.name}

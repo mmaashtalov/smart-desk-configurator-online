@@ -40,7 +40,9 @@ export const BlogPage: React.FC = () => {
   return (
     <div className="container mx-auto py-12 px-4">
       <header className="text-center mb-12">
-        <h1 className="text-4xl font-bold tracking-tight">Наш Блог</h1>
+        <h1 className="font-playfair text-4xl md:text-5xl font-bold mb-6">
+          Наш Блог
+        </h1>
         <p className="mt-2 text-lg text-gray-600">
           Последние новости, статьи и инсайты от нашей команды.
         </p>
@@ -49,11 +51,11 @@ export const BlogPage: React.FC = () => {
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {posts.map(post => (
           <Link to={`/blog/${post.slug}`} key={post.id}>
-            <Card className="h-full hover:shadow-xl transition-shadow duration-300 flex flex-col">
+            <Card className="h-full hover-scale flex flex-col">
               <img 
                 src={post.featuredImage} 
                 alt={post.title} 
-                className="w-full h-48 object-cover rounded-t-lg"
+                className="w-full aspect-video h-auto object-cover rounded-t-lg"
               />
               <CardHeader>
                 <CardTitle>{post.title}</CardTitle>

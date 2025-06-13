@@ -23,7 +23,7 @@ const CheckoutPage = () => {
             В ближайшее время с вами свяжется менеджер для уточнения деталей.
           </p>
           <Link to="/">
-            <Button className="btn-primary">Вернуться на главную</Button>
+            <Button variant="default">Вернуться на главную</Button>
           </Link>
         </div>
       </div>
