@@ -4,8 +4,10 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, Star, Award, Gem, PlusCircle, XCircle } from 'lucide-react';
 import { ProductImageSlider } from '@/components/ProductImageSlider';
 import { ImageFormModal } from '@/components/ui/ImageFormModal';
+import { useApp } from '@/contexts/AppContext';
 
 const HeroSection = () => {
+  const { user } = useApp();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<'add' | 'delete'>('add');
@@ -165,14 +167,16 @@ const HeroSection = () => {
           </div>
 
           {/* Image Management Buttons */}
-          <div className="flex justify-center gap-4 mt-8">
-            <Button size="sm" variant="outline" onClick={handleAddImageClick}>
-              <PlusCircle className="w-4 h-4 mr-2" /> Добавить изображение
-            </Button>
-            <Button size="sm" variant="destructive" onClick={handleDeleteImageClick}>
-              <XCircle className="w-4 h-4 mr-2" /> Удалить изображение
-            </Button>
-          </div>
+          {user?.role === 'admin' && (
+            <div className="flex justify-center gap-4 mt-8">
+              <Button size="sm" variant="outline" onClick={handleAddImageClick}>
+                <PlusCircle className="w-4 h-4 mr-2" /> Добавить изображение
+              </Button>
+              <Button size="sm" variant="destructive" onClick={handleDeleteImageClick}>
+                <XCircle className="w-4 h-4 mr-2" /> Удалить изображение
+              </Button>
+            </div>
+          )}
 
         </div>
       </div>

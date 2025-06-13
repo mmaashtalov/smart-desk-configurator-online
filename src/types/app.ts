@@ -1,4 +1,3 @@
-
 export interface CartItem {
   id: string;
   name: string;
@@ -13,6 +12,7 @@ export interface User {
   email: string;
   name: string;
   avatar?: string;
+  role?: 'admin' | 'user';
 }
 
 export interface AppContextType {

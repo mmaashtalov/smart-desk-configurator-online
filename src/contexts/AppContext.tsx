@@ -157,7 +157,8 @@ export const AppProvider = ({ children }: AppProviderProps) => {
         id: '1',
         email,
         name: email.split('@')[0],
-        avatar: `https://avatar.vercel.sh/${email}`
+        avatar: `https://avatar.vercel.sh/${email}`,
+        role: email === 'admin@example.com' ? 'admin' : 'user',
       };
       setUser(mockUser);
       return true;
