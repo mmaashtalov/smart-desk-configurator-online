@@ -2,6 +2,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Button } from '@/components/ui/button';
 import { useApp } from '@/contexts/AppContext';
 import { Minus, Plus, X, ShoppingCart } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface CartModalProps {
   isOpen: boolean;
@@ -10,12 +11,14 @@ interface CartModalProps {
 
 const CartModal = ({ isOpen, onClose }: CartModalProps) => {
   const { cartItems, removeFromCart, updateQuantity, clearCart, cartTotal, cartCount } = useApp();
+  const navigate = useNavigate();
 
   const handleCheckout = () => {
     // Navigate to checkout or show checkout form
     console.log('Proceeding to checkout with items:', cartItems);
-    alert('Переход к оформлению заказа');
     onClose();
+    navigate('/checkout');
+    clearCart(); // Clear cart after navigating to checkout
   };
 
   return (

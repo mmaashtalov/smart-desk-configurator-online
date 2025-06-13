@@ -31,6 +31,11 @@ import { PageManager } from "./pages/PageManager";
 import { PageEditor } from './pages/PageEditor';
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import ProductDetail from "./pages/ProductDetail";
+import CheckoutPage from "./pages/CheckoutPage";
+import AdminPanel from "./pages/AdminPanel";
+import ProductManagement from "./components/admin/ProductManagement";
+import UserManagement from "./components/admin/UserManagement";
+import ContentManagement from "./components/admin/ContentManagement";
 
 const queryClient = new QueryClient();
 
@@ -55,8 +60,13 @@ const App = () => (
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/blog" element={<BlogPage />} />
                 <Route path="/blog/:slug" element={<BlogPostPage />} />
+                <Route path="/checkout" element={<CheckoutPage />} />
                 <Route element={<NewProtectedRoute adminOnly />}>
                   <Route path="/admin" element={<AdminDashboard />} />
+                  <Route path="/admin/panel" element={<AdminPanel />} />
+                  <Route path="/admin/panel/products" element={<ProductManagement />} />
+                  <Route path="/admin/panel/users" element={<UserManagement />} />
+                  <Route path="/admin/panel/content" element={<ContentManagement />} />
                   <Route path="/admin/seo" element={<SEOSettings />} />
                   <Route path="/admin/analytics" element={
                     <AnalyticsPage>
