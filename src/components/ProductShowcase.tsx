@@ -1,16 +1,21 @@
-
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import { useState } from 'react';
+import { ProductImageSlider } from '@/components/ProductImageSlider';
 
 const ProductShowcase = () => {
-  const products = [
+  const initialProducts = [
     {
       id: 1,
       name: "Умный стол Arctic",
       description: "Дубовый шпон в тоне Арктик с электроприводом",
       price: "от 85 000 ₽",
-      image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      images: [
+        "https://picsum.photos/600/400?random=1",
+        "https://picsum.photos/600/400?random=2",
+        "https://picsum.photos/600/400?random=3",
+      ],
       features: ["Регулировка высоты", "Беспроводная зарядка", "USB-хаб"]
     },
     {
@@ -18,7 +23,11 @@ const ProductShowcase = () => {
       name: "Умный стол Sandal",
       description: "Дубовый шпон в тоне Сандал с интегрированной тумбой",
       price: "от 145 000 ₽",
-      image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      images: [
+        "https://picsum.photos/600/400?random=4",
+        "https://picsum.photos/600/400?random=5",
+        "https://picsum.photos/600/400?random=6",
+      ],
       features: ["Интегрированная тумба", "Подсветка", "Акустическая система"]
     },
     {
@@ -26,10 +35,24 @@ const ProductShowcase = () => {
       name: "Умный стол Wenge",
       description: "Дубовый шпон в тоне Венге с полным набором опций",
       price: "от 165 000 ₽",
-      image: "https://images.unsplash.com/photo-1497366412874-3415097a27e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      images: [
+        "https://picsum.photos/600/400?random=7",
+        "https://picsum.photos/600/400?random=8",
+        "https://picsum.photos/600/400?random=9",
+      ],
       features: ["Биометрический замок", "Голосовой ассистент", "Конференц-система"]
     }
   ];
+
+  const [products, setProducts] = useState(initialProducts);
+
+  const handleAddImage = (productId: number, url: string) => {
+    setProducts(prev => prev.map(p => p.id === productId ? { ...p, images: [...(p.images || []), url] } : p));
+  };
+
+  const handleDeleteImage = (productId: number, url: string) => {
+    setProducts(prev => prev.map(p => p.id === productId ? { ...p, images: (p.images || []).filter(i => i !== url) } : p));
+  };
 
   return (
     <section className="py-20 bg-white">
@@ -47,14 +70,16 @@ const ProductShowcase = () => {
           {products.map((product, index) => (
             <div
               key={product.id}
-              className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover-scale animate-fade-in"
+              className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover-scale animate-fade-in"
               style={{ animationDelay: `${index * 200}ms` }}
             >
-              <div className="relative overflow-hidden">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-64 object-cover transition-transform duration-300 hover:scale-105"
+              <div className="relative w-full h-72 rounded-t-2xl">
+                <ProductImageSlider
+                  images={product.images}
+                  productName={product.name}
+                  onAddImage={(url) => handleAddImage(product.id, url)}
+                  onDeleteImage={(url) => handleDeleteImage(product.id, url)}
+                  className="absolute inset-0 z-10"
                 />
                 <div className="absolute top-4 right-4 bg-accent text-white px-3 py-1 rounded-full text-sm font-semibold">
                   {product.price}

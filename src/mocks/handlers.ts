@@ -1,4 +1,4 @@
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, passthrough } from 'msw';
 
 const mockMeta = {
   title: 'Главная страница',
@@ -136,4 +136,10 @@ export const handlers = [
     console.log('New/Updated post:', newPost);
     return new HttpResponse(null, { status: 200 });
   }),
-]; 
+
+  // Passthrough for root path to prevent MSW interception warnings
+  http.get('/', () => passthrough()),
+
+  // Passthrough for Unsplash images to prevent MSW interception warnings
+  http.get('https://images.unsplash.com/*', () => passthrough()),
+];

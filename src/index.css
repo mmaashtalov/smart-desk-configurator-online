@@ -219,27 +219,6 @@
     letter-spacing: 0.15em;
   }
 
-  /* Анимации для премиум-сегмента */
-  .luxury-reveal {
-    @apply opacity-0 translate-y-12;
-    animation: luxuryReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-
-  .luxury-fade-in {
-    @apply opacity-0;
-    animation: luxuryFadeIn 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-
-  .luxury-slide-up {
-    @apply opacity-0 translate-y-16;
-    animation: luxurySlideUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-
-  .luxury-scale-in {
-    @apply opacity-0 scale-95;
-    animation: luxuryScaleIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-
   .parallax-slow {
     transform: translateY(var(--scroll-y, 0) * 0.5px);
   }
@@ -249,55 +228,12 @@
   }
 }
 
-/* Премиальные анимации */
-@keyframes luxuryReveal {
-  0% {
-    opacity: 0;
-    transform: translateY(48px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes luxuryFadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes luxurySlideUp {
-  0% {
-    opacity: 0;
-    transform: translateY(64px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes luxuryScaleIn {
-  0% {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
 @keyframes shimmer {
   0% {
-    background-position: -200% 0;
+    transform: translateX(-100%);
   }
   100% {
-    background-position: 200% 0;
+    transform: translateX(100%);
   }
 }
 

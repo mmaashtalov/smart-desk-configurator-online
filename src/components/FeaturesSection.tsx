@@ -1,33 +1,47 @@
-
 import { Settings, Zap, Shield, Award, ArrowRight } from 'lucide-react';
+import { useState } from 'react';
+
+const initialFeatures = [
+  {
+    icon: Settings,
+    title: "Электрическая регулировка",
+    description: "Плавная регулировка высоты от 65 до 125 см с памятью позиций",
+    details: "4 позиции памяти",
+    images: [
+      "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=600&q=60"
+    ]
+  },
+  {
+    icon: Zap,
+    title: "Беспроводная зарядка",
+    description: "Встроенная беспроводная зарядка Qi для смартфонов",
+    details: "15W быстрая зарядка",
+    images: [
+      "https://images.unsplash.com/photo-1516116216624-53e697fedbea?auto=format&fit=crop&w=600&q=60"
+    ]
+  },
+  {
+    icon: Shield,
+    title: "Натуральные материалы",
+    description: "Дубовый шпон 18 мм с масляным покрытием в трёх тонах",
+    details: "100% экологично",
+    images: [
+      "https://images.unsplash.com/photo-1505691723518-36a5ac3be353?auto=format&fit=crop&w=600&q=60"
+    ]
+  },
+  {
+    icon: Award,
+    title: "Гарантия качества",
+    description: "5 лет гарантии на электрическую систему, 10 лет на столешницу",
+    details: "Премиум качество",
+    images: [
+      "https://images.unsplash.com/photo-1519241047957-be31d7379a5d?auto=format&fit=crop&w=600&q=60"
+    ]
+  }
+];
 
 const FeaturesSection = () => {
-  const features = [
-    {
-      icon: Settings,
-      title: "Электрическая регулировка",
-      description: "Плавная регулировка высоты от 65 до 125 см с памятью позиций",
-      details: "4 позиции памяти"
-    },
-    {
-      icon: Zap,
-      title: "Беспроводная зарядка",
-      description: "Встроенная беспроводная зарядка Qi для смартфонов",
-      details: "15W быстрая зарядка"
-    },
-    {
-      icon: Shield,
-      title: "Натуральные материалы",
-      description: "Дубовый шпон 18 мм с масляным покрытием в трёх тонах",
-      details: "100% экологично"
-    },
-    {
-      icon: Award,
-      title: "Гарантия качества",
-      description: "5 лет гарантии на электрическую систему, 10 лет на столешницу",
-      details: "Премиум качество"
-    }
-  ];
+  const [features, setFeatures] = useState(initialFeatures);
 
   return (
     <section className="py-24 bg-surface">
@@ -54,13 +68,12 @@ const FeaturesSection = () => {
               className="feature-card group cursor-pointer animate-fade-in"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <div className="relative mb-6">
-                <div className="inline-flex items-center justify-center w-16 h-16 gradient-accent rounded-2xl mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <feature.icon className="h-8 w-8 text-white" />
-                </div>
-                <div className="absolute -top-2 -right-2 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                  <ArrowRight className="h-3 w-3 text-white transform group-hover:translate-x-1 transition-transform duration-300" />
-                </div>
+              <div className="relative mb-6 h-64">
+                <img 
+                  src={feature.images[0]}
+                  alt={feature.title} 
+                  className="w-full h-full object-cover rounded-md"
+                />
               </div>
               
               <div className="space-y-3">
