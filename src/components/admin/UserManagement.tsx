@@ -2,6 +2,14 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { User as UserIcon, Edit, Trash2 } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 
 interface User {
   id: string;
@@ -19,16 +27,29 @@ const initialUsers: User[] = [
 const UserManagement = () => {
   const [users, setUsers] = useState<User[]>(initialUsers);
   const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [newUserData, setNewUserData] = useState<Partial<User>>({});
 
   const handleAddUser = () => {
-    const newId = (Math.max(...users.map(u => parseInt(u.id))) + 1).toString();
-    const newUser: User = {
-      id: newId,
-      name: `Новый пользователь ${newId}`,
-      email: `user${newId}@example.com`,
-      role: 'user',
-    };
-    setUsers([...users, newUser]);
+    setNewUserData({ name: '', email: '', role: 'user' });
+    setIsAddModalOpen(true);
+  };
+
+  const handleSaveNewUser = () => {
+    if (newUserData.name && newUserData.email && newUserData.role) {
+      const newId = (Math.max(...users.map(u => parseInt(u.id))) + 1).toString();
+      const userToAdd: User = {
+        id: newId,
+        name: newUserData.name,
+        email: newUserData.email,
+        role: newUserData.role,
+      };
+      setUsers([...users, userToAdd]);
+      setIsAddModalOpen(false);
+      setNewUserData({});
+    } else {
+      console.error('Please fill in all required fields for new user.');
+    }
   };
 
   const handleEditUser = (user: User) => {
@@ -77,16 +98,20 @@ const UserManagement = () => {
         ))}
       </div>
 
-      {editingUser && (
-        <div className="mt-8 p-6 bg-white rounded-lg shadow-md">
-          <h3 className="font-playfair text-2xl font-bold text-primary mb-4">Редактировать пользователя</h3>
-          <div className="space-y-4">
+      {/* Add User Modal */}
+      <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Добавить нового пользователя</DialogTitle>
+            <DialogDescription>Заполните детали для нового пользователя.</DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
             <div>
               <label className="block text-sm font-medium text-gray-700">Имя пользователя</label>
               <Input
                 type="text"
-                value={editingUser.name}
-                onChange={(e) => setEditingUser({ ...editingUser, name: e.target.value })}
+                value={newUserData.name || ''}
+                onChange={(e) => setNewUserData({ ...newUserData, name: e.target.value })}
                 className="mt-1 block w-full"
               />
             </div>
@@ -94,8 +119,8 @@ const UserManagement = () => {
               <label className="block text-sm font-medium text-gray-700">Email</label>
               <Input
                 type="email"
-                value={editingUser.email}
-                onChange={(e) => setEditingUser({ ...editingUser, email: e.target.value })}
+                value={newUserData.email || ''}
+                onChange={(e) => setNewUserData({ ...newUserData, email: e.target.value })}
                 className="mt-1 block w-full"
               />
             </div>
@@ -103,18 +128,63 @@ const UserManagement = () => {
               <label className="block text-sm font-medium text-gray-700">Роль</label>
               <Input
                 type="text"
-                value={editingUser.role}
-                onChange={(e) => setEditingUser({ ...editingUser, role: e.target.value })}
+                value={newUserData.role || ''}
+                onChange={(e) => setNewUserData({ ...newUserData, role: e.target.value })}
                 className="mt-1 block w-full"
               />
             </div>
-            <div className="flex gap-4">
-              <Button onClick={() => handleSaveUser(editingUser)}>Сохранить</Button>
-              <Button variant="outline" onClick={() => setEditingUser(null)}>Отмена</Button>
-            </div>
           </div>
-        </div>
-      )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsAddModalOpen(false)}>Отмена</Button>
+            <Button onClick={handleSaveNewUser}>Сохранить пользователя</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit User Modal */}
+      <Dialog open={!!editingUser} onOpenChange={() => setEditingUser(null)}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Редактировать пользователя</DialogTitle>
+            <DialogDescription>Измените детали пользователя.</DialogDescription>
+          </DialogHeader>
+          {editingUser && (
+            <div className="grid gap-4 py-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Имя пользователя</label>
+                <Input
+                  type="text"
+                  value={editingUser.name}
+                  onChange={(e) => setEditingUser({ ...editingUser, name: e.target.value })}
+                  className="mt-1 block w-full"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Email</label>
+                <Input
+                  type="email"
+                  value={editingUser.email}
+                  onChange={(e) => setEditingUser({ ...editingUser, email: e.target.value })}
+                  className="mt-1 block w-full"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Роль</label>
+                <Input
+                  type="text"
+                  value={editingUser.role}
+                  onChange={(e) => setEditingUser({ ...editingUser, role: e.target.value })}
+                  className="mt-1 block w-full"
+                />
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditingUser(null)}>Отмена</Button>
+            <Button onClick={() => editingUser && handleSaveUser(editingUser)}>Сохранить изменения</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
