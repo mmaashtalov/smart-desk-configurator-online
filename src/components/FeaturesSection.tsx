@@ -106,10 +106,10 @@ const FeaturesSection = () => {
               Наши эксперты помогут подобрать и настроить умный стол под ваши потребности
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="btn-primary">
+              <button className="px-8 py-3 rounded-full text-white font-semibold bg-accent hover:bg-accent-dark transition-colors duration-300 shadow-lg">
                 Получить консультацию
               </button>
-              <button className="btn-secondary">
+              <button className="px-8 py-3 rounded-full text-accent font-semibold border border-accent hover:bg-accent/10 transition-colors duration-300">
                 Посмотреть каталог
               </button>
             </div>
