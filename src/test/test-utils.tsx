@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { AppProvider } from '@/contexts/AppContext';
 import { AnalyticsProvider } from '@/contexts/AnalyticsContext';
 import { Toaster } from '@/components/ui/toaster';
+import '@testing-library/jest-dom/vitest';
 
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
   return (

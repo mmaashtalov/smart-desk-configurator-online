@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Layout } from '@/components/Layout';
 
 // This type should be shared
 interface BlogPost {
@@ -38,38 +39,40 @@ export const BlogPage: React.FC = () => {
   if (loading) return <div className="text-center py-10">Loading posts...</div>;
 
   return (
-    <div className="container mx-auto py-12 px-4">
-      <header className="text-center mb-12">
-        <h1 className="font-playfair text-4xl md:text-5xl font-bold mb-6">
-          Наш Блог
-        </h1>
-        <p className="mt-2 text-lg text-gray-600">
-          Последние новости, статьи и инсайты от нашей команды.
-        </p>
-      </header>
-      
-      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {posts.map(post => (
-          <Link to={`/blog/${post.slug}`} key={post.id}>
-            <Card className="h-full hover-scale flex flex-col">
-              <img 
-                src={post.featuredImage} 
-                alt={post.title} 
-                className="w-full aspect-video h-auto object-cover rounded-t-lg"
-              />
-              <CardHeader>
-                <CardTitle>{post.title}</CardTitle>
-                <p className="text-sm text-gray-500 pt-2">
-                  {new Date(post.createdAt).toLocaleDateString()}
-                </p>
-              </CardHeader>
-              <CardContent className="flex-grow">
-                <CardDescription>{post.excerpt}</CardDescription>
-              </CardContent>
-            </Card>
-          </Link>
-        ))}
+    <Layout>
+      <div className="container mx-auto py-12 px-4">
+        <header className="text-center mb-12">
+          <h1 className="font-playfair text-4xl md:text-5xl font-bold mb-6">
+            Наш Блог
+          </h1>
+          <p className="mt-2 text-lg text-gray-600">
+            Последние новости, статьи и инсайты от нашей команды.
+          </p>
+        </header>
+        
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {posts.map(post => (
+            <Link to={`/blog/${post.slug}`} key={post.id}>
+              <Card className="h-full hover-scale flex flex-col">
+                <img 
+                  src={post.featuredImage} 
+                  alt={post.title} 
+                  className="w-full aspect-video h-auto object-cover rounded-t-lg"
+                />
+                <CardHeader>
+                  <CardTitle>{post.title}</CardTitle>
+                  <p className="text-sm text-gray-500 pt-2">
+                    {new Date(post.createdAt).toLocaleDateString()}
+                  </p>
+                </CardHeader>
+                <CardContent className="flex-grow">
+                  <CardDescription>{post.excerpt}</CardDescription>
+                </CardContent>
+              </Card>
+            </Link>
+          ))}
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 }; 

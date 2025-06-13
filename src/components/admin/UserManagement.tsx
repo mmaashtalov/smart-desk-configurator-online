@@ -1,68 +1,65 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { User as UserIcon, Edit, Trash2 } from 'lucide-react';
+import { User as UserIcon, Edit, Trash2, Save, X } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
+  DialogFooter,
 } from '@/components/ui/dialog';
 
+// Предполагается, что у вас есть такой тип
 interface User {
-  id: string;
+  id: number;
   name: string;
   email: string;
-  role: string;
+  role: 'admin' | 'user';
 }
 
 const initialUsers: User[] = [
-  { id: '1', name: 'Иван Иванов', email: 'ivan.i@example.com', role: 'admin' },
-  { id: '2', name: 'Мария Петрова', email: 'maria.p@example.com', role: 'user' },
-  { id: '3', name: 'Алексей Сидоров', email: 'alex.s@example.com', role: 'user' },
+  { id: 1, name: 'Иван Петров', email: 'ivan.p@example.com', role: 'admin' },
+  { id: 2, name: 'Екатерина Смирнова', email: 'kate.s@example.com', role: 'user' },
+  { id: 3, name: 'Дмитрий Волков', email: 'dmitry.v@example.com', role: 'user' },
 ];
 
-const UserManagement = () => {
+export function UserManagement() {
   const [users, setUsers] = useState<User[]>(initialUsers);
   const [editingUser, setEditingUser] = useState<User | null>(null);
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [newUserData, setNewUserData] = useState<Partial<User>>({});
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [userToDelete, setUserToDelete] = useState<User | null>(null);
 
-  const handleAddUser = () => {
-    setNewUserData({ name: '', email: '', role: 'user' });
-    setIsAddModalOpen(true);
+  const handleEdit = (user: User) => {
+    setEditingUser({ ...user });
   };
 
-  const handleSaveNewUser = () => {
-    if (newUserData.name && newUserData.email && newUserData.role) {
-      const newId = (Math.max(...users.map(u => parseInt(u.id))) + 1).toString();
-      const userToAdd: User = {
-        id: newId,
-        name: newUserData.name,
-        email: newUserData.email,
-        role: newUserData.role,
-      };
-      setUsers([...users, userToAdd]);
-      setIsAddModalOpen(false);
-      setNewUserData({});
-    } else {
-      console.error('Please fill in all required fields for new user.');
-    }
-  };
-
-  const handleEditUser = (user: User) => {
-    setEditingUser(user);
-  };
-
-  const handleSaveUser = (updatedUser: User) => {
-    setUsers(users.map(u => u.id === updatedUser.id ? updatedUser : u));
+  const handleSave = () => {
+    if (!editingUser) return;
+    setUsers(users.map(u => (u.id === editingUser.id ? editingUser : u)));
     setEditingUser(null);
   };
 
-  const handleDeleteUser = (id: string) => {
-    setUsers(users.filter(u => u.id !== id));
+  const handleCancel = () => {
+    setEditingUser(null);
+  };
+
+  const handleDelete = (user: User) => {
+    setUserToDelete(user);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (!userToDelete) return;
+    setUsers(users.filter(u => u.id !== userToDelete.id));
+    setIsDeleteDialogOpen(false);
+    setUserToDelete(null);
+  };
+
+  const handleAddUser = () => {
+    // Логика добавления нового пользователя
+    console.log('Добавление нового пользователя...');
   };
 
   return (
@@ -82,111 +79,67 @@ const UserManagement = () => {
                 <UserIcon className="w-5 h-5 text-gray-500" />
               </div>
               <div>
-                <h3 className="font-semibold">{user.name}</h3>
-                <p className="text-gray-600 text-sm">{user.email} - {user.role}</p>
+                {editingUser && editingUser.id === user.id ? (
+                  <div className="flex items-center gap-2">
+                    <Input
+                      value={editingUser.name}
+                      onChange={(e) => setEditingUser({ ...editingUser, name: e.target.value })}
+                      className="h-8"
+                    />
+                    <Input
+                      value={editingUser.email}
+                      onChange={(e) => setEditingUser({ ...editingUser, email: e.target.value })}
+                      className="h-8"
+                    />
+                  </div>
+                ) : (
+                  <div>
+                    <h3 className="font-semibold">{user.name}</h3>
+                    <p className="text-gray-600 text-sm">{user.email} - {user.role}</p>
+                  </div>
+                )}
               </div>
             </div>
-            <div className="flex gap-2">
-              <Button variant="outline" size="icon" onClick={() => handleEditUser(user)}>
-                <Edit className="w-4 h-4" />
-              </Button>
-              <Button variant="destructive" size="icon" onClick={() => handleDeleteUser(user.id)}>
-                <Trash2 className="w-4 h-4" />
-              </Button>
+
+            <div className="flex items-center gap-2">
+              {editingUser && editingUser.id === user.id ? (
+                <>
+                  <Button variant="ghost" size="icon" onClick={handleSave}>
+                    <Save className="w-5 h-5 text-green-600" />
+                  </Button>
+                  <Button variant="ghost" size="icon" onClick={handleCancel}>
+                    <X className="w-5 h-5 text-gray-500" />
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button variant="ghost" size="icon" onClick={() => handleEdit(user)}>
+                    <Edit className="w-5 h-5 text-blue-600" />
+                  </Button>
+                  <Button variant="ghost" size="icon" onClick={() => handleDelete(user)}>
+                    <Trash2 className="w-5 h-5 text-red-600" />
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         ))}
       </div>
 
-      {/* Add User Modal */}
-      <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <DialogContent>
           <DialogHeader>
-            <DialogTitle>Добавить нового пользователя</DialogTitle>
-            <DialogDescription>Заполните детали для нового пользователя.</DialogDescription>
+            <DialogTitle>Вы уверены?</DialogTitle>
+            <DialogDescription>
+              Это действие необратимо. Вы действительно хотите удалить пользователя {userToDelete?.name}?
+            </DialogDescription>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Имя пользователя</label>
-              <Input
-                type="text"
-                value={newUserData.name || ''}
-                onChange={(e) => setNewUserData({ ...newUserData, name: e.target.value })}
-                className="mt-1 block w-full"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Email</label>
-              <Input
-                type="email"
-                value={newUserData.email || ''}
-                onChange={(e) => setNewUserData({ ...newUserData, email: e.target.value })}
-                className="mt-1 block w-full"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Роль</label>
-              <Input
-                type="text"
-                value={newUserData.role || ''}
-                onChange={(e) => setNewUserData({ ...newUserData, role: e.target.value })}
-                className="mt-1 block w-full"
-              />
-            </div>
-          </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsAddModalOpen(false)}>Отмена</Button>
-            <Button onClick={handleSaveNewUser}>Сохранить пользователя</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Edit User Modal */}
-      <Dialog open={!!editingUser} onOpenChange={() => setEditingUser(null)}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Редактировать пользователя</DialogTitle>
-            <DialogDescription>Измените детали пользователя.</DialogDescription>
-          </DialogHeader>
-          {editingUser && (
-            <div className="grid gap-4 py-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Имя пользователя</label>
-                <Input
-                  type="text"
-                  value={editingUser.name}
-                  onChange={(e) => setEditingUser({ ...editingUser, name: e.target.value })}
-                  className="mt-1 block w-full"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Email</label>
-                <Input
-                  type="email"
-                  value={editingUser.email}
-                  onChange={(e) => setEditingUser({ ...editingUser, email: e.target.value })}
-                  className="mt-1 block w-full"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Роль</label>
-                <Input
-                  type="text"
-                  value={editingUser.role}
-                  onChange={(e) => setEditingUser({ ...editingUser, role: e.target.value })}
-                  className="mt-1 block w-full"
-                />
-              </div>
-            </div>
-          )}
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setEditingUser(null)}>Отмена</Button>
-            <Button onClick={() => editingUser && handleSaveUser(editingUser)}>Сохранить изменения</Button>
+            <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>Отмена</Button>
+            <Button variant="destructive" onClick={confirmDelete}>Удалить</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>
   );
-};
-
-export default UserManagement;
+}

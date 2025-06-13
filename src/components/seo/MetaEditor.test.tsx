@@ -16,6 +16,10 @@ const mockMeta = {
 };
 
 describe('MetaEditor', () => {
+  // Setup MSW server before all tests and clean up after
+  beforeAll(() => server.listen());
+  afterEach(() => server.resetHandlers());
+  afterAll(() => server.close());
   
   beforeEach(() => {
     server.use(
@@ -29,11 +33,11 @@ describe('MetaEditor', () => {
     render(<MetaEditor />);
 
     // Wait for the fields to be populated
-    expect(await screen.findByDisplayValue('Тестовый Title')).toBeInTheDocument();
-    expect(screen.getByDisplayValue('Тестовое описание')).toBeInTheDocument();
-    expect(screen.getByDisplayValue('Тестовый H1')).toBeInTheDocument();
-    expect(screen.getByDisplayValue('google-code')).toBeInTheDocument();
-    expect(screen.getByDisplayValue('yandex-code')).toBeInTheDocument();
+    expect(await screen.findByLabelText('Title')).toHaveValue('Тестовый Title');
+    expect(screen.getByLabelText('Description')).toHaveValue('Тестовое описание');
+    expect(screen.getByLabelText('H1')).toHaveValue('Тестовый H1');
+    expect(screen.getByLabelText('Google Site Verification')).toHaveValue('google-code');
+    expect(screen.getByLabelText('Yandex Verification')).toHaveValue('yandex-code');
   });
 
   it('should display error message on fetch failure', async () => {
@@ -81,7 +85,7 @@ describe('MetaEditor', () => {
     render(<MetaEditor />);
     
     // Wait for initial data to load
-    await screen.findByDisplayValue('Тестовый Title');
+    await screen.findByLabelText('Title');
 
     // Change a value
     const titleInput = screen.getByLabelText('Title');

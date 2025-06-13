@@ -36,6 +36,8 @@ import AdminPanel from "./pages/AdminPanel";
 import ProductManagement from "./components/admin/ProductManagement";
 import UserManagement from "./components/admin/UserManagement";
 import ContentManagement from "./components/admin/ContentManagement";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import UserAgreement from "./pages/UserAgreement";
 
 const queryClient = new QueryClient();
 
@@ -61,6 +63,8 @@ const App = () => (
                 <Route path="/blog" element={<BlogPage />} />
                 <Route path="/blog/:slug" element={<BlogPostPage />} />
                 <Route path="/checkout" element={<CheckoutPage />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/user-agreement" element={<UserAgreement />} />
                 <Route element={<NewProtectedRoute adminOnly />}>
                   <Route path="/admin" element={<AdminDashboard />} />
                   <Route path="/admin/panel" element={<AdminPanel />} />

@@ -9,9 +9,13 @@ export function MetaEditor() {
   const [verification, setVerification] = useState({ google: '', yandex: '' });
 
   useEffect(() => {
-    fetch('/api/seo/meta')
-      .then(res => res.json())
-      .then(data => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch('/api/seo/meta');
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        const data = await res.json();
         setMeta({
           title: data.title || '',
           description: data.description || '',
@@ -21,15 +25,31 @@ export function MetaEditor() {
           google: data.verification?.google || '',
           yandex: data.verification?.yandex || '',
         });
-      });
+      } catch (error) {
+        console.error("Failed to fetch meta data:", error);
+        // Optionally, handle error state in UI
+      }
+    };
+
+    fetchData();
   }, []);
 
-  const handleSave = () => {
-    fetch('/api/seo/meta', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ meta, verification }),
-    });
+  const handleSave = async () => {
+    try {
+      const res = await fetch('/api/seo/meta', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ meta, verification }),
+      });
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      // Optionally, show a success message
+      console.log("Meta data saved successfully!");
+    } catch (error) {
+      console.error("Failed to save meta data:", error);
+      // Optionally, show an error message to the user
+    }
   };
 
   return (

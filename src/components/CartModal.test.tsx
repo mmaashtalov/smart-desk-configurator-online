@@ -5,6 +5,7 @@ import CartModal from './CartModal';
 import { AppContext } from '../contexts/AppContext';
 import { AppContextType, CartItem } from '@/types/app';
 import { ReactNode } from 'react';
+import { MemoryRouter } from 'react-router-dom';
 
 const mockUpdateQuantity = vi.fn();
 const mockRemoveFromCart = vi.fn();
@@ -24,9 +25,11 @@ const TestAppProvider = ({ children, cartItems }: { children: ReactNode, cartIte
 
 const renderWithProvider = (component: React.ReactElement, cartItems: CartItem[]) => {
   return render(
-    <TestAppProvider cartItems={cartItems}>
-      {component}
-    </TestAppProvider>
+    <MemoryRouter>
+      <TestAppProvider cartItems={cartItems}>
+        {component}
+      </TestAppProvider>
+    </MemoryRouter>
   );
 };
 

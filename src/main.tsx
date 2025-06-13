@@ -18,9 +18,8 @@ async function enableMocking() {
   // once the Service Worker is up and ready to intercept requests.
   return worker.start()
 }
- 
-// Temporarily disable MSW mocking to resolve image loading issues
-// enableMocking().then(() => {
+
+const renderApp = () => {
   createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
       <HelmetProvider>
@@ -34,4 +33,10 @@ async function enableMocking() {
       </HelmetProvider>
     </React.StrictMode>
   );
-// });
+};
+
+if (import.meta.env.MODE === 'development') {
+  enableMocking().then(renderApp);
+} else {
+  renderApp();
+}
