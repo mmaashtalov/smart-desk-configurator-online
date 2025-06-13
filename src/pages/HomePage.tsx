@@ -43,7 +43,7 @@ export function HomePage() {
               <div className="space-y-4">
                 <h1 className="text-4xl lg:text-6xl font-playfair font-bold text-gray-900 leading-tight">
                   Премиальные{' '}
-                  <span className="text-gradient">умные столы</span>
+                  <span className="text-gradient-gold">умные столы</span>
                 </h1>
                 <p className="text-xl text-gray-600 leading-relaxed">
                   Дубовый шпон с электроприводом и масляным покрытием. 

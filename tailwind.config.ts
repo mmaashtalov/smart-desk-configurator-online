@@ -80,7 +80,9 @@ export default {
 					charcoal: 'hsl(var(--luxury-charcoal))',
 					pearl: 'hsl(var(--luxury-pearl))',
 					onyx: 'hsl(var(--luxury-onyx))',
-				}
+				},
+				'wood-primary': '#A0522D',
+				'wood-secondary': '#8B4513',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
