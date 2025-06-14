@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { logger } from '@/services/logger.service'
 
 export function useAuth() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -15,7 +16,7 @@ export function useAuth() {
         setUser(JSON.parse(userData))
         setIsAuthenticated(true)
       } catch (error) {
-        console.error('Error parsing user data:', error)
+        logger.error('Error parsing user data from localStorage', error as Error)
         localStorage.removeItem('auth-token')
         localStorage.removeItem('user-data')
       }
@@ -38,9 +39,11 @@ export function useAuth() {
       localStorage.setItem('user-data', JSON.stringify(userData))
       setUser(userData)
       setIsAuthenticated(true)
+      logger.info('User logged in successfully', { email: email })
       return { success: true }
     }
     
+    logger.warn('Login failed: invalid credentials', { email: email })
     return { success: false, error: 'Неверные учетные данные' }
   }
 
@@ -49,6 +52,7 @@ export function useAuth() {
     localStorage.removeItem('user-data')
     setUser(null)
     setIsAuthenticated(false)
+    logger.info('User logged out', { previousUserEmail: user?.email })
   }
 
   return {

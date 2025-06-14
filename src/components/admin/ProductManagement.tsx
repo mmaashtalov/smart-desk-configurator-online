@@ -12,6 +12,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { ImageFormModal } from '@/components/ui/ImageFormModal';
+import { logger } from '@/services/logger.service';
 
 const ProductManagement = () => {
   const [products, setProducts] = useState<Product[]>(initialProducts);
@@ -35,6 +36,7 @@ const ProductManagement = () => {
       isNew: true,
     });
     setIsAddModalOpen(true);
+    logger.info('Attempting to add a new product');
   };
 
   const handleSaveNewProduct = () => {
@@ -54,9 +56,9 @@ const ProductManagement = () => {
       setProducts([...products, productToAdd]);
       setIsAddModalOpen(false);
       setNewProductData({});
+      logger.info('New product saved successfully', { productId: newId, productName: productToAdd.name });
     } else {
-      // Handle validation error, e.g., show a toast
-      console.error('Please fill in all required fields for new product.');
+      logger.warn('Failed to save new product: missing required fields', { newProductData });
     }
   };
 
@@ -67,16 +69,19 @@ const ProductManagement = () => {
   const handleSaveProduct = (updatedProduct: Product) => {
     setProducts(products.map(p => p.id === updatedProduct.id ? updatedProduct : p));
     setEditingProduct(null);
+    logger.info('Product updated successfully', { productId: updatedProduct.id, productName: updatedProduct.name });
   };
 
   const handleDeleteProduct = (id: number) => {
     setProducts(products.filter(p => p.id !== id));
+    logger.info('Product deleted successfully', { productId: id });
   };
 
   const handleImageAddClick = (product: Product) => {
     setCurrentProductForImageModal(product);
     setImageModalMode('add');
     setIsImageModalOpen(true);
+    logger.info('Attempting to add image for product', { productId: product.id, productName: product.name });
   };
 
   const handleImageDeleteClick = (product: Product, imageUrl: string) => {
@@ -84,6 +89,7 @@ const ProductManagement = () => {
     setCurrentImageForModal(imageUrl);
     setImageModalMode('delete');
     setIsImageModalOpen(true);
+    logger.info('Attempting to delete image from product', { productId: product.id, productName: product.name, imageUrl });
   };
 
   const handleImageModalConfirm = (imageUrl?: string) => {
@@ -95,6 +101,7 @@ const ProductManagement = () => {
             : p
         )
       );
+      logger.info('Image added successfully', { productId: currentProductForImageModal.id, imageUrl });
     } else if (currentProductForImageModal && imageModalMode === 'delete' && currentImageForModal) {
       setProducts(prevProducts =>
         prevProducts.map(p =>
@@ -103,6 +110,7 @@ const ProductManagement = () => {
             : p
         )
       );
+      logger.info('Image deleted successfully', { productId: currentProductForImageModal.id, imageUrl: currentImageForModal });
     }
     setIsImageModalOpen(false);
     setCurrentImageForModal(undefined);
@@ -113,6 +121,7 @@ const ProductManagement = () => {
     setIsImageModalOpen(false);
     setCurrentImageForModal(undefined);
     setCurrentProductForImageModal(null);
+    logger.info('Image modal closed');
   };
 
   return (

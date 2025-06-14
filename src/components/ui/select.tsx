@@ -40,6 +40,7 @@ const SelectScrollUpButton = React.forwardRef<
       "flex cursor-default items-center justify-center py-1",
       className
     )}
+    data-testid="select-scroll-up-button"
     {...props}
   >
     <ChevronUp className="h-4 w-4" />
@@ -57,6 +58,7 @@ const SelectScrollDownButton = React.forwardRef<
       "flex cursor-default items-center justify-center py-1",
       className
     )}
+    data-testid="select-scroll-down-button"
     {...props}
   >
     <ChevronDown className="h-4 w-4" />
@@ -139,6 +141,7 @@ const SelectSeparator = React.forwardRef<
   <SelectPrimitive.Separator
     ref={ref}
     className={cn("-mx-1 my-1 h-px bg-muted", className)}
+    data-testid="select-separator"
     {...props}
   />
 ))

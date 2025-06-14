@@ -178,5 +178,25 @@ export default defineConfig(({ mode }) => ({
     // you might want to disable it, if you don't have tests that rely on CSS
     // since parsing CSS is slow
     css: true,
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'lcov'],
+      exclude: [
+        'src/pages/**', // Static pages mostly wrappers around components
+        'src/types/**',
+        'src/data/**',
+        'scripts/**',
+        'public/**',
+        'server/**',
+        'dist/**',
+        'build/**',
+        'coverage/**',
+        'vite.config.ts',
+        'tailwind.config.ts',
+        'postcss.config.js',
+        'eslint.config.js',
+        '**/*.d.ts',
+      ],
+    },
   },
 }));

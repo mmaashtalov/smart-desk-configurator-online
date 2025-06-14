@@ -1,5 +1,8 @@
 import { Settings, Zap, Shield, Award, ArrowRight } from 'lucide-react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { ConsultationDialog } from '@/components/ConsultationDialog';
 
 const initialFeatures = [
   {
@@ -41,7 +44,8 @@ const initialFeatures = [
 ];
 
 const FeaturesSection = () => {
-  const [features, setFeatures] = useState(initialFeatures);
+  const [features] = useState(initialFeatures);
+  const [isDialogOpen, setDialogOpen] = useState(false);
 
   return (
     <section className="py-24 bg-surface">
@@ -106,15 +110,16 @@ const FeaturesSection = () => {
               Наши эксперты помогут подобрать и настроить умный стол под ваши потребности
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="px-8 py-3 rounded-full text-white font-semibold bg-accent hover:bg-accent-dark transition-colors duration-300 shadow-lg">
+              <Button size="lg" onClick={() => setDialogOpen(true)}>
                 Получить консультацию
-              </button>
-              <button className="px-8 py-3 rounded-full text-accent font-semibold border border-accent hover:bg-accent/10 transition-colors duration-300">
-                Посмотреть каталог
-              </button>
+              </Button>
+              <Button asChild size="lg" variant="outline">
+                <Link to="/projects">Посмотреть каталог</Link>
+              </Button>
             </div>
           </div>
         </div>
+        <ConsultationDialog open={isDialogOpen} onOpenChange={setDialogOpen} />
       </div>
     </section>
   );

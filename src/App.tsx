@@ -2,10 +2,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AppProvider } from "@/contexts/AppContext";
 import Index from "./pages/Index";
-import Catalog from "./pages/Catalog";
+import CategoryPage from "./pages/CategoryPage";
 import Configurator from "./pages/Configurator";
 import About from "./pages/About";
 import Projects from "./pages/Projects";
@@ -38,6 +38,10 @@ import UserManagement from "./components/admin/UserManagement";
 import ContentManagement from "./components/admin/ContentManagement";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import UserAgreement from "./pages/UserAgreement";
+import { ProjectDetailPage } from "./pages/ProjectDetailPage";
+import Visualization from "./pages/Visualization";
+import OfficeConfiguratorPage from "./pages/OfficeConfiguratorPage";
+import RentLanding from "./pages/RentLanding";
 
 const queryClient = new QueryClient();
 
@@ -52,17 +56,22 @@ const App = () => (
             <BrowserRouter>
               <Routes>
                 <Route path="/" element={<Index />} />
-                <Route path="/catalog" element={<Catalog />} />
-                <Route path="/catalog/:id" element={<ProductDetail />} />
+                <Route path="/catalog" element={<Navigate to="/catalog/executive-desks" replace />} />
+                <Route path="/catalog/:categoryId" element={<CategoryPage />} />
+                <Route path="/catalog/:categoryId/:productId" element={<ProductDetail />} />
                 <Route path="/configurator" element={<Configurator />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/projects" element={<Projects />} />
+                <Route path="/projects/:id" element={<ProjectDetailPage />} />
                 <Route path="/contacts" element={<Contacts />} />
                 <Route path="/favorites" element={<Favorites />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/blog" element={<BlogPage />} />
                 <Route path="/blog/:slug" element={<BlogPostPage />} />
                 <Route path="/checkout" element={<CheckoutPage />} />
+                <Route path="/visualization" element={<Visualization />} />
+                <Route path="/office-configurator" element={<OfficeConfiguratorPage />} />
+                <Route path="/rent" element={<RentLanding />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/user-agreement" element={<UserAgreement />} />
                 <Route element={<NewProtectedRoute adminOnly />}>
