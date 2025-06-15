@@ -13,6 +13,7 @@ import { Page } from '@/types/page';
 import { ArrowLeft } from 'lucide-react';
 import { logger } from '@/services/logger.service';
 import { pageService } from '@/services/page.service';
+import { useDebounce } from '@/hooks/useDebounce';
 
 const generateSlug = (title: string) => {
     return title
@@ -34,6 +35,8 @@ export const PageEditor: React.FC = () => {
   });
   const [loading, setLoading] = useState(false);
   const [autoSlug, setAutoSlug] = useState(true);
+  const [slugAvailable, setSlugAvailable] = useState<boolean | null>(null);
+  const [checkingSlug, setCheckingSlug] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -55,6 +58,31 @@ export const PageEditor: React.FC = () => {
     }
   }, [id]);
 
+  // Debounced slug uniqueness validation
+  const debouncedSlug = useDebounce(page.slug, 500);
+
+  useEffect(() => {
+    if (!debouncedSlug) {
+      setSlugAvailable(null);
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      try {
+        setCheckingSlug(true);
+        const unique = await pageService.isSlugUnique(debouncedSlug, id);
+        if (!cancelled) setSlugAvailable(unique);
+      } catch {
+        /* ignore */
+      } finally {
+        if (!cancelled) setCheckingSlug(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [debouncedSlug, id]);
+
   const handleChange = (field: string, value: any) => {
     let newPageData: Partial<Page> = { ...page, [field]: value };
     
@@ -74,6 +102,16 @@ export const PageEditor: React.FC = () => {
       setLoading(true);
       if (!page.title) {
         toast.error('Заголовок обязателен');
+        return;
+      }
+
+      if (checkingSlug) {
+        toast.error('Дождитесь проверки URL');
+        return;
+      }
+
+      if (slugAvailable === false) {
+        toast.error('URL уже занят');
         return;
       }
 
@@ -109,7 +147,7 @@ export const PageEditor: React.FC = () => {
             </Button>
             <h1 className="text-3xl font-bold">{id ? 'Редактировать страницу' : 'Создать новую страницу'}</h1>
         </div>
-        <Button onClick={handleSave} disabled={loading}>
+        <Button onClick={handleSave} disabled={loading || checkingSlug || slugAvailable === false}>
           {loading ? 'Сохранение...' : 'Сохранить'}
         </Button>
       </div>
@@ -182,6 +220,15 @@ export const PageEditor: React.FC = () => {
                   placeholder="naprimer-about-us"
                   disabled={autoSlug}
                 />
+                {checkingSlug && (
+                  <p className="text-xs text-gray-500 mt-1">Проверка…</p>
+                )}
+                {slugAvailable === false && !checkingSlug && (
+                  <p className="text-xs text-red-600 mt-1">Такой URL уже существует</p>
+                )}
+                {slugAvailable === true && !checkingSlug && (
+                  <p className="text-xs text-green-600 mt-1">URL свободен</p>
+                )}
               </div>
               <div>
                 <Label htmlFor="metaTitle">Мета-заголовок</Label>
