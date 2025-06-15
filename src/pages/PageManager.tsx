@@ -22,6 +22,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { useDebounce } from '@/hooks/useDebounce';
 
 export const PageManager: React.FC = () => {
   const [pages, setPages] = useState<Page[]>([]);
@@ -30,6 +32,8 @@ export const PageManager: React.FC = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [pageToDeleteId, setPageToDeleteId] = useState<string | null>(null);
   const navigate = useNavigate();
+  const [search, setSearch] = useState('');
+  const debouncedSearch = useDebounce(search, 300);
 
   useEffect(() => {
     const fetchPages = async () => {
@@ -72,6 +76,14 @@ export const PageManager: React.FC = () => {
     navigate('/admin/pages/new');
   };
 
+  const filteredPages = pages.filter((p) => {
+    const q = debouncedSearch.toLowerCase();
+    return (
+      p.title.toLowerCase().includes(q) ||
+      p.slug.toLowerCase().includes(q)
+    );
+  });
+
   if (loading) {
     return <div>Загрузка страниц...</div>;
   }
@@ -89,6 +101,12 @@ export const PageManager: React.FC = () => {
             </Button>
             <h1 className="text-3xl font-bold">Менеджер страниц</h1>
         </div>
+        <Input
+          placeholder="Поиск..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-64"
+        />
         <Button onClick={handleAddNewPage}>
           <PlusCircle className="mr-2 h-4 w-4" />
           Добавить страницу
@@ -110,7 +128,7 @@ export const PageManager: React.FC = () => {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {pages.map((page) => (
+                    {filteredPages.map((page) => (
                     <TableRow key={page.id}>
                         <TableCell className="font-medium">{page.title}</TableCell>
                         <TableCell>
