@@ -12,6 +12,7 @@ import { toast } from 'sonner';
 import { Page } from '@/types/page';
 import { ArrowLeft } from 'lucide-react';
 import { logger } from '@/services/logger.service';
+import { pageService } from '@/services/page.service';
 
 const generateSlug = (title: string) => {
     return title
@@ -36,26 +37,23 @@ export const PageEditor: React.FC = () => {
 
   useEffect(() => {
     if (id) {
-      setLoading(true);
-      fetch('/seo-data/pages.json')
-        .then((res) => res.json())
-        .then((pages) => {
-          const currentPage = pages.find((p: Page) => p.id === id);
+      // Supabase fetch
+      (async () => {
+        try {
+          setLoading(true);
+          const currentPage = await pageService.getPage(id);
           if (currentPage) {
             setPage(currentPage);
-          } else {
-            toast.error('Страница не найдена');
-            logger.warn('Page not found', { pageId: id });
-            navigate('/admin/pages');
+            setLoading(false);
+            return;
           }
-        })
-        .catch((err) => {
+        } catch (err) {
           toast.error('Не удалось загрузить данные страницы');
-          logger.error('Failed to load page data', err, { pageId: id });
-        })
-        .finally(() => setLoading(false));
+          logger.error('Failed to load page data', err instanceof Error ? err : new Error(String(err)), { pageId: id });
+        }
+      })();
     }
-  }, [id, navigate]);
+  }, [id]);
 
   const handleChange = (field: string, value: any) => {
     let newPageData: Partial<Page> = { ...page, [field]: value };
@@ -71,15 +69,31 @@ export const PageEditor: React.FC = () => {
     setPage({ ...page, seo: { ...page.seo, [field]: value } });
   };
 
-  const handleSave = () => {
-    setLoading(true);
-    // TODO: Replace with actual API call to save data
-    console.log('Сохранение страницы:', page);
-    toast.success(`Страница "${page.title}" успешно сохранена!`);
-    setTimeout(() => {
-      setLoading(false);
+  const handleSave = async () => {
+    try {
+      setLoading(true);
+      if (!page.title) {
+        toast.error('Заголовок обязателен');
+        return;
+      }
+
+      if (id) {
+        await pageService.updatePage(id, page as Page);
+        toast.success('Страница обновлена');
+      } else {
+        await pageService.createPage({
+          ...(page as Page),
+          status: page.status ?? 'draft',
+        });
+        toast.success('Страница создана');
+      }
       navigate('/admin/pages');
-    }, 1000);
+    } catch (err) {
+      toast.error('Ошибка сохранения');
+      logger.error('Failed to save page', err instanceof Error ? err : new Error(String(err)));
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (loading && id) {

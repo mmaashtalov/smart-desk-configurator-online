@@ -11,8 +11,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { logger } from '@/services/logger.service';
+import { pageService } from '@/services/page.service';
 import {
   Dialog,
   DialogContent,
@@ -33,11 +34,7 @@ export const PageManager: React.FC = () => {
   useEffect(() => {
     const fetchPages = async () => {
       try {
-        const response = await fetch('/seo-data/pages.json');
-        if (!response.ok) {
-          throw new Error('Failed to fetch pages');
-        }
-        const data = await response.json();
+        const data = await pageService.getPages();
         setPages(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An unknown error occurred');
@@ -64,6 +61,10 @@ export const PageManager: React.FC = () => {
       setPages(pages.filter(page => page.id !== pageToDeleteId));
       setIsDeleteModalOpen(false);
       setPageToDeleteId(null);
+      pageService.deletePage(pageToDeleteId).catch((err) => {
+        setError(err instanceof Error ? err.message : 'Ошибка удаления');
+        logger.error('Failed to delete page', err instanceof Error ? err : new Error(String(err)));
+      });
     }
   };
   
@@ -112,7 +113,11 @@ export const PageManager: React.FC = () => {
                     {pages.map((page) => (
                     <TableRow key={page.id}>
                         <TableCell className="font-medium">{page.title}</TableCell>
-                        <TableCell>{page.slug}</TableCell>
+                        <TableCell>
+                          <Link to={`/${page.slug}`} className="text-blue-600 hover:underline">
+                            {page.slug}
+                          </Link>
+                        </TableCell>
                         <TableCell>
                             <Badge variant={page.status === 'published' ? 'default' : 'secondary'}>
                                 {page.status === 'published' ? 'Опубликовано' : 'Черновик'}

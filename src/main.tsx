@@ -36,7 +36,8 @@ const renderApp = () => {
 };
 
 if (import.meta.env.MODE === 'development') {
-  enableMocking().then(renderApp);
+  // MSW mocking disabled to ensure direct Supabase communication
+  renderApp();
 } else {
   renderApp();
 }

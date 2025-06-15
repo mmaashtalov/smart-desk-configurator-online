@@ -42,6 +42,7 @@ import { ProjectDetailPage } from "./pages/ProjectDetailPage";
 import Visualization from "./pages/Visualization";
 import OfficeConfiguratorPage from "./pages/OfficeConfiguratorPage";
 import RentLanding from "./pages/RentLanding";
+import { PageView } from "./pages/PageView";
 
 const queryClient = new QueryClient();
 
@@ -99,6 +100,7 @@ const App = () => (
                   <Route path="/admin/pages/new" element={<PageEditor />} />
                   <Route path="/admin/pages/edit/:id" element={<PageEditor />} />
                 </Route>
+                <Route path="/:slug" element={<PageView />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

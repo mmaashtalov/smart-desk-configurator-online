@@ -1,10 +1,21 @@
 import { createClient } from '@supabase/supabase-js'
 import { PageSEO, SEOData } from '@/types'
 
-// IMPORTANT: Replace with your actual Supabase URL and Anon Key
-// You should store these in environment variables (.env file)
-const supabaseUrl = process.env.REACT_APP_SUPABASE_URL || 'YOUR_SUPABASE_URL'
-const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY || 'YOUR_SUPABASE_ANON_KEY'
+// Support both CRA-style (process.env.REACT_APP_*) and Vite-style (import.meta.env.VITE_*)
+// CRA / Node style
+let supabaseUrl: string | undefined = (typeof process !== 'undefined' && process.env.REACT_APP_SUPABASE_URL) as string | undefined;
+let supabaseAnonKey: string | undefined = (typeof process !== 'undefined' && process.env.REACT_APP_SUPABASE_ANON_KEY) as string | undefined;
+
+// Vite style fallback
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+if (!supabaseUrl && typeof import.meta !== 'undefined') supabaseUrl = (import.meta.env?.VITE_SUPABASE_URL as string) ?? undefined;
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+if (!supabaseAnonKey && typeof import.meta !== 'undefined') supabaseAnonKey = (import.meta.env?.VITE_SUPABASE_ANON_KEY as string) ?? undefined;
+
+supabaseUrl = supabaseUrl || 'YOUR_SUPABASE_URL';
+supabaseAnonKey = supabaseAnonKey || 'YOUR_SUPABASE_ANON_KEY';
 
 if (supabaseUrl === 'YOUR_SUPABASE_URL' || supabaseAnonKey === 'YOUR_SUPABASE_ANON_KEY') {
   console.warn('Supabase URL or Anon Key is not set. Please update your environment variables.')
