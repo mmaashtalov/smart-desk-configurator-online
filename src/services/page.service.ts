@@ -5,16 +5,37 @@ import { Page } from '@/types/page';
  * Service-layer helpers for interacting with the `pages` table in Supabase.
  * All methods throw if Supabase returns an error so they can be handled by the caller.
  */
-export const pageService = {
-  async getPages(): Promise<Page[]> {
-    const { data, error } = await supabase
-      .from('pages')
-      .select('*')
-      .order('updated_at', { ascending: false });
+// Function implementation with overloads
+export async function getPages(): Promise<Page[]>;
+export async function getPages(options: { page?: number; limit?: number; sortBy?: keyof Page | 'updated_at' | 'created_at'; ascending?: boolean }): Promise<{ data: Page[]; total: number }>;
+export async function getPages(options?: {
+  page?: number; // 1-based
+  limit?: number;
+  sortBy?: keyof Page | 'updated_at' | 'created_at';
+  ascending?: boolean;
+}): Promise<any> {
+  const { page = 1, limit = 10, sortBy = 'updated_at', ascending = false } = options || {};
 
-    if (error) throw error;
-    return data || [];
-  },
+  const from = (page - 1) * limit;
+  const to = from + limit - 1;
+
+  const { data, error, count } = await supabase
+    .from('pages')
+    .select('*', { count: 'exact' })
+    .order(sortBy, { ascending })
+    .range(from, to);
+
+  if (error) throw error;
+
+  if (!options) {
+    return (data || []) as Page[];
+  }
+
+  return { data: data || [], total: count || 0 };
+}
+
+export const pageService = {
+  getPages,
 
   async getPage(id: string): Promise<Page | null> {
     const { data, error } = await supabase

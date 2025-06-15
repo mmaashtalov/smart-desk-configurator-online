@@ -27,6 +27,11 @@ import { useDebounce } from '@/hooks/useDebounce';
 
 export const PageManager: React.FC = () => {
   const [pages, setPages] = useState<Page[]>([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const pageSize = 10;
+  const [sortBy, setSortBy] = useState<'title' | 'updated_at' | 'status'>('updated_at');
+  const [ascending, setAscending] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -38,8 +43,9 @@ export const PageManager: React.FC = () => {
   useEffect(() => {
     const fetchPages = async () => {
       try {
-        const data = await pageService.getPages();
+        const { data, total } = await pageService.getPages({ page, limit: pageSize, sortBy, ascending });
         setPages(data);
+        setTotal(total);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An unknown error occurred');
         logger.error('Failed to fetch pages', err instanceof Error ? err : new Error(String(err)));
@@ -49,7 +55,12 @@ export const PageManager: React.FC = () => {
     };
 
     fetchPages();
-  }, []);
+  }, [page, sortBy, ascending]);
+
+  // Reset page when search changes
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearch]);
 
   const handleEdit = (id: string) => {
     navigate(`/admin/pages/edit/${id}`);
@@ -76,12 +87,20 @@ export const PageManager: React.FC = () => {
     navigate('/admin/pages/new');
   };
 
+  const toggleSort = (col: 'title' | 'updated_at' | 'status') => {
+    if (sortBy === col) {
+      setAscending(!ascending);
+    } else {
+      setSortBy(col);
+      setAscending(col === 'title'); // default asc for title
+    }
+  };
+
+  const totalPages = Math.max(1, Math.ceil(total / pageSize));
+
   const filteredPages = pages.filter((p) => {
     const q = debouncedSearch.toLowerCase();
-    return (
-      p.title.toLowerCase().includes(q) ||
-      p.slug.toLowerCase().includes(q)
-    );
+    return p.title.toLowerCase().includes(q) || p.slug.toLowerCase().includes(q);
   });
 
   if (loading) {
@@ -120,10 +139,16 @@ export const PageManager: React.FC = () => {
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Заголовок</TableHead>
+                        <TableHead onClick={() => toggleSort('title')} className="cursor-pointer select-none">
+                          Заголовок {sortBy === 'title' ? (ascending ? '▲' : '▼') : ''}
+                        </TableHead>
                         <TableHead>URL (slug)</TableHead>
-                        <TableHead>Статус</TableHead>
-                        <TableHead>Последнее обновление</TableHead>
+                        <TableHead onClick={() => toggleSort('status')} className="cursor-pointer select-none">
+                          Статус {sortBy === 'status' ? (ascending ? '▲' : '▼') : ''}
+                        </TableHead>
+                        <TableHead onClick={() => toggleSort('updated_at')} className="cursor-pointer select-none">
+                          Последнее обновление {sortBy === 'updated_at' ? (ascending ? '▲' : '▼') : ''}
+                        </TableHead>
                         <TableHead className="text-right">Действия</TableHead>
                     </TableRow>
                 </TableHeader>
@@ -166,6 +191,19 @@ export const PageManager: React.FC = () => {
             </Table>
         </CardContent>
       </Card>
+
+      {/* Pagination */}
+      <div className="flex justify-center items-center mt-4 gap-2">
+        <Button variant="outline" size="sm" disabled={page === 1} onClick={() => setPage((p) => p - 1)}>
+          Предыдущая
+        </Button>
+        <span>
+          Страница {page} из {totalPages}
+        </span>
+        <Button variant="outline" size="sm" disabled={page === totalPages} onClick={() => setPage((p) => p + 1)}>
+          Следующая
+        </Button>
+      </div>
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>

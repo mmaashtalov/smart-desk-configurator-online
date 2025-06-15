@@ -4,13 +4,14 @@ import { pageService } from '../page.service';
 // 1. Create a factory that returns a chainable mock builder
 const createBuilder = (finalValue: any) => {
   return {
-    order: vi.fn(() => Promise.resolve(finalValue)),
     select: vi.fn().mockReturnThis(),
     insert: vi.fn().mockReturnThis(),
     update: vi.fn().mockReturnThis(),
     delete: vi.fn(() => Promise.resolve(finalValue)),
     eq: vi.fn().mockReturnThis(),
     neq: vi.fn().mockReturnThis(),
+    order: vi.fn().mockReturnThis(),
+    range: vi.fn(() => Promise.resolve(finalValue)),
     single: vi.fn(() => Promise.resolve(finalValue)),
   } as any;
 };
@@ -27,7 +28,7 @@ vi.mock('../supabase', () => {
 // Import after mocking
 import { supabase } from '../supabase';
 
-const castedFrom = supabase.from as unknown as jest.MockedFunction<any>;
+const castedFrom = supabase.from as unknown as any;
 
 beforeEach(() => {
   vi.clearAllMocks();

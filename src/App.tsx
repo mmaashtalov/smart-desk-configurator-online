@@ -29,6 +29,7 @@ import { BlogPage } from "./pages/BlogPage";
 import { BlogPostPage } from "./pages/BlogPostPage";
 import { PageManager } from "./pages/PageManager";
 import { PageEditor } from './pages/PageEditor';
+import { PageEditorFixed } from './pages/PageEditorFixed';
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import ProductDetail from "./pages/ProductDetail";
 import CheckoutPage from "./pages/CheckoutPage";
@@ -97,8 +98,8 @@ const App = () => (
                   <Route path="/admin/blog/new" element={<BlogPostEditor />} />
                   <Route path="/admin/blog/edit/:id" element={<BlogPostEditor />} />
                   <Route path="/admin/pages" element={<PageManager />} />
-                  <Route path="/admin/pages/new" element={<PageEditor />} />
-                  <Route path="/admin/pages/edit/:id" element={<PageEditor />} />
+                  <Route path="/admin/pages/new" element={<PageEditorFixed />} />
+                  <Route path="/admin/pages/edit/:id" element={<PageEditorFixed />} />
                 </Route>
                 <Route path="/:slug" element={<PageView />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
