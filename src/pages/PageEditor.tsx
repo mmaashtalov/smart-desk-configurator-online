@@ -250,6 +250,18 @@ export const PageEditor: React.FC = () => {
               </div>
             </CardContent>
           </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Предпросмотр</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div
+                className="prose max-w-none border rounded p-4 bg-white"
+                dangerouslySetInnerHTML={{ __html: page.content || '<p><em>Нет контента</em></p>' }}
+              />
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
