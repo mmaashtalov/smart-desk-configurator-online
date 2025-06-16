@@ -13,7 +13,7 @@ export function Footer() {
           {/* Company Info */}
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center space-x-2 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-br from-wood-primary to-wood-secondary rounded-lg"></div>
+              <img src="/assets/logo-icon.svg" alt="Офис Интеллект" className="w-8 h-8" />
               <span className="text-xl font-playfair font-semibold">
                 Офис Интеллект
               </span>
