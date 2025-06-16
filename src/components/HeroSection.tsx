@@ -1,99 +1,61 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Star, Award, Gem, PlusCircle, XCircle } from 'lucide-react';
-import { ProductImageSlider } from '@/components/ProductImageSlider';
-import { ImageFormModal } from '@/components/ui/ImageFormModal';
-import { useApp } from '@/contexts/AppContext';
+import { ArrowRight, Star, Award, Gem } from 'lucide-react';
 
 const HeroSection = () => {
-  const { user } = useApp();
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalMode, setModalMode] = useState<'add' | 'delete'>('add');
   const [slides, setSlides] = useState([
     {
       id: 1,
-      title: "Исключительность",
+      imageUrl: '/images/heroslider/Lucid_Realism_Generate_a_highresolution_2400800_px_ultrarealis_0.jpg',
+      title: 'Создавайте свой идеальный стол',
+      description: 'Настройте каждый аспект, от материалов до функций.',
+      buttonText: 'Начать конфигурацию',
+      buttonLink: '/configurator',
       subtitle: "в каждой детали",
-      description: "Премиальные умные столы из редких пород дуба с инновационными технологиями для тех, кто ценит совершенство",
-      images: [
-        "https://picsum.photos/seed/hero1/2400/800",
-        "https://picsum.photos/seed/hero2/2400/800",
-      ],
       features: ["Ручная работа", "Редкие материалы", "Инновации"]
     },
     {
       id: 2,
+      imageUrl: "/images/heroslider/Lucid_Realism_Generate_a_highresolution_2400800_px_ultrarealis_0.jpg",
       title: "Мастерство",
       subtitle: "передается поколениями",
       description: "Каждый стол создается вручную мастерами с многолетним опытом, используя технологии будущего",
-      images: [
-        "https://picsum.photos/seed/hero3/2400/800",
-        "https://picsum.photos/seed/hero4/2400/800"
-      ],
+      buttonText: 'Начать конфигурацию',
+      buttonLink: '/configurator',
       features: ["Эксклюзивность", "Безупречность", "Вечность"]
     },
     {
       id: 3,
+      imageUrl: "/images/heroslider/Lucid_Realism_Generate_a_highresolution_2400800_px_ultrarealis_0.jpg",
       title: "Индивидуальность",
       subtitle: "для избранных",
       description: "Создайте уникальный стол, который станет центром вашего пространства и отражением вашего статуса",
-      images: [
-        "https://picsum.photos/seed/hero5/2400/800",
-        "https://picsum.photos/seed/hero6/2400/800"
-      ],
+      buttonText: 'Начать конфигурацию',
+      buttonLink: '/configurator',
       features: ["Персонализация", "Эксклюзивность", "Престиж"]
     }
   ]);
 
-  const handleAddImageClick = () => {
-    setModalMode('add');
-    setIsModalOpen(true);
-  };
+  const autoplayTimerRef = useRef<number | null>(null);
 
-  const handleDeleteImageClick = () => {
-    if (slides[currentSlide].images.length === 1) {
-      alert("Нельзя удалить последнее изображение.");
-      return;
+  const resetAutoplayTimer = () => {
+    if (autoplayTimerRef.current) {
+      clearInterval(autoplayTimerRef.current);
     }
-    setModalMode('delete');
-    setIsModalOpen(true);
-  };
-
-  const handleModalConfirm = (imageUrl?: string) => {
-    if (modalMode === 'add' && imageUrl) {
-      setSlides(prevSlides =>
-        prevSlides.map((slide, index) =>
-          index === currentSlide
-            ? { ...slide, images: [...slide.images, imageUrl] }
-            : slide
-        )
-      );
-    } else if (modalMode === 'delete') {
-      setSlides(prevSlides =>
-        prevSlides.map((slide, index) => {
-          if (index === currentSlide) {
-            const newImages = slide.images.filter(img => img !== slide.images[0]); // Only delete the currently displayed image for now
-            return { ...slide, images: newImages.length > 0 ? newImages : ["https://picsum.photos/seed/placeholder/2400/800"] }; // Placeholder if no images left
-          }
-          return slide;
-        })
-      );
-      setCurrentSlide(0); // Reset to first slide after deletion
-    }
-    setIsModalOpen(false);
-  };
-
-  const handleModalClose = () => {
-    setIsModalOpen(false);
+    autoplayTimerRef.current = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 7000);
   };
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 7000);
-    return () => clearInterval(timer);
+    resetAutoplayTimer();
+    return () => {
+      if (autoplayTimerRef.current) {
+        clearInterval(autoplayTimerRef.current);
+      }
+    };
   }, [slides.length]);
 
   const slide = slides[currentSlide];
@@ -108,7 +70,7 @@ const HeroSection = () => {
       <div
         className="absolute inset-0 z-15 w-full h-full"
         style={{
-          backgroundImage: `url(${slide.images[0]})`,
+          backgroundImage: `url(${slide.imageUrl})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
@@ -154,8 +116,8 @@ const HeroSection = () => {
           {/* Call to Action Buttons */}
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Button asChild size="lg" variant="accent">
-              <Link to="/configurator">
-                Начать конфигурацию
+              <Link to={slide.buttonLink}>
+                {slide.buttonText}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
@@ -166,18 +128,6 @@ const HeroSection = () => {
             </Button>
           </div>
 
-          {/* Image Management Buttons */}
-          {user?.role === 'admin' && (
-            <div className="flex justify-center gap-4 mt-8">
-              <Button size="sm" variant="outline" onClick={handleAddImageClick}>
-                <PlusCircle className="w-4 h-4 mr-2" /> Добавить изображение
-              </Button>
-              <Button size="sm" variant="destructive" onClick={handleDeleteImageClick}>
-                <XCircle className="w-4 h-4 mr-2" /> Удалить изображение
-              </Button>
-            </div>
-          )}
-
         </div>
       </div>
 
@@ -186,7 +136,10 @@ const HeroSection = () => {
         {slides.map((_, index) => (
           <button
             key={index}
-            onClick={() => setCurrentSlide(index)}
+            onClick={() => {
+              setCurrentSlide(index);
+              resetAutoplayTimer(); // Reset timer on manual slide change
+            }}
             className={`h-2 w-2 rounded-full transition-all duration-300 ${
               index === currentSlide ? 'bg-white scale-125' : 'bg-white/50 hover:bg-white/75'
             }`}
@@ -194,13 +147,6 @@ const HeroSection = () => {
           />
         ))}
       </div>
-      <ImageFormModal
-        isOpen={isModalOpen}
-        onClose={handleModalClose}
-        onConfirm={handleModalConfirm}
-        mode={modalMode}
-        currentImageUrl={modalMode === 'delete' ? slide.images[0] : undefined}
-      />
     </section>
   );
 };

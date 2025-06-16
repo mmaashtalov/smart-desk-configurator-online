@@ -36,7 +36,7 @@ export function NewHeader() {
             className="flex items-center space-x-2"
             onClick={() => trackClick('logo')}
           >
-            <div className="w-8 h-8 bg-gradient-to-br from-wood-primary to-wood-secondary rounded-lg"></div>
+            <img src="/assets/logo-icon.svg" alt="Офис Интеллект" className="w-8 h-8" />
             <span className="hidden sm:inline text-xl font-playfair font-semibold text-gray-900">
               Офис Интеллект
             </span>

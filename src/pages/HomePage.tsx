@@ -18,7 +18,7 @@ export function HomePage() {
       "name": "Офис Интеллект",
       "description": "Премиальные умные столы из дубового шпона",
       "url": window.location.origin,
-      "logo": `${window.location.origin}/logo.png`,
+      "logo": `${window.location.origin}/assets/logo.svg`,
       "contactPoint": {
         "@type": "ContactPoint",
         "telephone": "+7-495-123-45-67",

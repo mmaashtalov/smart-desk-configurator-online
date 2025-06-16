@@ -43,3 +43,26 @@ export interface AppContextType {
   logout: () => void;
   isAuthenticated: boolean;
 }
+
+export interface SEOData {
+  title: string;
+  description: string;
+  keywords: string[];
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+  twitterCard?: string;
+  twitterSite?: string;
+  canonical?: string;
+  robots?: string;
+  structuredData?: Record<string, any>;
+}
+
+export interface PageSEO {
+  id: string;
+  path: string;
+  seo: SEOData;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}

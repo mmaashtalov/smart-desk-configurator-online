@@ -31,10 +31,45 @@ const defaultSEO: SEOData = {
   twitterCard: 'summary_large_image',
   twitterSite: '@office_intellect',
   robots: 'index, follow',
-}
+};
 
 export const SEOProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [currentSEO, setCurrentSEO] = useState<SEOData>(defaultSEO);
+  const [currentSEO, setCurrentSEO] = useState<SEOData>(() => {
+    const origin = typeof window !== 'undefined' ? window.location.origin : '';
+    return {
+      ...defaultSEO,
+      structuredData: {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": `${origin}/#organization`,
+            "name": "Офис Интеллект",
+            "url": `${origin}/`,
+            "logo": `${origin}/assets/logo.svg`,
+            "sameAs": [
+              "https://vk.com/officeintellect",
+              "https://t.me/officeintellect"
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": `${origin}/#website`,
+            "url": `${origin}/`,
+            "name": "Офис Интеллект",
+            "publisher": {
+              "@id": `${origin}/#organization`
+            },
+            "potentialAction": [{
+              "@type": "SearchAction",
+              "target": `${origin}/?s={search_term_string}`,
+              "query-input": "required name=search_term_string"
+            }]
+          }
+        ]
+      }
+    };
+  });
   const [pages, setPages] = useState<PageSEO[]>(() => {
     try {
       const savedData = localStorage.getItem('seo-data');

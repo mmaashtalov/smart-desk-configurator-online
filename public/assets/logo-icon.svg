@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <g transform="rotate(180 50 50)" fill="none" stroke="#1F2426" stroke-width="12" stroke-linecap="round">
+    <!-- vertical line -->
+    <line x1="50" y1="15" x2="50" y2="45" />
+    <!-- circle -->
+    <path d="M80 50a30 30 0 1 1 -60 0" />
+  </g>
+</svg>

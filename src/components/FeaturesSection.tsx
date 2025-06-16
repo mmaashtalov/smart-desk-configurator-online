@@ -11,7 +11,7 @@ const initialFeatures = [
     description: "Плавная регулировка высоты от 65 до 125 см с памятью позиций",
     details: "4 позиции памяти",
     images: [
-      "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=600&q=60"
+      "/images/features/electric-lift.webp"
     ]
   },
   {
@@ -20,7 +20,7 @@ const initialFeatures = [
     description: "Встроенная беспроводная зарядка Qi для смартфонов",
     details: "15W быстрая зарядка",
     images: [
-      "https://images.unsplash.com/photo-1516116216624-53e697fedbea?auto=format&fit=crop&w=600&q=60"
+      "/images/features/qi-charger.webp"
     ]
   },
   {
@@ -29,7 +29,7 @@ const initialFeatures = [
     description: "Дубовый шпон 18 мм с масляным покрытием в трёх тонах",
     details: "100% экологично",
     images: [
-      "https://images.unsplash.com/photo-1505691723518-36a5ac3be353?auto=format&fit=crop&w=600&q=60"
+      "/images/features/oak-veneer.webp"
     ]
   },
   {
@@ -38,7 +38,7 @@ const initialFeatures = [
     description: "5 лет гарантии на электрическую систему, 10 лет на столешницу",
     details: "Премиум качество",
     images: [
-      "https://images.unsplash.com/photo-1519241047957-be31d7379a5d?auto=format&fit=crop&w=600&q=60"
+      "/images/features/quality-control.webp"
     ]
   }
 ];
