@@ -8,15 +8,30 @@ const ProductShowcase = () => {
   const initialProducts = [
     {
       id: 1,
-      name: "Умный стол Arctic",
-      description: "Дубовый шпон в тоне Арктик с электроприводом",
-      price: "от 85 000 ₽",
+      name: "Smart Desk Primary",
+      description: "Массив дуба / американского ореха с регулируемой высотой 60–125 см",
+      price: "от 120 000 ₽",
       images: [
-        "https://picsum.photos/600/400?random=1",
-        "https://picsum.photos/600/400?random=2",
-        "https://picsum.photos/600/400?random=3",
+        "/images/Primary/10.jpg.webp",
+        "/images/Primary/7.jpg.webp",
+        "/images/Primary/5.jpg.webp",
       ],
-      features: ["Регулировка высоты", "Беспроводная зарядка", "USB-хаб"]
+      features: [
+        "Массив дуба / американского ореха",
+        "Цвет по каталогу",
+        "Регулируемая высота от 60 до 125 см",
+        "Пенал для канцелярии",
+        "Полка для проводов",
+        "Органайзер",
+        "Подставка под телефон",
+        "Bluetooth аудиосистема",
+        "Ящик с замком по отпечатку пальца",
+        "Подогрев кружки (+ кружка)",
+        "USB Hub (USB 3.0 и USB-C)",
+        "Беспроводная зарядка",
+        "Разъёмы HDMI, USB, 220V",
+        "Сетевой фильтр"
+      ]
     },
     {
       id: 2,
