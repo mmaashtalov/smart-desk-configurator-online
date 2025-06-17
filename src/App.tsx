@@ -44,6 +44,7 @@ import Visualization from "./pages/Visualization";
 import OfficeConfiguratorPage from "./pages/OfficeConfiguratorPage";
 import RentLanding from "./pages/RentLanding";
 import { PageView } from "./pages/PageView";
+import MarketplacePage from "./pages/MarketplacePage";
 
 const queryClient = new QueryClient();
 

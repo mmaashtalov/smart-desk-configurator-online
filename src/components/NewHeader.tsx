@@ -31,8 +31,8 @@ export function NewHeader() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link 
-            to="/" 
+          <Link
+            to="/"
             className="flex items-center space-x-2"
             onClick={() => trackClick('logo')}
           >
@@ -44,61 +44,68 @@ export function NewHeader() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link 
-              to="/" 
+            <Link
+              to="/"
               className="text-gray-700 hover:text-gray-900 transition-colors"
               onClick={() => trackClick('nav-home')}
             >
               Главная
             </Link>
-            <Link 
-              to="/catalog" 
+            <Link
+              to="/catalog"
               className="text-gray-700 hover:text-gray-900 transition-colors"
               onClick={() => trackClick('nav-catalog')}
             >
               Каталог
             </Link>
-            <Link 
-              to="/configurator" 
+            <Link
+              to="/configurator"
               className="text-gray-700 hover:text-gray-900 transition-colors"
               onClick={() => trackClick('nav-configurator')}
             >
               Конфигуратор
             </Link>
-            <Link 
-              to="/about" 
+            <Link
+              to="/about"
               className="text-gray-700 hover:text-gray-900 transition-colors"
               onClick={() => trackClick('nav-about')}
             >
               О нас
             </Link>
-            <Link 
-              to="/projects" 
+            <Link
+              to="/projects"
               className="text-gray-700 hover:text-gray-900 transition-colors"
               onClick={() => trackClick('nav-projects')}
             >
               Проекты
             </Link>
-            <Link 
-              to="/contacts" 
+            <Link
+              to="/contacts"
               className="text-gray-700 hover:text-gray-900 transition-colors"
               onClick={() => trackClick('nav-contact')}
             >
               Контакты
             </Link>
-            
+            <Link
+              to="/marketplace"
+              className="text-gray-700 hover:text-gray-900 transition-colors"
+              onClick={() => trackClick('nav-marketplace')}
+            >
+              Биржа
+            </Link>
+
             {isAuthenticated && user?.role === 'admin' && (
               <div className="flex items-center space-x-2">
-                <Link 
-                  to="/admin" 
+                <Link
+                  to="/admin"
                   className="flex items-center space-x-1 text-gray-700 hover:text-gray-900 transition-colors"
                   onClick={handleAdminClick}
                 >
                   <Settings className="w-4 h-4" />
                   <span>Админ</span>
                 </Link>
-                <Link 
-                  to="/admin/analytics" 
+                <Link
+                  to="/admin/analytics"
                   className="flex items-center space-x-1 text-gray-700 hover:text-gray-900 transition-colors"
                   onClick={() => trackClick('analytics-access')}
                 >
@@ -116,17 +123,17 @@ export function NewHeader() {
                 <span className="text-sm text-gray-600">
                   Привет, {user?.name}
                 </span>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
+                <Button
+                  variant="outline"
+                  size="sm"
                   onClick={handleLogout}
                 >
                   Выйти
                 </Button>
               </div>
             ) : (
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 size="sm"
                 onClick={() => {
                   navigate('/admin')
@@ -151,8 +158,8 @@ export function NewHeader() {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-gray-200">
             <nav className="flex flex-col space-y-4">
-              <Link 
-                to="/" 
+              <Link
+                to="/"
                 className="text-gray-700 hover:text-gray-900 transition-colors"
                 onClick={() => {
                   setIsMenuOpen(false)
@@ -161,8 +168,8 @@ export function NewHeader() {
               >
                 Главная
               </Link>
-              <Link 
-                to="/catalog" 
+              <Link
+                to="/catalog"
                 className="text-gray-700 hover:text-gray-900 transition-colors"
                 onClick={() => {
                   setIsMenuOpen(false)
@@ -171,8 +178,8 @@ export function NewHeader() {
               >
                 Каталог
               </Link>
-              <Link 
-                to="/configurator" 
+              <Link
+                to="/configurator"
                 className="text-gray-700 hover:text-gray-900 transition-colors"
                 onClick={() => {
                   setIsMenuOpen(false)
@@ -181,8 +188,8 @@ export function NewHeader() {
               >
                 Конфигуратор
               </Link>
-              <Link 
-                to="/about" 
+              <Link
+                to="/about"
                 className="text-gray-700 hover:text-gray-900 transition-colors"
                 onClick={() => {
                   setIsMenuOpen(false)
@@ -191,8 +198,8 @@ export function NewHeader() {
               >
                 О нас
               </Link>
-              <Link 
-                to="/projects" 
+              <Link
+                to="/projects"
                 className="text-gray-700 hover:text-gray-900 transition-colors"
                 onClick={() => {
                   setIsMenuOpen(false)
@@ -201,8 +208,8 @@ export function NewHeader() {
               >
                 Проекты
               </Link>
-              <Link 
-                to="/contacts" 
+              <Link
+                to="/contacts"
                 className="text-gray-700 hover:text-gray-900 transition-colors"
                 onClick={() => {
                   setIsMenuOpen(false)
@@ -211,11 +218,20 @@ export function NewHeader() {
               >
                 Контакты
               </Link>
-              
+              <Link
+                to="/marketplace"
+                className="text-gray-700 hover:text-gray-900 transition-colors"
+                onClick={() => {
+                  setIsMenuOpen(false)
+                  trackClick('mobile-nav-marketplace')
+                }}
+              >
+                Биржа
+              </Link>
               {isAuthenticated && user?.role === 'admin' && (
                 <>
-                  <Link 
-                    to="/admin" 
+                  <Link
+                    to="/admin"
                     className="flex items-center space-x-1 text-gray-700 hover:text-gray-900 transition-colors"
                     onClick={() => {
                       setIsMenuOpen(false)
@@ -225,8 +241,8 @@ export function NewHeader() {
                     <Settings className="w-4 h-4" />
                     <span>Админ панель</span>
                   </Link>
-                  <Link 
-                    to="/admin/analytics" 
+                  <Link
+                    to="/admin/analytics"
                     className="flex items-center space-x-1 text-gray-700 hover:text-gray-900 transition-colors"
                     onClick={() => {
                       setIsMenuOpen(false)
@@ -238,16 +254,16 @@ export function NewHeader() {
                   </Link>
                 </>
               )}
-              
+
               <div className="pt-4 border-t border-gray-200">
                 {isAuthenticated ? (
                   <div className="space-y-2">
                     <p className="text-sm text-gray-600">
                       Привет, {user?.name}
                     </p>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
+                    <Button
+                      variant="outline"
+                      size="sm"
                       onClick={() => {
                         setIsMenuOpen(false)
                         handleLogout()
@@ -258,8 +274,8 @@ export function NewHeader() {
                     </Button>
                   </div>
                 ) : (
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     size="sm"
                     onClick={() => {
                       setIsMenuOpen(false)
@@ -278,4 +294,4 @@ export function NewHeader() {
       </div>
     </header>
   )
-} 
+}
