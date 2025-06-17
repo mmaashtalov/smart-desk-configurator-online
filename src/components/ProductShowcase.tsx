@@ -7,6 +7,32 @@ import { ProductImageSlider } from '@/components/ProductImageSlider';
 const ProductShowcase = () => {
   const initialProducts = [
     {
+      id: 6,
+      name: "Smart Desk Primary R+",
+      description: "Массив дуба / американского ореха с регулируемой высотой 60–125 см",
+      price: "от 160 000 ₽",
+      images: [
+        "/images/Prymary R+/5370657970456752821.jpg",
+        "/images/Prymary R+/5370657970456752820.jpg"
+      ],
+      features: [
+        "Массив дуба / американского ореха/ палисандра",
+        "Цвет по каталогу",
+        "Регулируемая высота от 60 до 125 см",
+        "Пенал для канцелярии",
+        "Полка для проводов",
+        "Органайзер",
+        "Подставка под телефон",
+        "Bluetooth аудиосистема",
+        "Ящик с замком по отпечатку пальца",
+        "USB Hub (USB 3.0 и USB-C)",
+        "Беспроводная зарядка",
+        "Разъёмы HDMI, USB, 220V",
+        "Сетевой фильтр",
+        "Натуральная кожа"
+      ]
+    },
+    {
       id: 1,
       name: "Smart Desk Primary",
       description: "Массив дуба / американского ореха с регулируемой высотой 60–125 см",
