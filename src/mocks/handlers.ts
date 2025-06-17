@@ -372,4 +372,4 @@ export const handlers = [
 
   // Passthrough for Unsplash images to prevent MSW interception warnings
   http.get('https://images.unsplash.com/*', () => passthrough()),
-];
+]; 

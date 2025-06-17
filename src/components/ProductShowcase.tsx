@@ -38,6 +38,7 @@ const ProductShowcase = () => {
       description: "Массив дуба / американского ореха с регулируемой высотой 60–125 см",
       price: "от 120 000 ₽",
       images: [
+        "/images/Primary/4.jpg.webp",
         "/images/Primary/10.jpg.webp",
         "/images/Primary/7.jpg.webp",
         "/images/Primary/5.jpg.webp",
@@ -52,7 +53,7 @@ const ProductShowcase = () => {
         "Подставка под телефон",
         "Bluetooth аудиосистема",
         "Ящик с замком по отпечатку пальца",
-        "USB Hub (USB 3.0 и USB-C)",
+        "USB Hub (USB-A и USB-C)",
         "Беспроводная зарядка",
         "Разъёмы HDMI, USB, 220V",
         "Сетевой фильтр"
@@ -64,6 +65,7 @@ const ProductShowcase = () => {
       description: "Массив дуба / американского ореха с регулируемой высотой 60–125 см",
       price: "от 155 000 ₽",
       images: [
+        "/images/Primary+/1.jpg.webp",
         "/images/Primary+/13.jpg.webp",
         "/images/Primary+/8.jpg.webp",
         "/images/Primary+/2.jpg.webp",
@@ -78,7 +80,7 @@ const ProductShowcase = () => {
         "Подставка под телефон",
         "Bluetooth аудиосистема",
         "Ящик с замком по отпечатку пальца",
-        "USB Hub (USB 3.0 и USB-C)",
+        "USB Hub (USB-A и USB-C)",
         "Беспроводная зарядка",
         "Разъёмы HDMI, USB, 220V",
         "Сетевой фильтр"
@@ -90,9 +92,9 @@ const ProductShowcase = () => {
       description: "Массив дуба или ореха с регулируемой высотой 60–125 см",
       price: "от 135 000 ₽",
       images: [
-        "/images/Medium/8.jpg.webp",
-        "/images/Medium/7.jpg.webp",
         "/images/Medium/2.jpg.webp",
+        "/images/Medium/1.jpg.webp",
+        "/images/Medium/3.jpg",
       ],
       features: [
         "Массив + шпон дуба или ореха",
@@ -102,7 +104,7 @@ const ProductShowcase = () => {
         "Органайзер для проводов",
         "Сетевой фильтр с защитой от скачков напряжения",
         "Выдвижной ящик",
-        "USB Hub (Разъёмы USB 3.0 и USB-C)"
+        "USB Hub (Разъёмы USB-A и USB-C)"
       ]
     },
     {
@@ -122,7 +124,7 @@ const ProductShowcase = () => {
         "Органайзер для проводов",
         "Сетевой фильтр с защитой от скачков напряжения",
         "Выдвижной ящик",
-        "USB Hub (Разъёмы USB 3.0 и USB-C)"
+        "USB Hub (Разъёмы USB-A и USB-C)"
       ]
     },
     {
@@ -143,7 +145,7 @@ const ProductShowcase = () => {
         "Органайзер для проводов",
         "Сетевой фильтр с защитой от скачков напряжения",
         "Выдвижной ящик",
-        "USB Hub (Разъёмы USB 3.0 и USB-C)"
+        "USB Hub (Разъёмы USB-A и USB-C)"
       ]
     }
   ];
@@ -174,7 +176,7 @@ const ProductShowcase = () => {
           {products.slice(0, 3).map((product, index) => (
             <div
               key={product.id}
-              className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover-scale animate-fade-in"
+              className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover-scale animate-fade-in flex flex-col h-full"
               style={{ animationDelay: `${index * 200}ms` }}
             >
               <div className="relative w-full h-72 rounded-t-2xl">
@@ -190,7 +192,7 @@ const ProductShowcase = () => {
                 </div>
               </div>
 
-              <div className="p-6">
+              <div className="p-6 flex flex-col h-full">
                 <h3 className="font-playfair text-xl font-bold text-primary mb-2">
                   {product.name}
                 </h3>
@@ -198,7 +200,7 @@ const ProductShowcase = () => {
                   {product.description}
                 </p>
 
-                <div className="space-y-2 mb-6">
+                <div className="space-y-2 mb-6 flex-1">
                   {product.features.map((feature, featureIndex) => (
                     <div key={featureIndex} className="flex items-center text-sm text-gray-500">
                       <div className="w-1.5 h-1.5 bg-accent rounded-full mr-2" />
@@ -207,7 +209,7 @@ const ProductShowcase = () => {
                   ))}
                 </div>
 
-                <div className="flex space-x-2">
+                <div className="flex space-x-2 mt-auto">
                   <Button className="flex-1 config-button">
                     Подробнее
                   </Button>
