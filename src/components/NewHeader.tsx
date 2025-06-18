@@ -93,6 +93,13 @@ export function NewHeader() {
             >
               Биржа
             </Link>
+            <Link
+              to="/gallery"
+              className="text-gray-700 hover:text-gray-900 transition-colors"
+              onClick={() => trackClick('nav-gallery')}
+            >
+              Галерея
+            </Link>
 
             {isAuthenticated && user?.role === 'admin' && (
               <div className="flex items-center space-x-2">
@@ -227,6 +234,16 @@ export function NewHeader() {
                 }}
               >
                 Биржа
+              </Link>
+              <Link
+                to="/gallery"
+                className="text-gray-700 hover:text-gray-900 transition-colors"
+                onClick={() => {
+                  setIsMenuOpen(false)
+                  trackClick('mobile-nav-gallery')
+                }}
+              >
+                Галерея
               </Link>
               {isAuthenticated && user?.role === 'admin' && (
                 <>

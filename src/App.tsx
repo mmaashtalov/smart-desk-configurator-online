@@ -28,7 +28,6 @@ import { BlogPostEditor } from "./pages/BlogPostEditor";
 import { BlogPage } from "./pages/BlogPage";
 import { BlogPostPage } from "./pages/BlogPostPage";
 import { PageManager } from "./pages/PageManager";
-import { PageEditor } from './pages/PageEditor';
 import { PageEditorFixed } from './pages/PageEditorFixed';
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import ProductDetail from "./pages/ProductDetail";
@@ -45,6 +44,8 @@ import OfficeConfiguratorPage from "./pages/OfficeConfiguratorPage";
 import RentLanding from "./pages/RentLanding";
 import { PageView } from "./pages/PageView";
 import MarketplacePage from "./pages/MarketplacePage";
+import GalleryPage from "./pages/GalleryPage";
+import Layout from "./components/Layout";
 
 const queryClient = new QueryClient();
 
@@ -58,27 +59,33 @@ const App = () => (
             <Sonner />
             <BrowserRouter>
               <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/catalog" element={<Navigate to="/catalog/executive-desks" replace />} />
-                <Route path="/catalog/:categoryId" element={<CategoryPage />} />
-                <Route path="/catalog/:categoryId/:productId" element={<ProductDetail />} />
-                <Route path="/configurator" element={<Configurator />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/projects" element={<Projects />} />
-                <Route path="/projects/:id" element={<ProjectDetailPage />} />
-                <Route path="/contacts" element={<Contacts />} />
-                <Route path="/favorites" element={<Favorites />} />
+                <Route element={<Layout />}>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/catalog" element={<Navigate to="/catalog/executive-desks" replace />} />
+                  <Route path="/catalog/:categoryId" element={<CategoryPage />} />
+                  <Route path="/catalog/:categoryId/:productId" element={<ProductDetail />} />
+                  <Route path="/configurator" element={<Configurator />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/projects" element={<Projects />} />
+                  <Route path="/projects/:id" element={<ProjectDetailPage />} />
+                  <Route path="/contacts" element={<Contacts />} />
+                  <Route path="/favorites" element={<Favorites />} />
+                  <Route path="/blog" element={<BlogPage />} />
+                  <Route path="/blog/:slug" element={<BlogPostPage />} />
+                  <Route path="/checkout" element={<CheckoutPage />} />
+                  <Route path="/visualization" element={<Visualization />} />
+                  <Route path="/office-configurator" element={<OfficeConfiguratorPage />} />
+                  <Route path="/rent" element={<RentLanding />} />
+                  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                  <Route path="/user-agreement" element={<UserAgreement />} />
+                  <Route path="/marketplace" element={<MarketplacePage />} />
+                  <Route path="/gallery" element={<GalleryPage />} />
+                  <Route path="/:slug" element={<PageView />} />
+                </Route>
+
                 <Route path="/login" element={<LoginPage />} />
-                <Route path="/blog" element={<BlogPage />} />
-                <Route path="/blog/:slug" element={<BlogPostPage />} />
-                <Route path="/checkout" element={<CheckoutPage />} />
-                <Route path="/visualization" element={<Visualization />} />
-                <Route path="/office-configurator" element={<OfficeConfiguratorPage />} />
-                <Route path="/rent" element={<RentLanding />} />
-                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                <Route path="/user-agreement" element={<UserAgreement />} />
                 <Route element={<NewProtectedRoute adminOnly />}>
-                  <Route path="/admin" element={<AdminDashboard />} />
+                  <Route path="/admin" element={<Navigate to="/admin/panel" replace />} />
                   <Route path="/admin/panel" element={<AdminPanel />} />
                   <Route path="/admin/panel/products" element={<ProductManagement />} />
                   <Route path="/admin/panel/users" element={<UserManagement />} />
@@ -102,8 +109,7 @@ const App = () => (
                   <Route path="/admin/pages/new" element={<PageEditorFixed />} />
                   <Route path="/admin/pages/edit/:id" element={<PageEditorFixed />} />
                 </Route>
-                <Route path="/:slug" element={<PageView />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>
