@@ -1,73 +1,63 @@
-# Welcome to your Lovable project
+# Конфигуратор умных столов «Офис Интеллект»
 
-## Project info
+Это веб-приложение представляет собой интерактивный конфигуратор для кастомизации и покупки умных столов для офиса. Пользователи могут выбирать различные компоненты, материалы и аксессуары, чтобы создать стол, идеально соответствующий их потребностям.
 
-**URL**: https://lovable.dev/projects/d1069eaa-02ab-4e59-bb26-3a52fc4470ba
+Проект создан с использованием современных веб-технологий и предоставляет богатый пользовательский опыт, а также удобную административную панель для управления контентом и товарами.
 
-## How can I edit this code?
+## Ключевые технологии
 
-There are several ways of editing your application.
+-   **Фреймворк:** [React](https://react.dev/)
+-   **Сборщик:** [Vite](https://vitejs.dev/)
+-   **Язык:** [TypeScript](https://www.typescriptlang.org/)
+-   **UI компоненты:** [Shadcn/UI](https://ui.shadcn.com/)
+-   **Стилизация:** [Tailwind CSS](https://tailwindcss.com/)
+-   **Бэкенд и база данных:** [Supabase](https://supabase.com/)
+-   **Формы:** [React Hook Form](https://react-hook-form.com/) & [Zod](https://zod.dev/)
+-   **Тестирование:** [Vitest](https://vitest.dev/) & [React Testing Library](https://testing-library.com/)
 
-**Use Lovable**
+## Начало работы
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/d1069eaa-02ab-4e59-bb26-3a52fc4470ba) and start prompting.
+### 1. Клонирование репозитория
 
-Changes made via Lovable will be committed automatically to this repo.
+```bash
+git clone <URL_ВАШЕГО_РЕПОЗИТОРИЯ>
+cd smart-desk-configurator-online
+```
 
-**Use your preferred IDE**
+### 2. Установка зависимостей
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+```bash
+npm install
+```
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### 3. Настройка переменных окружения
 
-Follow these steps:
+Для работы с Supabase необходимо настроить переменные окружения.
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+1.  Создайте файл `.env.local` в корневой папке проекта.
+2.  Добавьте в него следующие переменные, заменив значения на ваши ключи из проекта Supabase:
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+    ```env
+    VITE_SUPABASE_URL="https://your-project-id.supabase.co"
+    VITE_SUPABASE_ANON_KEY="your-public-anon-key"
+    ```
 
-# Step 3: Install the necessary dependencies.
-npm i
+### 4. Запуск проекта
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+После установки зависимостей и настройки переменных окружения, запустите сервер для разработки:
+
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Проект будет доступен по адресу `http://localhost:8081`.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Доступные скрипты
 
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/d1069eaa-02ab-4e59-bb26-3a52fc4470ba) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+-   `npm run dev`: Запуск сервера для разработки с HMR.
+-   `npm run build`: Сборка проекта для продакшена.
+-   `npm run preview`: Предпросмотр продакшн-сборки.
+-   `npm run test`: Запуск тестов в консоли.
+-   `npm run test:ui`: Запуск тестов в интерактивном UI.
+-   `npm run coverage`: Расчет покрытия кода тестами.
+-   `npm run lint`: Проверка кода с помощью ESLint.
