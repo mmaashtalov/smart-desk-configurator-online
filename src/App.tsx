@@ -33,9 +33,9 @@ import { ErrorBoundary } from "./components/ErrorBoundary";
 import ProductDetail from "./pages/ProductDetail";
 import CheckoutPage from "./pages/CheckoutPage";
 import AdminPanel from "./pages/AdminPanel";
-import ProductManagement from "./components/admin/ProductManagement";
+import { ProductManagement } from "./components/admin/ProductManagement";
 import UserManagement from "./components/admin/UserManagement";
-import ContentManagement from "./components/admin/ContentManagement";
+import { ContentManagement } from "./components/admin/ContentManagement";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import UserAgreement from "./pages/UserAgreement";
 import { ProjectDetailPage } from "./pages/ProjectDetailPage";
@@ -57,7 +57,7 @@ const App = () => (
           <TooltipProvider>
             <Toaster />
             <Sonner />
-            <BrowserRouter>
+            <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
               <Routes>
                 <Route element={<Layout />}>
                   <Route path="/" element={<Index />} />
@@ -80,36 +80,38 @@ const App = () => (
                   <Route path="/user-agreement" element={<UserAgreement />} />
                   <Route path="/marketplace" element={<MarketplacePage />} />
                   <Route path="/gallery" element={<GalleryPage />} />
+                  
+                  <Route element={<NewProtectedRoute adminOnly />}>
+                    <Route path="/admin" element={<Navigate to="/admin/panel" replace />} />
+                    <Route path="/admin/panel" element={<AdminPanel />} />
+                    <Route path="/admin/panel/products" element={<ProductManagement />} />
+                    <Route path="/admin/panel/users" element={<UserManagement />} />
+                    <Route path="/admin/panel/content" element={<ContentManagement />} />
+                    <Route path="/admin/seo" element={<SEOSettings />} />
+                    <Route path="/admin/analytics" element={
+                      <AnalyticsPage>
+                        <AnalyticsDashboard />
+                      </AnalyticsPage>
+                    } />
+                    <Route path="/admin/analytics/integrations" element={
+                      <AnalyticsPage>
+                        <TrackingScriptsEditor />
+                      </AnalyticsPage>
+                    } />
+                    <Route path="/admin/settings" element={<Settings />} />
+                    <Route path="/admin/blog" element={<BlogAdminPage />} />
+                    <Route path="/admin/blog/new" element={<BlogPostEditor />} />
+                    <Route path="/admin/blog/edit/:id" element={<BlogPostEditor />} />
+                    <Route path="/admin/pages" element={<PageManager />} />
+                    <Route path="/admin/pages/new" element={<PageEditorFixed />} />
+                    <Route path="/admin/pages/edit/:id" element={<PageEditorFixed />} />
+                  </Route>
+
                   <Route path="/:slug" element={<PageView />} />
                 </Route>
 
                 <Route path="/login" element={<LoginPage />} />
-                <Route element={<NewProtectedRoute adminOnly />}>
-                  <Route path="/admin" element={<Navigate to="/admin/panel" replace />} />
-                  <Route path="/admin/panel" element={<AdminPanel />} />
-                  <Route path="/admin/panel/products" element={<ProductManagement />} />
-                  <Route path="/admin/panel/users" element={<UserManagement />} />
-                  <Route path="/admin/panel/content" element={<ContentManagement />} />
-                  <Route path="/admin/seo" element={<SEOSettings />} />
-                  <Route path="/admin/analytics" element={
-                    <AnalyticsPage>
-                      <AnalyticsDashboard />
-                    </AnalyticsPage>
-                  } />
-                  <Route path="/admin/analytics/integrations" element={
-                    <AnalyticsPage>
-                      <TrackingScriptsEditor />
-                    </AnalyticsPage>
-                  } />
-                  <Route path="/admin/settings" element={<Settings />} />
-                  <Route path="/admin/blog" element={<BlogAdminPage />} />
-                  <Route path="/admin/blog/new" element={<BlogPostEditor />} />
-                  <Route path="/admin/blog/edit/:id" element={<BlogPostEditor />} />
-                  <Route path="/admin/pages" element={<PageManager />} />
-                  <Route path="/admin/pages/new" element={<PageEditorFixed />} />
-                  <Route path="/admin/pages/edit/:id" element={<PageEditorFixed />} />
-                </Route>
-
+                
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>

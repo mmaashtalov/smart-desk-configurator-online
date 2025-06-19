@@ -11,6 +11,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 
+
 interface ContentType {
   id: number;
   title: string;
@@ -23,7 +24,7 @@ const initialContent: ContentType[] = [
   { id: 3, title: 'Наши проекты', type: 'static_page' },
 ];
 
-const ContentManagement = () => {
+export function ContentManagement() {
   const [content, setContent] = useState<ContentType[]>(initialContent);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -194,6 +195,4 @@ const ContentManagement = () => {
       </nav>
     </div>
   );
-};
-
-export default ContentManagement;
+}

@@ -14,7 +14,7 @@ import {
 import { ImageFormModal } from '@/components/ui/ImageFormModal';
 import { logger } from '@/services/logger.service';
 
-const ProductManagement = () => {
+export function ProductManagement() {
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -357,6 +357,4 @@ const ProductManagement = () => {
       />
     </div>
   );
-};
-
-export default ProductManagement; 
+} 

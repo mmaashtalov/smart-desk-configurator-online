@@ -167,6 +167,13 @@ export default defineConfig(({ mode }) => ({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
+  css: {
+    postcss: './postcss.config.cjs',
+  },
+  server: {
+    port: 8081,
+    strictPort: true,
+  },
   test: {
     globals: true,
     environment: 'jsdom',

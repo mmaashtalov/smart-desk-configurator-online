@@ -1,66 +1,97 @@
-import { useState, useEffect } from 'react'
-import { logger } from '@/services/logger.service'
+import { useState, useEffect, useCallback } from 'react';
+import { supabase } from '@/services/supabase';
+import { logger } from '@/services/logger.service';
+import { Session, User } from '@supabase/supabase-js';
 
-export function useAuth() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    // Check if user is authenticated (simplified)
-    const token = localStorage.getItem('auth-token')
-    const userData = localStorage.getItem('user-data')
-    
-    if (token && userData) {
-      try {
-        setUser(JSON.parse(userData))
-        setIsAuthenticated(true)
-      } catch (error) {
-        logger.error('Error parsing user data from localStorage', error as Error)
-        localStorage.removeItem('auth-token')
-        localStorage.removeItem('user-data')
-      }
-    }
-    
-    setLoading(false)
-  }, [])
-
-  const login = async (email: string, password: string) => {
-    // Simplified login - in real app, this would call an API
-    if (email === 'admin@office-intellect.ru' && password === 'admin123') {
-      const userData = {
-        id: '1',
-        email,
-        name: 'Администратор',
-        role: 'admin'
-      }
-      
-      localStorage.setItem('auth-token', 'mock-token')
-      localStorage.setItem('user-data', JSON.stringify(userData))
-      setUser(userData)
-      setIsAuthenticated(true)
-      logger.info('User logged in successfully', { email: email })
-      return { success: true }
-    }
-    
-    logger.warn('Login failed: invalid credentials', { email: email })
-    return { success: false, error: 'Неверные учетные данные' }
-  }
-
-  const logout = () => {
-    localStorage.removeItem('auth-token')
-    localStorage.removeItem('user-data')
-    setUser(null)
-    setIsAuthenticated(false)
-    logger.info('User logged out', { previousUserEmail: user?.email })
-  }
-
-  return {
-    isAuthenticated,
-    user,
-    loading,
-    login,
-    logout,
-  }
+// Расширяем тип User, чтобы включить наши кастомные роли
+interface UserWithRoles extends User {
+  roles?: string[];
 }
 
+// Функция для получения профиля
+async function getUserProfile(user: User | null): Promise<UserWithRoles | null> {
+  if (!user) return null;
+
+  const { data: profile, error } = await supabase
+    .from('profiles')
+    .select('roles')
+    .eq('id', user.id)
+    .single();
+  
+  if (error) {
+    // Не блокируем пользователя, если профиль не найден (например, сразу после регистрации)
+    // Просто логируем ошибку, если это не "No rows found"
+    if (error.message && !error.message.includes('No rows found')) {
+        logger.error('Error fetching user profile', error);
+    }
+    return { ...user, roles: [] };
+  }
+  
+  const finalUser = {
+    ...user,
+    roles: profile?.roles || [],
+  };
+
+  return finalUser;
+}
+
+
+export function useAuth() {
+  const [session, setSession] = useState<Session | null>(null);
+  const [user, setUser] = useState<UserWithRoles | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const fetchSession = useCallback(async () => {
+    setLoading(true);
+    const { data: { session }, error } = await supabase.auth.getSession();
+    
+    if (error) {
+      logger.error('Error getting session', error);
+      setLoading(false);
+      return;
+    }
+
+    setSession(session);
+    const userWithProfile = await getUserProfile(session?.user ?? null);
+    setUser(userWithProfile);
+    setLoading(false);
+  }, []);
+  
+  useEffect(() => {
+    fetchSession();
+
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session);
+        getUserProfile(session?.user ?? null).then(setUser);
+      }
+    );
+
+    return () => {
+      authListener?.subscription.unsubscribe();
+    };
+  }, [fetchSession]);
+
+  const login = async (email, password) => {
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+  };
+
+  const logout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
+    setUser(null);
+    setSession(null);
+  };
+  
+  const isAuthenticated = !!session?.user;
+
+  return {
+    session,
+    user,
+    isAuthenticated,
+    login,
+    logout,
+    loading
+  };
+}
