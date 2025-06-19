@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
-import ProductManagement from './ProductManagement';
+import { ProductManagement } from './ProductManagement';
 import { logger } from '@/services/logger.service';
 import { vi } from 'vitest';
 

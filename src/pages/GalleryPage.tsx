@@ -117,7 +117,7 @@ const GalleryPage: React.FC = () => {
         </div>
       </div>
 
-      {loading && <p className="text-center">Загрузка изображений...</p>}
+      {loading && <p className="text-center" role="status">Загрузка изображений...</p>}
       {error && <p className="text-center text-red-500">{error}</p>}
       
       {!loading && !error && filteredImages.length === 0 && (

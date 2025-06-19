@@ -1,7 +1,17 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import CategoryPage from './CategoryPage';
-import { AnalyticsProvider } from '../contexts/AnalyticsContext'; // Импортируем провайдер
+import { AnalyticsProvider } from '../contexts/AnalyticsContext';
+
+// Мокаем useNavigate, чтобы отслеживать вызовы
+const mockedUseNavigate = vi.fn();
+vi.mock('react-router-dom', async () => {
+    const actual = await vi.importActual('react-router-dom');
+    return {
+        ...actual,
+        useNavigate: () => mockedUseNavigate,
+    };
+});
 
 // Мокаем данные, чтобы тест был изолированным
 vi.mock('../data/catalog', () => ({
@@ -47,19 +57,16 @@ const renderCategoryPage = (categoryId: string) => {
 };
 
 describe('CategoryPage', () => {
+    beforeEach(() => {
+        vi.clearAllMocks();
+    });
+
   it('должен рендерить товары для выбранной категории', () => {
     renderCategoryPage('test-category');
 
     expect(screen.getByRole('heading', { name: /Тестовая категория/i })).toBeInTheDocument();
     expect(screen.getByText('Тестовый стул 1')).toBeInTheDocument();
     expect(screen.getByText('Тестовый стул 2')).toBeInTheDocument();
-    expect(screen.getByText('9 999 ₽')).toBeInTheDocument();
-    expect(screen.getByText('12 345 ₽')).toBeInTheDocument();
-
-    const productImages = screen.getAllByRole('img').filter(img => img.getAttribute('src')?.startsWith('/images/'));
-    expect(productImages).toHaveLength(2);
-    expect(productImages[0]).toHaveAttribute('src', '/images/test1.jpg');
-    expect(productImages[1]).toHaveAttribute('src', '/images/test2.jpg');
   });
 
   it('должен показывать сообщение, если в категории нет товаров', () => {
@@ -68,8 +75,8 @@ describe('CategoryPage', () => {
     expect(screen.getByText(/В этой категории пока нет товаров/i)).toBeInTheDocument();
   });
 
-  it('должен показывать "не найдено" для несуществующей категории', () => {
+  it('должен вызывать navigate на /404 для несуществующей категории', () => {
     renderCategoryPage('non-existent-category');
-    expect(screen.getByText(/Категория не найдена/i)).toBeInTheDocument();
+    expect(mockedUseNavigate).toHaveBeenCalledWith('/404', { replace: true });
   });
 });

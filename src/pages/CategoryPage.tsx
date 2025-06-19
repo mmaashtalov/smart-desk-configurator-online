@@ -1,6 +1,5 @@
 import React from 'react'
-import { useParams, Link } from 'react-router-dom'
-import { Layout } from '@/components/Layout'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 import { CATEGORIES, PRODUCTS } from '@/data/catalog'
 import { ImageWithFallback } from '@/components/ui/ImageWithFallback'
 import { Button } from '@/components/ui/button'
@@ -8,17 +7,24 @@ import { CategoryTabs } from '@/components/catalog/CategoryTabs'
 
 const CategoryPage: React.FC = () => {
   const { categoryId } = useParams<{ categoryId: string }>()
+  const navigate = useNavigate();
 
   const category = CATEGORIES.find((cat) => cat.id === categoryId)
 
+  React.useEffect(() => {
+    if (!category) {
+      navigate('/404', { replace: true });
+    }
+  }, [category, navigate]);
+
   if (!category) {
-    return <Layout><div className="container mx-auto px-4 py-8"><h1 className="text-3xl font-bold">Категория не найдена</h1><p>Извините, запрашиваемая категория не существует.</p><Link to="/catalog"><Button className="mt-4">Вернуться в каталог</Button></Link></div></Layout>
+    return null; // Рендерим null, пока происходит перенаправление
   }
 
   const products = PRODUCTS.filter((product) => product.category === category.id)
 
   return (
-    <Layout>
+    <>
       <section className="container mx-auto px-4 py-8">
         <h1 className="text-3xl md:text-4xl font-bold mb-4 font-playfair text-center">
           {category.name}
@@ -79,7 +85,7 @@ const CategoryPage: React.FC = () => {
           </div>
         )}
       </section>
-    </Layout>
+    </>
   )
 }
 
