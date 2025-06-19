@@ -2,9 +2,10 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import GalleryPage from './GalleryPage';
 import { getGalleryImages } from '@/services/gallery.service';
-import { GalleryImage } from '@/types/gallery';
-import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
+import type { GalleryImage } from '@/types/gallery';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 
+// Mock the service
 vi.mock('@/services/gallery.service');
 
 const mockImages: GalleryImage[] = [
@@ -14,49 +15,53 @@ const mockImages: GalleryImage[] = [
 
 describe('GalleryPage', () => {
   beforeEach(() => {
-    (getGalleryImages as vi.Mock).mockResolvedValue(mockImages);
-  });
-
-  afterEach(() => {
     vi.clearAllMocks();
   });
 
-  it('should render a loading state initially', () => {
+  it('should display a loading spinner initially', () => {
+    // Mock a promise that never resolves to keep it in a loading state
+    (getGalleryImages as vi.Mock).mockReturnValue(new Promise(() => {})); 
     render(
         <MemoryRouter>
             <GalleryPage />
         </MemoryRouter>
     );
-    expect(screen.getByText('Загрузка изображений...')).toBeInTheDocument();
+    // In your component, the loading spinner should have a role of 'status' for accessibility
+    expect(screen.getByRole('status')).toBeInTheDocument();
   });
 
-  it('should render images after successful fetch', async () => {
+  it('should display images after successful fetching', async () => {
+    (getGalleryImages as vi.Mock).mockResolvedValue(mockImages);
     render(
         <MemoryRouter>
             <GalleryPage />
         </MemoryRouter>
     );
-    
+
+    // Wait for the elements with the alt text to appear
     await waitFor(() => {
-        expect(screen.queryByText('Загрузка изображений...')).not.toBeInTheDocument();
+      expect(screen.getByAltText('Image 1')).toBeInTheDocument();
+      expect(screen.getByAltText('Image 2')).toBeInTheDocument();
     });
 
     const images = screen.getAllByRole('img');
     expect(images).toHaveLength(2);
     expect(images[0]).toHaveAttribute('src', '/image1.jpg');
-    expect(screen.getByAltText('Image 1')).toBeInTheDocument();
   });
 
-  it('should render an error message if fetch fails', async () => {
-    (getGalleryImages as vi.Mock).mockRejectedValue(new Error('Fetch failed'));
+  it('should display an error message if fetching fails', async () => {
+    const errorMessage = 'Failed to fetch images';
+    (getGalleryImages as vi.Mock).mockRejectedValue(new Error(errorMessage));
     render(
         <MemoryRouter>
             <GalleryPage />
         </MemoryRouter>
     );
 
+    // Check for the error message to appear
     await waitFor(() => {
-        expect(screen.getByText('Не удалось загрузить изображения.')).toBeInTheDocument();
+      // The text might be part of a larger sentence, so we use a regex
+      expect(screen.getByText(/произошла ошибка/i)).toBeInTheDocument();
     });
   });
-}); 
+});

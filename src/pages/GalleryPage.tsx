@@ -33,7 +33,7 @@ const GalleryPage: React.FC = () => {
         const data = await getGalleryImages();
         setImages(data);
       } catch (err) {
-        setError('Не удалось загрузить изображения.');
+        setError('При загрузке изображений произошла ошибка.');
         console.error(err);
       } finally {
         setLoading(false);

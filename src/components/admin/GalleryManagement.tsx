@@ -102,13 +102,13 @@ export function GalleryManagement() {
               {errors.category && <p className="text-red-500 text-sm">{errors.category.message}</p>}
             </div>
             <div className="space-y-2">
-              <Label>Тип</Label>
+              <Label htmlFor="type-select">Тип</Label>
               <Controller
                 name="type"
                 control={control}
                 render={({ field }) => (
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <SelectTrigger>
+                    <SelectTrigger id="type-select">
                       <SelectValue placeholder="Выберите тип" />
                     </SelectTrigger>
                     <SelectContent>
@@ -120,13 +120,13 @@ export function GalleryManagement() {
               />
             </div>
             <div className="space-y-2">
-              <Label>Покрытие</Label>
+              <Label htmlFor="coating-select">Покрытие</Label>
               <Controller
                 name="coating"
                 control={control}
                 render={({ field }) => (
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <SelectTrigger>
+                    <SelectTrigger id="coating-select">
                       <SelectValue placeholder="Выберите покрытие" />
                     </SelectTrigger>
                     <SelectContent>
@@ -161,7 +161,7 @@ export function GalleryManagement() {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="image">Файл изображения</Label>
+            <Label htmlFor="image">Изображение</Label>
             <Input id="image" type="file" {...register('image')} />
             {errors.image && <p className="text-red-500 text-sm">{typeof errors.image.message === 'string' ? errors.image.message : 'Ошибка файла'}</p>}
           </div>
